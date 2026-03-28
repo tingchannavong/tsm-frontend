@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+.container {
+  @apply p-10 flex flex-col items-center justify-center min-h-screen;
+}
+
+.formCard {
+  @apply space-y-4 w-full max-w-sm p-8 bg-white rounded-xl shadow-lg border border-gray-100;
+}
+
+.title {
+  @apply text-3xl font-extrabold text-gray-700 mb-6;
+}
+
+.inputGroup {
+  @apply flex flex-col gap-1;
+}
+
+.label {
+  @apply text-sm font-semibold text-gray-700;
+}
+
+.input {
+  @apply w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-all;
+}
+
+.inputSuccess {
+  @apply border-gray-300 focus:ring-blue-100;
+}
+
+.inputError {
+  @apply border-red-500 focus:ring-red-200;
+}
+
+.errorText {
+  @apply text-xs text-red-500 font-medium;
+}
+
+.submitButton {
+  @apply w-full py-3 bg-gray-500 hover:bg-purple-400 text-white font-bold rounded-lg shadow-md hover:shadow-lg transform transition active:scale-95 cursor-pointer mt-4;
+}

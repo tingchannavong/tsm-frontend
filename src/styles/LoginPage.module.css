@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .container {
-  @apply p-10 flex flex-col items-center justify-center min-h-screen;
+  @apply p-10 flex grow flex-col items-center justify-center min-h-auto ;
 }
 
 .formCard {

@@ -46,7 +46,7 @@ function Login() {
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(submitData)} className={styles.formCard}>
-        <h1 className={styles.title}>Please login to TSM</h1>
+        <h1 className={styles.title}>LOGIN</h1>
         <div className={styles.inputGroup}>
           <label className={styles.label}>Username</label>
           <input
@@ -74,6 +74,7 @@ function Login() {
             <span className={styles.errorText}>{errors.password.message}</span>
           }
         </div>
+        <p>Forgot password</p>
         <button type="submit" className={styles.submitButton}>
           Log In
         </button>

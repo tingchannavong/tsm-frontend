@@ -74,7 +74,7 @@ function Login() {
             <span className={styles.errorText}>{errors.password.message}</span>
           }
         </div>
-        <p>Forgot password</p>
+        <p className="text-[#60D2CC] italic underline text-right">Forgot password</p>
         <button type="submit" className={styles.submitButton}>
           Log In
         </button>

@@ -10,7 +10,7 @@ export function TimerIcon(props) {
       {...props}
     >
       <g
-        stroke="#292D32"
+        stroke="#60D2CC"
         strokeWidth={1.5}
         strokeLinecap="round"
         strokeLinejoin="round"

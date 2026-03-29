@@ -4,6 +4,7 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthStore } from "../stores/authStores.js";
 import { useNavigate } from "react-router";
+import { useT } from "../languages/translations.js";
 
 const loginSchema = z.object({
   username: z.string("Not a string").min(3, "Minimum username is 3 letters"),
@@ -16,6 +17,7 @@ function Login() {
 
   // get zustand
   const login = useAuthStore((state) => state.login);
+  const t = useT();
 
 // form validation with react hook form
   const {
@@ -46,7 +48,7 @@ function Login() {
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(submitData)} className={styles.formCard}>
-        <h1 className={styles.title}>LOGIN</h1>
+        <h1 className={styles.title}>{t("login")}</h1>
         <div className={styles.inputGroup}>
           <label className={styles.label}>Username</label>
           <input

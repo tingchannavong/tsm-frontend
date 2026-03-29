@@ -2,5 +2,8 @@
     "login": "LOGIN",
     "subtitle": "Manage your sessions easily",
     "sessions": "Sessions",
-    "settings": "Settings"
+    "join_group": "JOIN EXISTING GROUP SESSION",
+    "view_session": "VIEW SESSION",
+    "create_session": "CREATE NEW GROUP SESSION"
+
 }

@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+.mainContainer {
+  @apply flex flex-col grow p-4;
+}
+
+.title {
+  @apply text-3xl font-extrabold text-[#2D877C] mb-6;
+}

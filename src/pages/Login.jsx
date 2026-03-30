@@ -1,25 +1,19 @@
 import { useForm } from "react-hook-form";
-import styles from "../styles/LoginPage.module.css";
-import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthStore } from "../stores/authStores.js";
 import { useNavigate } from "react-router";
 import { useT } from "../languages/translations.js";
-
-const loginSchema = z.object({
-  username: z.string("Not a string").min(3, "Minimum username is 3 letters"),
-  password: z.string().min(6, "Password must be at least 6 letters"),
-});
+import styles from "../styles/LoginPage.module.css";
+import { loginSchema } from "../validations/auth.schema.js";
 
 function Login() {
-
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // get zustand
   const login = useAuthStore((state) => state.login);
   const t = useT();
 
-// form validation with react hook form
+  // form validation with react hook form
   const {
     register,
     handleSubmit,
@@ -29,13 +23,13 @@ function Login() {
   // get data from react hook form
   const submitData = async (data) => {
     try {
-        await login(data.username, data.password);
-        alert('login success');
-        navigate('/');
+      await login(data.username, data.password);
+      alert("login success");
+      navigate("/");
     } catch (error) {
-        console.log("Status:", error.response.status);
-        console.log("Message:", error.response.data.message);
-        alert(error.response.data.message);
+      console.log("Status:", error.response.status);
+      console.log("Message:", error.response.data.message);
+      alert(error.response.data.message);
     }
   };
 
@@ -53,15 +47,13 @@ function Login() {
           <label className={styles.label}>Username</label>
           <input
             {...register("username")}
-            className={`${styles.input} ${errors.username ? styles.inputError: styles.inputSuccess}`}
+            className={`${styles.input} ${errors.username ? styles.inputError : styles.inputSuccess}`}
             type="text"
             placeholder="trialblazer321"
           />
-          {
-            errors.username && (
-                <span className={styles.errorText}>{errors.username?.message}</span>
-            )
-          }
+          {errors.username && (
+            <span className={styles.errorText}>{errors.username?.message}</span>
+          )}
         </div>
         <div className={styles.inputGroup}>
           <label className={styles.label}>Password</label>
@@ -71,12 +63,13 @@ function Login() {
             type="password"
             placeholder="**********"
           />
-          {
-            errors.password && 
+          {errors.password && (
             <span className={styles.errorText}>{errors.password.message}</span>
-          }
+          )}
         </div>
-        <p className="text-[#60D2CC] italic underline text-right">Forgot password</p>
+        <p className="text-[#60D2CC] italic underline text-right">
+          Forgot password
+        </p>
         <button type="submit" className={styles.submitButton}>
           Log In
         </button>

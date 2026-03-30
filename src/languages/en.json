@@ -7,5 +7,6 @@
     "view_session": "View sessions",
     "create_session": "Create new group session",
     "boardgame_collection": "Go to boardgame collection",
-    "start_timer": "Start timer"
+    "start_timer": "Start timer",
+    "go_back": "Go Back"
 }

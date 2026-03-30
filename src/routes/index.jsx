@@ -28,22 +28,18 @@ const routes = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "sessions", 
+        path: "sessions/:id",
         element: <SessionLayout />,
         children: [
           {
-        index: true, 
-        element: <SessionInfo />,
-      },
-           {
-        path: ":id", // /:location-id
-        element: <SessionInfo />,
-      },
-         {
-          path: "create",
-        element: <NewSessionForm />,
-      },
-        ]
+            index: true,
+            element: <SessionInfo />,
+          },
+          {
+            path: "create",
+            element: <NewSessionForm />,
+          },
+        ],
       },
     ],
   },

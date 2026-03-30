@@ -1,8 +1,11 @@
 function Button(props) {
-  const bgColor = props.color || "bg-[#2D877C]";
+  const { onClick, text, color } = props;
+
+  const bgColor = color || "bg-[#2D877C]";
   return (
-    <button className={`w-full ${bgColor} rounded-2xl p-2 text-white uppercase font-medium`}>
-        {props.text}
+    <button onClick={onClick}
+    className={`w-full ${bgColor} rounded-2xl p-2 text-white uppercase font-medium`}>
+        {text}
     </button>
   )
 }

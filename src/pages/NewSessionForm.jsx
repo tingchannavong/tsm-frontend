@@ -3,7 +3,7 @@ import styles from "../styles/Base.module.css";
 import Button from "../components/Button.jsx";
 import SmallButton from "../components/SmallButton.jsx";
 import Input from "../components/Input.jsx";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createSessionSchema } from "../validations/session.schema.js";
@@ -14,7 +14,9 @@ function NewSessionForm() {
   const t = useT();
   const navigate = useNavigate();
   const { id } = useParams();
-  
+  const path = useLocation();
+  const groupId = path.state ? path.state.groupId: null;
+
   const [isGenNames, setIsGenNames ] = useState(false)
 
   const {
@@ -27,7 +29,7 @@ function NewSessionForm() {
       people: 0,
       names: [],
       pricingId: 1,
-      groupId: null,
+      groupId: groupId,
       locationId: id
     },
   });
@@ -55,7 +57,7 @@ function NewSessionForm() {
 
   return (
     <div>
-      <h1 className={`${styles.subtitle}`}>{t("create_session")}</h1>
+      <h1 className={`${styles.subtitle}`}>{groupId ? t("join_group") : t("create_session")}</h1>
       <form onSubmit={handleSubmit(submitData)}>
         <fieldset className="fieldset">
           <Input

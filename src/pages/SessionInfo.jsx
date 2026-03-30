@@ -11,22 +11,34 @@ function SessionInfo(props) {
   const navigate = useNavigate();
   const [groups, setGroups] = useState(null);
   const { id } = useParams();
+  const [selectedGroupId, setSelectedGroupId] = useState(null);
+  const [modalAction, setModalAction] = useState(null);
+
 
   const hdlGoToCreate = () => navigate("create");
   const hdlGoToView = () => navigate("view");
   const hdlGoToJoin = () => navigate("join");
 
+  const handleModalSubmit = () => {
+    if (!selectedGroupId) return alert("Please select a group");
+
+    if (modalAction === "join") {
+      navigate("create", { state: { groupId: selectedGroupId } });
+    
+    } else if (modalAction === "view") {
+      navigate(`view`, { state: { groupId: selectedGroupId } });
+    }
+
+    document.getElementById("choose_group_modal")?.close();
+};
+
   useEffect(() => {
     const fetchGroupSessions = async () => {
       try {
         const data = await getSessionsByLocation(id);
-        console.log(data.responses);
   
         const grouped = filterGroups(data.responses);
 
-        // console.log(grouped[0].items.length);
-        console.log(typeof grouped);
-        console.log(grouped);
         setGroups(grouped);
       } catch (error) {
         console.error("Failed to fetch group sessions:", error);
@@ -40,11 +52,17 @@ function SessionInfo(props) {
       <div className="flex flex-col gap-5">
         <Button
           text={t("join_group")}
-          onClick={() =>
+          onClick={() => {
+            setModalAction("join");
             document.getElementById("choose_group_modal").showModal()
+            }
           }
         />
-        <Button text={t("view_session")} onClick={hdlGoToView} />
+        <Button text={t("view_session")} onClick={() =>
+        { setModalAction("view");
+            document.getElementById("choose_group_modal").showModal()
+            }
+          }/>
         <Button text={t("create_session")} onClick={hdlGoToCreate} />
         <Button text={t("boardgame_collection")} color="bg-[#7A3CEA]" />
       </div>
@@ -54,13 +72,14 @@ function SessionInfo(props) {
           <div className="flex flex-col">
           {groups && groups.map( each => (
               <label key={each.groupId}>
-              <input type="checkbox" /> {`${each.items.length} ${t("people")} ${t("started")}: ~ ${convertDateTimeTo24HrTime(each.items[0].startTime)}`}
+              <input type="radio" value={each.groupId} checked={selectedGroupId === each.groupId} onChange={() => setSelectedGroupId(each.groupId)}/> {`${each.items.length} ${t("people")} ${t("started")}: ~ ${convertDateTimeTo24HrTime(each.items[0].startTime)}`}
               </label>
             ))}
             </div>
           <div className="modal-action">
             <form method="dialog">
-              <button className="btn">Submit</button>
+              <button className="btn mr-1">Close</button>
+              <button className="btn" type="submit" onClick={() => handleModalSubmit()}>Submit</button>
             </form>
           </div>
         </div>

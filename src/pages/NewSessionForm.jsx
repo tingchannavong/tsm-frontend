@@ -3,20 +3,19 @@ import styles from "../styles/Base.module.css";
 import Button from "../components/Button.jsx";
 import SmallButton from "../components/SmallButton.jsx";
 import Input from "../components/Input.jsx";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createSessionSchema } from "../validations/session.schema.js";
 import { useState } from "react";
+import { createSession } from "../api/session.js";
 
 function NewSessionForm() {
   const t = useT();
   const navigate = useNavigate();
+  const { id } = useParams();
   
   const [isGenNames, setIsGenNames ] = useState(false)
-
-  // BACK TO EXACT SESSION
-  const hdlGoBack = () => navigate(-1);
 
   const {
     register,
@@ -29,13 +28,14 @@ function NewSessionForm() {
       names: [],
       pricingId: 1,
       groupId: null,
+      locationId: id
     },
   });
 
   //  resolver: zodResolver(createSessionSchema),
 
     const hdlChange = (e) => {
-    setIsGenNames(e.target.checked); // ใช้ .checked ไม่ใช่ .value
+    setIsGenNames(e.target.checked); 
   };
 
   const guestNumber = watch("people") || 0;
@@ -43,7 +43,7 @@ function NewSessionForm() {
   const submitData = async (data) => {
     try {
       console.log(data);
-      // await login(data.username, data.password);
+      await createSession(data);
       alert("create session success");
       // navigate("/");
     } catch (error) {
@@ -55,12 +55,11 @@ function NewSessionForm() {
 
   return (
     <div>
-      <SmallButton text={t("go_back")} onClick={hdlGoBack} />
       <h1 className={`${styles.subtitle}`}>{t("create_session")}</h1>
       <form onSubmit={handleSubmit(submitData)}>
         <fieldset className="fieldset">
           <Input
-            label={t("player_number")}
+            label={t("guest_number")}
             type="number"
             placeholder="0"
             register={register}

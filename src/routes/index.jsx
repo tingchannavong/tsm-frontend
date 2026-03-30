@@ -9,6 +9,7 @@ import SessionInfo from "../pages/SessionInfo";
 import ErrorPage from "../pages/ErrorPage";
 import SessionLayout from "../layouts/SessionLayout";
 import NewSessionForm from "../pages/NewSessionForm";
+import ViewSessions from "../pages/ViewSessions";
 
 const routes = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const routes = createBrowserRouter([
           {
             path: "create",
             element: <NewSessionForm />,
+          },
+          {
+            path: "view",
+            element: <ViewSessions />,
           },
         ],
       },

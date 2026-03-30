@@ -8,5 +8,11 @@
     "create_session": "Create new group session",
     "boardgame_collection": "Go to boardgame collection",
     "start_timer": "Start timer",
-    "go_back": "Go Back"
+    "go_back": "Go Back",
+    "guest_number": "Guest number",
+    "guest": "Guest",
+    "enter_name": "Enter name",
+    "which_group": "Which group would you like to choose?",
+    "people": "people",
+    "started": "started"
 }

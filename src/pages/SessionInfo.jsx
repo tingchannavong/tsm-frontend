@@ -1,16 +1,10 @@
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import Button from "../components/Button";
 import { useT } from "../languages/translations.js";
 
 function SessionInfo(props) {
   const t = useT();
   const navigate = useNavigate();
-  const path = useLocation();
-
-  const hdlGoToCreateSession = () => {
-    const urlPath = path.pathname;
-    navigate(`${urlPath}/create`);
-  };
 
   const hdlGoToCreate = () => navigate("create");
   const hdlGoToView = () => navigate("view");

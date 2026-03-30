@@ -11,11 +11,11 @@ export function useT() {
    function t(key) {
     const langFile = translations[lang];
     const value = langFile[key];
-    if (!value) {
-      console.log(`Missing translation: ${key}`);
-      return key;
-    }
-    return value;
+    // if (!value) {
+    //   console.log(`Missing translation: ${key}`);
+    //   return key;
+    // }
+    return value || key;
   }
   return t;
 }

@@ -1,12 +1,12 @@
 import React from "react";
 
-function Input(props) {
+function Input({ register, name, placeholder, label, type }) {
   return (
-    <fieldset className="fieldset">
-      <legend className="fieldset-legend">{props.legend}</legend>
-      <input type="text" className="input" placeholder={props.placeholder} />
+    <>
+      <legend className="fieldset-legend">{label}</legend>
+      <input {...register(name)} type={type} className="input" placeholder={placeholder} />
       <p className="label"></p>
-    </fieldset>
+    </>
   );
 }
 

@@ -7,6 +7,8 @@ import AdminPage from "../pages/AdminPage";
 import MainLayout from "../layouts/MainLayout";
 import SessionInfo from "../pages/SessionInfo";
 import ErrorPage from "../pages/ErrorPage";
+import SessionLayout from "../layouts/SessionLayout";
+import NewSessionForm from "../pages/NewSessionForm";
 
 const routes = createBrowserRouter([
   {
@@ -26,8 +28,22 @@ const routes = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "sessions", // /:location-id
+        path: "sessions", 
+        element: <SessionLayout />,
+        children: [
+          {
+        index: true, 
         element: <SessionInfo />,
+      },
+           {
+        path: ":id", // /:location-id
+        element: <SessionInfo />,
+      },
+         {
+          path: "create",
+        element: <NewSessionForm />,
+      },
+        ]
       },
     ],
   },

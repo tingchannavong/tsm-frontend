@@ -7,3 +7,6 @@
 .title {
   @apply text-3xl font-extrabold text-[#2D877C] mb-6;
 }
+.subtitle {
+  @apply text-xl font-medium text-[#2D877C] mb-6;
+}

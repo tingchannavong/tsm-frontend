@@ -2,8 +2,10 @@
     "login": "LOGIN",
     "subtitle": "Manage your sessions easily",
     "sessions": "Sessions",
-    "join_group": "JOIN EXISTING GROUP SESSION",
-    "view_session": "VIEW SESSION",
-    "create_session": "CREATE NEW GROUP SESSION"
-
+    "location": "location",
+    "join_group": "Join existing group session",
+    "view_session": "View sessions",
+    "create_session": "Create new group session",
+    "boardgame_collection": "Go to boardgame collection",
+    "start_timer": "Start timer"
 }

@@ -1,4 +1,3 @@
-import styles from "../styles/Base.module.css";
 import Button from "../components/Button";
 import { useT } from "../languages/translations.js";
 
@@ -7,14 +6,12 @@ function SessionInfo() {
     
   return (
     <>
-      <div className={`${styles.mainContainer}`}>
-        <h1 className={`${styles.title}`}>Session Info</h1>
-        <h2 className="mb-5">Location: Table 1</h2>
+        <h2 className="mb-5">{t("location")}: Table 1</h2>
         <div className="flex flex-col gap-5">
         <Button text={t("join_group")}/>
         <Button text={t("view_session")}/>
         <Button text={t("create_session")}/>
-        </div>
+        <Button text={t("boardgame_collection")} color="bg-[#7A3CEA]"/>
         </div>
     </>
   );

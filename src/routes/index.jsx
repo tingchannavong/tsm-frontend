@@ -13,17 +13,23 @@ import ViewSessions from "../pages/ViewSessions";
 
 const routes = createBrowserRouter([
   {
-    path: "/",
-    loader: publicLoader,
-    element: <MainLayout />,
-    errorElement: <ErrorPage />,
-  },
+        path: "*",
+        loader: () => {
+          throw new Response("Not Found", { status: 404 });
+        },
+        element: <MainLayout />,
+        errorElement: <ErrorPage />,
+      },
   {
     path: "/tsm",
     loader: publicLoader,
     element: <MainLayout />,
     errorElement: <ErrorPage />,
     children: [
+        {
+        index: true,
+        element: <Login />, // TO DO CHANGE TO WELCOME PAGE LATER
+      },
       {
         path: "login",
         element: <Login />,

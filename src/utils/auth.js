@@ -1,3 +1,11 @@
+
+export const getHomePath = (user) => {
+    if (!user) return "/tsm/login";
+    if (user.role === "ADMIN") return "/tsm/admin";
+    if (user.role === "STAFF") return "/tsm/staff";
+    return "/tsm";
+};
+
 // Moved logic to backend
 // export function filterGroups(data) {
     

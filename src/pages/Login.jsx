@@ -2,10 +2,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthStore } from "../stores/authStores.js";
 import { useNavigate } from "react-router";
-import { useT } from "../languages/translations.js";
-import styles from "../styles/LoginPage.module.css";
 import { loginSchema } from "../validations/auth.schema.js";
 import { toast } from "react-toastify";
+import styles from "../styles/LoginPage.module.css";
+import { useT } from "../languages/translations.js";
+import { getHomePath } from "../utils/auth.js";
 
 function Login() {
   const navigate = useNavigate();
@@ -24,9 +25,9 @@ function Login() {
   // get data from react hook form
   const submitData = async (data) => {
     try {
-      await login(data.username, data.password);
+      const user = await login(data.username, data.password);
       toast.success(t("login_success"))
-      navigate("/");
+      navigate(getHomePath(user));
     } catch (error) {
       console.log("Status:", error.response.status);
       console.log("Message:", error.response.data.message);

@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router";
 import Login from "../pages/Login";
-import DashboardPage from "../pages/DashboardPage";
 import { protectedLoader, roleLoader } from "../loaders/protectedLoader";
 import { publicLoader } from "../loaders/publicLoader";
 import AdminPage from "../pages/AdminPage";
@@ -13,72 +12,132 @@ import ViewSessions from "../pages/ViewSessions";
 import Welcome from "../pages/Welcome";
 import StaffLayout from "../layouts/StaffLayout";
 import AdminLayout from "../layouts/AdminLayout";
+import FloorPlan from "../pages/FloorPlan";
+import UserPage from "../pages/UserPage";
 
 const routes = createBrowserRouter([
+  // 1. ADMIN SECTION 
   {
-    path: "*",
-    loader: () => {
-      throw new Response("Not Found", { status: 404 });
-    },
-    element: <MainLayout />,
-    errorElement: <ErrorPage />,
+    path: "/tsm/admin", 
+    loader: roleLoader("ADMIN"), 
+    element: <AdminLayout />,
+    children: [
+      { index: true, element: <AdminPage /> },
+    ],
   },
+
+  // 2. STAFF SECTION
+  {
+    path: "/tsm/staff", 
+    loader: roleLoader("STAFF"), 
+    element: <StaffLayout />,
+    children: [
+      { index: true, element: <FloorPlan /> },
+      { path: "profile", element: <UserPage /> },
+    ],
+  },
+
+  // 3. PUBLIC SECTION
   {
     path: "/tsm",
-    loader: publicLoader,
+    loader: publicLoader, 
     element: <MainLayout />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        index: true,
-        element: <Welcome />,
-      },
-      {
-        path: "login",
-        element: <Login />,
-      },
+      { index: true, element: <Welcome /> },
+      { path: "login", element: <Login /> },
       {
         path: "sessions/:id",
         element: <SessionLayout />,
         children: [
-          {
-            index: true,
-            element: <SessionInfo />,
-          },
-          {
-            path: "create",
-            element: <NewSessionForm />,
-          },
-          {
-            path: "view",
-            element: <ViewSessions />,
-          },
+          { index: true, element: <SessionInfo /> },
+          { path: "create", element: <NewSessionForm /> },
+          { path: "view", element: <ViewSessions /> },
         ],
       },
     ],
   },
+
+  // 4. GLOBAL ERROR (Simple 404)
   {
-    path: "/",
-    loader: protectedLoader,
-    element: <StaffLayout />,
-    children: [
-      {
-        index: true,
-        element: <DashboardPage />,
-      },
-    ],
-  },
-  {
-    path: "/admin",
-    loader: roleLoader(["ADMIN"]),
-    element: <AdminLayout />,
-     children: [
-      {
-        index: true,
-        element: <AdminPage />,
-      },
-    ],
+    path: "*",
+    element: <ErrorPage />,
   },
 ]);
+
+// const routes = createBrowserRouter([
+//   // STAFF SECTION
+//    {
+//     path: "tsm/staff",
+//     loader: roleLoader("STAFF"),
+//     element: <StaffLayout />,
+//     children: [
+//       {
+//         index: true,
+//         element: <FloorPlan />,
+//       },
+//       {
+//         path: "profile",
+//         element: <UserPage />,
+//       },
+//     ],
+//   },
+//     // ADMIN SECTION
+//   {
+//     path: "tsm/admin",
+//     loader: roleLoader("ADMIN"),
+//     element: <AdminLayout />,
+//      children: [
+//       {
+//         index: true,
+//         element: <AdminPage />,
+//       },
+//     ],
+//   },
+//   // PUBLIC SECTION
+//   {
+//     path: "tsm",
+//     loader: publicLoader,
+//     element: <MainLayout />,
+//     errorElement: <ErrorPage />,
+//     children: [
+//       {
+//         index: true,
+//         element: <Welcome />,
+//       },
+//       {
+//         path: "login",
+//         element: <Login />,
+//       },
+//       {
+//         path: "sessions/:id",
+//         element: <SessionLayout />,
+//         children: [
+//           {
+//             index: true,
+//             element: <SessionInfo />,
+//           },
+//           {
+//             path: "create",
+//             element: <NewSessionForm />,
+//           },
+//           {
+//             path: "view",
+//             element: <ViewSessions />,
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   // GLOBAL ERROR
+//   {
+//     path: "*",
+//     loader: () => {
+//       throw new Response("Not Found", { status: 404 });
+//     },
+//     element: <MainLayout />,
+//     errorElement: <ErrorPage />,
+//   },
+// ]);
 
 export default routes;

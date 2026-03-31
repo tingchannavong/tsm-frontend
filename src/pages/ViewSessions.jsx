@@ -3,7 +3,7 @@ import SessionCard from "../components/SessionCard";
 import { useT } from "../languages/translations";
 import { useLocation, useParams } from "react-router";
 import { getSessionsByLocationGroup } from "../api/session.js";
-import { convertDateTimeTo24HrTime } from "../utils/time.js";
+import { convertDateTimeToDate, getElapsedTime } from "../utils/time.js";
 
 function ViewSessions() {
   const t = useT();
@@ -28,9 +28,16 @@ function ViewSessions() {
     }, []);
 
   return (
-    <div>
-      {/* {`${t("people")} ${t("started")}: ~ ${convertDateTimeTo24HrTime(each.items[0].startTime)}`} */}
-      <SessionCard />
+    <div className="flex flex-col gap-10">
+      {selectedGroup && selectedGroup.map( (each, i) => {
+        const people = each.items.length;
+        const names = each.items.map( (item) => item.name);
+        const date = convertDateTimeToDate(each.items[0].startTime);
+        const timeElapsed = getElapsedTime(each.items[0].startTime);
+        const startTime = each.startTime;
+        return <SessionCard key={startTime} startTime={startTime} people={people} names={names} date={date} timeElapsed={timeElapsed}/>
+      })
+    }
     </div>
   );
 }

@@ -1,11 +1,12 @@
 {
+    "tsm": "Time Session Management System",
     "welcome": "Welcome to TSM!",
     "scan": "Scan location QR code to get started.",
     "lang": "Lang",
     "en": "English",
     "th": "Thai",
     "lao": "Lao",
-    "login": "LOGIN",
+    "login": "Log In",
     "login_success": "Log in success",
     "tables": "Tables",
     "floor_plan": "Floor Plan",
@@ -36,6 +37,15 @@
     "hour": "hr",
     "minutes": "m",
     "session_management": "Session Management",
-    "my_profile": "My Profile"
-
+    "my_profile": "My Profile",
+    "log_out": "Log out",
+     "edit": "Edit",
+    "change_password": "Change password",
+    "forgot_password": "Forgot password",
+    "username": "Username",
+    "password": "Password",
+    "firstname": "First Name",
+    "lastname": "Last Name",
+    "phone": "Phone",
+    "email": "Email"
 }

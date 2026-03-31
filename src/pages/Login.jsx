@@ -46,7 +46,7 @@ function Login() {
       <form onSubmit={handleSubmit(submitData)} className={styles.formCard}>
         <h1 className={styles.title}>{t("login")}</h1>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Username</label>
+          <label className={styles.label}>{t("username")}</label>
           <input
             {...register("username")}
             className={`${styles.input} ${errors.username ? styles.inputError : styles.inputSuccess}`}
@@ -58,7 +58,7 @@ function Login() {
           )}
         </div>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Password</label>
+          <label className={styles.label}>{t("password")}</label>
           <input
             {...register("password")}
             className={`${styles.input} ${errors.password ? styles.inputError : styles.inputSuccess}`}
@@ -70,10 +70,10 @@ function Login() {
           )}
         </div>
         <p className="text-[#60D2CC] italic underline text-right">
-          Forgot password
+          {t("forgot_password")}
         </p>
         <button type="submit" className={styles.submitButton}>
-          Log In
+          {t("login")}
         </button>
       </form>
     </div>

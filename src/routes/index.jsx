@@ -12,6 +12,7 @@ import NewSessionForm from "../pages/NewSessionForm";
 import ViewSessions from "../pages/ViewSessions";
 import Welcome from "../pages/Welcome";
 import StaffLayout from "../layouts/StaffLayout";
+import AdminLayout from "../layouts/AdminLayout";
 
 const routes = createBrowserRouter([
   {
@@ -70,7 +71,13 @@ const routes = createBrowserRouter([
   {
     path: "/admin",
     loader: roleLoader(["ADMIN"]),
-    element: <AdminPage />,
+    element: <AdminLayout />,
+     children: [
+      {
+        index: true,
+        element: <AdminPage />,
+      },
+    ],
   },
 ]);
 

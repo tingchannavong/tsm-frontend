@@ -5,7 +5,7 @@ function guard(user, allowedRoles) {
     if (!user) return redirect('/tsm/login');
     
     if (allowedRoles) {
-        if(!allowedRoles.includes(user.role)) return redirect("/tsm");
+        if(!allowedRoles.includes(user.role)) return redirect("/");
     }
 }
 

@@ -1,7 +1,6 @@
 import { useT } from "../languages/translations.js";
 import styles from "../styles/Base.module.css";
 import Button from "../components/Button.jsx";
-import SmallButton from "../components/SmallButton.jsx";
 import Input from "../components/Input.jsx";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";

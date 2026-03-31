@@ -6,7 +6,7 @@ import { getSessionsByLocation } from "../api/session.js";
 import { filterGroups } from "../utils/grouping.js";
 import { convertDateTimeTo24HrTime } from "../utils/time.js";
 
-function SessionInfo(props) {
+function SessionInfo() {
   const t = useT();
   const navigate = useNavigate();
   const [groups, setGroups] = useState(null);
@@ -16,8 +16,7 @@ function SessionInfo(props) {
 
 
   const hdlGoToCreate = () => navigate("create");
-  const hdlGoToView = () => navigate("view");
-  const hdlGoToJoin = () => navigate("join");
+  const hdlGoToSite = () => window.open("https://alphawolf.ckgroup-laos.com/boardgames/1");
 
   const handleModalSubmit = () => {
     if (!selectedGroupId) return alert("Please select a group");
@@ -64,7 +63,7 @@ function SessionInfo(props) {
             }
           }/>
         <Button text={t("create_session")} onClick={hdlGoToCreate} />
-        <Button text={t("boardgame_collection")} color="bg-[#7A3CEA]" />
+        <Button text={t("boardgame_collection")} color="bg-[#7A3CEA]" onClick={hdlGoToSite}/>
       </div>
       <dialog id="choose_group_modal" className="modal">
         <div className="modal-box">

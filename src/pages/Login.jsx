@@ -25,9 +25,9 @@ function Login() {
   // get data from react hook form
   const submitData = async (data) => {
     try {
-      const user = await login(data.username, data.password);
+      await login(data.username, data.password);
       toast.success(t("login_success"))
-      navigate(getHomePath(user));
+      navigate(getHomePath());
     } catch (error) {
       console.log("Status:", error.response.status);
       console.log("Message:", error.response.data.message);

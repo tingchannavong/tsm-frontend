@@ -34,6 +34,8 @@
     "time_elapsed": "Time elapsed",
     "est_price": "Est. price",
     "hour": "hr",
-    "minutes": "m"
+    "minutes": "m",
+    "session_management": "Session Management",
+    "my_profile": "My Profile"
 
 }

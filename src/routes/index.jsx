@@ -14,6 +14,9 @@ import StaffLayout from "../layouts/StaffLayout";
 import AdminLayout from "../layouts/AdminLayout";
 import FloorPlan from "../pages/FloorPlan";
 import UserPage from "../pages/UserPage";
+import AllSessions from "../pages/AllSessions";
+
+const commonPaths = [{ path: "profile", element: <UserPage /> }, { path: "sessions", element: <AllSessions /> },]
 
 const routes = createBrowserRouter([
   // 1. ADMIN SECTION 
@@ -23,6 +26,7 @@ const routes = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       { index: true, element: <AdminPage /> },
+      ...commonPaths
     ],
   },
 
@@ -33,7 +37,7 @@ const routes = createBrowserRouter([
     element: <StaffLayout />,
     children: [
       { index: true, element: <FloorPlan /> },
-      { path: "profile", element: <UserPage /> },
+      ...commonPaths
     ],
   },
 

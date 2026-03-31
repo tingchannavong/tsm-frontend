@@ -1,8 +1,12 @@
-import React from 'react'
+import { Outlet } from "react-router"
+import StaffNavBar from "../components/StaffNavBar"
 
 function StaffLayout() {
   return (
-    <div>StaffLayout</div>
+    <>
+    <Outlet />
+    <StaffNavBar/>
+    </>
   )
 }
 

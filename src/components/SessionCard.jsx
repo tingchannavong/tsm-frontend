@@ -1,4 +1,3 @@
-import styles from "../styles/LoginPage.module.css";
 import { useT } from "../languages/translations";
 
 function SessionCard({ names, people, date, startTime, timeElapsed }) {
@@ -16,8 +15,8 @@ function SessionCard({ names, people, date, startTime, timeElapsed }) {
           {t("time_elapsed")}:{" "}
           <span className={infoStyles}>
             {" "}
-            ~{timeElapsed.hours} {t("hour")} {timeElapsed.minutes}{" "}
-            {t("minutes")}
+            ~{timeElapsed.hours ? `${timeElapsed.hours} ${t("hour")} ` : ""}  
+            {timeElapsed.minutes ? `${timeElapsed.minutes} ${t("minutes")}` : ""} 
           </span>
         </h1>
            <h1 className={subtitleStyles}>
@@ -40,9 +39,9 @@ function SessionCard({ names, people, date, startTime, timeElapsed }) {
               ))}
           </div>
         </div>
-        <h1 className={subtitleStyles}>
+        {/* <h1 className={subtitleStyles}>
           {t("est_price")}: <span className={infoStyles}>~220 THB</span>
-        </h1>
+        </h1> */}
       </div>
     </>
   );

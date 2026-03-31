@@ -18,7 +18,8 @@ function ViewSessions() {
       const fetchGroupSessions = async () => {
         try {
           const data = await getSessionsByLocationGroup(id, groupId);
-          console.log(data.sameStartTimes)
+          // TO DO GET ESTIMATED PRICE
+          // console.log(data.sameStartTimes)
           setSelectedGroup(data.sameStartTimes);
         } catch (error) {
           console.error("Failed to fetch group sessions:", error);

@@ -10,25 +10,27 @@ import ErrorPage from "../pages/ErrorPage";
 import SessionLayout from "../layouts/SessionLayout";
 import NewSessionForm from "../pages/NewSessionForm";
 import ViewSessions from "../pages/ViewSessions";
+import Welcome from "../pages/Welcome";
+import StaffLayout from "../layouts/StaffLayout";
 
 const routes = createBrowserRouter([
   {
-        path: "*",
-        loader: () => {
-          throw new Response("Not Found", { status: 404 });
-        },
-        element: <MainLayout />,
-        errorElement: <ErrorPage />,
-      },
+    path: "*",
+    loader: () => {
+      throw new Response("Not Found", { status: 404 });
+    },
+    element: <MainLayout />,
+    errorElement: <ErrorPage />,
+  },
   {
     path: "/tsm",
     loader: publicLoader,
     element: <MainLayout />,
     errorElement: <ErrorPage />,
     children: [
-        {
+      {
         index: true,
-        element: <Login />, // TO DO CHANGE TO WELCOME PAGE LATER
+        element: <Welcome />,
       },
       {
         path: "login",
@@ -57,11 +59,17 @@ const routes = createBrowserRouter([
   {
     path: "/",
     loader: protectedLoader,
-    element: <DashboardPage />,
+    element: <StaffLayout />,
+    children: [
+      {
+        index: true,
+        element: <DashboardPage />,
+      },
+    ],
   },
   {
     path: "/admin",
-    loader: roleLoader(["ADMIN", "SUPERADMIN"]),
+    loader: roleLoader(["ADMIN"]),
     element: <AdminPage />,
   },
 ]);

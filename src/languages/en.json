@@ -1,5 +1,8 @@
 {
+    "welcome": "Welcome to TSM!",
+    "scan": "Scan location QR code to get started.",
     "login": "LOGIN",
+    "login_success": "Log in success",
     "subtitle": "Manage your sessions easily",
     "sessions": "Sessions",
     "location": "location",

@@ -7,7 +7,7 @@ function AdminPage() {
 
    const hdlLogOut = () => {
     logout();
-    navigate('/login');
+    navigate('/tsm/login');
    }
 
     const buttonStyles =

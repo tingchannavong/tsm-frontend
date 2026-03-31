@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { useT } from "../languages/translations.js";
 import styles from "../styles/LoginPage.module.css";
 import { loginSchema } from "../validations/auth.schema.js";
+import { toast } from "react-toastify";
 
 function Login() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function Login() {
   const submitData = async (data) => {
     try {
       await login(data.username, data.password);
-      alert("login success");
+      toast.success(t("login_success"))
       navigate("/");
     } catch (error) {
       console.log("Status:", error.response.status);

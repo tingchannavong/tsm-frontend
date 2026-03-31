@@ -2,10 +2,10 @@ import { redirect } from "react-router";
 import { useAuthStore } from "../stores/authStores";
 
 function guard(user, allowedRoles) {
-    if (!user) return redirect('/login');
+    if (!user) return redirect('/tsm/login');
     
     if (allowedRoles) {
-        if(!allowedRoles.includes(user.role)) return redirect("/");
+        if(!allowedRoles.includes(user.role)) return redirect("/tsm");
     }
 }
 

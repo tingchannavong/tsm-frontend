@@ -3,7 +3,7 @@ import Button from "../components/Button";
 import { useT } from "../languages/translations.js";
 import { useEffect, useState } from "react";
 import { getSessionsByLocation } from "../api/session.js";
-import { convertDateTimeTo24HrTime } from "../utils/time.js";
+import { convertDateTimeTo24HrTime, convertDateTimeToDate } from "../utils/time.js";
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -86,7 +86,7 @@ function SessionInfo() {
                     checked={selectedGroupId === each.groupId}
                     onChange={() => setSelectedGroupId(each.groupId)}
                   />{" "}
-                  {`${each.items.length} ${t("people")} ${t("started")}: ~ ${convertDateTimeTo24HrTime(each.items[0].startTime)}`}
+                  {`${each.items.length} ${t("people")} ${t("started")}: ~ ${convertDateTimeTo24HrTime(each.items[0].startTime)} (${convertDateTimeToDate(each.items[0].startTime)})`}
                 </label>
               ))}
           </div>

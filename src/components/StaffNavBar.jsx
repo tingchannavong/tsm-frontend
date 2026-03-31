@@ -1,6 +1,6 @@
 import { TimerIcon } from "../icons";
 
-function Footer() {
+function StaffNavBar() {
   const textStyles = "text-white font-bold";
 
   return (
@@ -14,4 +14,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default StaffNavBar;

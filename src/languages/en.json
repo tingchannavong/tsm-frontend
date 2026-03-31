@@ -47,5 +47,6 @@
     "firstname": "First Name",
     "lastname": "Last Name",
     "phone": "Phone",
-    "email": "Email"
+    "email": "Email",
+    "add": "Add"
 }

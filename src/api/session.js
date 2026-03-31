@@ -10,7 +10,6 @@ export async function getSessionsByLocation(id) {
     return res.data;
 }
 
-// TO REFACTOR IN BACKEND TO SEND LOCATION+GROUP INFO
 export async function getSessionsByLocationGroup(locationId, groupId) {
     const res = await publicApi.get(`/api/sessions/filter?locationId=${locationId}&groupId=${groupId}`);
     return res.data;

@@ -3,7 +3,6 @@ import Button from "../components/Button";
 import { useT } from "../languages/translations.js";
 import { useEffect, useState } from "react";
 import { getSessionsByLocation } from "../api/session.js";
-import { filterGroups } from "../utils/grouping.js";
 import { convertDateTimeTo24HrTime } from "../utils/time.js";
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
@@ -37,8 +36,8 @@ function SessionInfo() {
   useEffect(() => {
     const fetchGroupSessions = async () => {
       try {
-        const grouped = await getSessionsByLocation(id);
-        setGroups(grouped.responses);
+        const data = await getSessionsByLocation(id);
+        setGroups(data.grouped);
       } catch (error) {
         console.error("Failed to fetch group sessions:", error);
       }
@@ -52,7 +51,6 @@ function SessionInfo() {
         <Button
           text={t("join_group")}
           onClick={() => {
-            console.log(groups);
             if (groups.length === 0)
               return Swal.fire({ title: t("no_session") });
             setModalAction("join");

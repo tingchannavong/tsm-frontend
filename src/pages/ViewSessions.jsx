@@ -8,20 +8,18 @@ import { convertDateTimeTo24HrTime } from "../utils/time.js";
 function ViewSessions() {
   const t = useT();
   const { id } = useParams();
-  console.log(id);
-
   const path = useLocation();
   const groupId = path.state ? path.state.groupId: null;
-  console.log(groupId)
+
   const [selectedGroup, setSelectedGroup] = useState(null);
-  // const selectedGroup = path.state?.selectedGroup; // drawback group state dont trigger reload
+  // drawback group update no state to trigger reload // const selectedGroup = path.state?.selectedGroup; 
 
   useEffect(() => {
       const fetchGroupSessions = async () => {
         try {
-          const data = await getSessionsByLocationGroup(id, groupId);;
-          console.log(data)
-          setSelectedGroup(data);
+          const data = await getSessionsByLocationGroup(id, groupId);
+          console.log(data.sameStartTimes)
+          setSelectedGroup(data.sameStartTimes);
         } catch (error) {
           console.error("Failed to fetch group sessions:", error);
         }

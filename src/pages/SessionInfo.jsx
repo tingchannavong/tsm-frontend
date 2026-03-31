@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { getSessionsByLocation } from "../api/session.js";
 import { filterGroups } from "../utils/grouping.js";
 import { convertDateTimeTo24HrTime } from "../utils/time.js";
+import Swal from "sweetalert2";
+import { toast, ToastContainer } from "react-toastify";
 
 function SessionInfo() {
   const t = useT();
@@ -14,28 +16,28 @@ function SessionInfo() {
   const [selectedGroupId, setSelectedGroupId] = useState(null);
   const [modalAction, setModalAction] = useState(null);
 
-
   const hdlGoToCreate = () => navigate("create");
-  const hdlGoToSite = () => window.open("https://alphawolf.ckgroup-laos.com/boardgames/1");
+  const hdlGoToSite = () =>
+    window.open("https://alphawolf.ckgroup-laos.com/boardgames/1");
 
-  const handleModalSubmit = () => {
-    if (!selectedGroupId) return alert("Please select a group");
+  const handleModalSubmit = (e) => {
+    e.preventDefault();
+    if (!selectedGroupId) return toast.error(t("select_group"));
 
     if (modalAction === "join") {
       navigate("create", { state: { groupId: selectedGroupId } });
-    
     } else if (modalAction === "view") {
-      navigate(`view`, { state: { groupId: selectedGroupId } });
+      navigate(`view`, { state: { groupId: selectedGroupId, groups: groups } });
     }
 
     document.getElementById("choose_group_modal")?.close();
-};
+  };
 
   useEffect(() => {
     const fetchGroupSessions = async () => {
       try {
         const data = await getSessionsByLocation(id);
-  
+
         const grouped = filterGroups(data.responses);
 
         setGroups(grouped);
@@ -52,36 +54,60 @@ function SessionInfo() {
         <Button
           text={t("join_group")}
           onClick={() => {
+            console.log(groups);
+            if (groups.length === 0)
+              return Swal.fire({ title: t("no_session") });
             setModalAction("join");
-            document.getElementById("choose_group_modal").showModal()
-            }
-          }
+            document.getElementById("choose_group_modal").showModal();
+          }}
         />
-        <Button text={t("view_session")} onClick={() =>
-        { setModalAction("view");
-            document.getElementById("choose_group_modal").showModal()
-            }
-          }/>
+        <Button
+          text={t("view_session")}
+          onClick={() => {
+            if (groups.length === 0)
+              return Swal.fire({ title: t("no_session") });
+            setModalAction("view");
+            document.getElementById("choose_group_modal").showModal();
+          }}
+        />
         <Button text={t("create_session")} onClick={hdlGoToCreate} />
-        <Button text={t("boardgame_collection")} color="bg-[#7A3CEA]" onClick={hdlGoToSite}/>
+        <Button
+          text={t("boardgame_collection")}
+          color="bg-[#7A3CEA]"
+          onClick={hdlGoToSite}
+        />
       </div>
       <dialog id="choose_group_modal" className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg">{t("which_group")}</h3>
           <div className="flex flex-col">
-          {groups && groups.map( each => (
-              <label key={each.groupId}>
-              <input type="radio" value={each.groupId} checked={selectedGroupId === each.groupId} onChange={() => setSelectedGroupId(each.groupId)}/> {`${each.items.length} ${t("people")} ${t("started")}: ~ ${convertDateTimeTo24HrTime(each.items[0].startTime)}`}
-              </label>
-            ))}
-            </div>
+            {groups &&
+              groups.map((each) => (
+                <label key={each.groupId}>
+                  <input
+                    type="radio"
+                    value={each.groupId}
+                    checked={selectedGroupId === each.groupId}
+                    onChange={() => setSelectedGroupId(each.groupId)}
+                  />{" "}
+                  {`${each.items.length} ${t("people")} ${t("started")}: ~ ${convertDateTimeTo24HrTime(each.items[0].startTime)}`}
+                </label>
+              ))}
+          </div>
           <div className="modal-action">
             <form method="dialog">
               <button className="btn mr-1">Close</button>
-              <button className="btn" type="submit" onClick={() => handleModalSubmit()}>Submit</button>
+              <button
+                className="btn"
+                type="submit"
+                onClick={(e) => handleModalSubmit(e)}
+              >
+                Submit
+              </button>
             </form>
           </div>
         </div>
+        <ToastContainer position="top-center" style={{ zIndex: 9999 }} />
       </dialog>
     </>
   );

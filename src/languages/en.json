@@ -14,5 +14,7 @@
     "enter_name": "Enter name",
     "which_group": "Which group would you like to choose?",
     "people": "people",
-    "started": "started"
+    "started": "started",
+    "no_session": "No existing sessions.",
+    "select_group": "Please select a group."
 }

@@ -29,7 +29,6 @@ function ViewSessions() {
 
   return (
     <div>
-      <h1>Group: 3 people, Started: ~10:00AM</h1>
       {/* {`${t("people")} ${t("started")}: ~ ${convertDateTimeTo24HrTime(each.items[0].startTime)}`} */}
       <SessionCard />
     </div>

@@ -16,5 +16,13 @@
     "people": "people",
     "started": "started",
     "no_session": "No existing sessions.",
-    "select_group": "Please select a group."
+    "select_group": "Please select a group.",
+    "names": "Names",
+    "date": "Date",
+    "start_time": "Start time",
+    "time_elapsed": "Time elapsed",
+    "est_price": "Est. price",
+    "hour": "hr",
+    "minutes": "m"
+
 }

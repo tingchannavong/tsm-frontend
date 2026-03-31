@@ -27,7 +27,8 @@ function SessionInfo() {
     if (modalAction === "join") {
       navigate("create", { state: { groupId: selectedGroupId } });
     } else if (modalAction === "view") {
-      navigate(`view`, { state: { groupId: selectedGroupId, groups: groups } });
+      navigate(`view`, { state: { groupId: selectedGroupId} }); 
+      // Send only filtered group way // navigate(`view`, { state: { selectedGroup: groups.filter((each) => each.groupId === selectedGroupId),},});
     }
 
     document.getElementById("choose_group_modal")?.close();
@@ -36,11 +37,8 @@ function SessionInfo() {
   useEffect(() => {
     const fetchGroupSessions = async () => {
       try {
-        const data = await getSessionsByLocation(id);
-
-        const grouped = filterGroups(data.responses);
-
-        setGroups(grouped);
+        const grouped = await getSessionsByLocation(id);
+        setGroups(grouped.responses);
       } catch (error) {
         console.error("Failed to fetch group sessions:", error);
       }

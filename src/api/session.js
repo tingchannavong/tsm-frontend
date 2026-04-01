@@ -19,3 +19,13 @@ export async function getAllSessions() {
     const res = await authApi.get(`/api/sessions?status=ACTIVE`);
     return res.data;
 }
+
+export async function deleteSessionById(id) {
+    const res = await authApi.delete(`/api/sessions/${id}`);
+    return res.data;
+}
+
+export async function getSessionById(id) {
+    const res = await authApi.get(`/api/sessions/${id}`);
+    return res.data;
+}

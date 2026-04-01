@@ -1,3 +1,12 @@
+export function convertToDateString(myDate) { 
+  // my date accept input  "YYYY-MM-DDTHH:mm:ss"
+  // example "2026-04-01T10:15:03"
+  const dateObj = new Date(myDate) || new Date(); // DEFAULT TO CURRENT DATE TIME
+  const dateString = dateObj.toISOString();
+
+  return dateString;
+}
+
 export function getElapsedTime(pastDate) {
   const start = new Date(pastDate);
   const now = new Date();

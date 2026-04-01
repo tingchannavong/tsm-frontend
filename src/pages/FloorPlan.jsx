@@ -13,16 +13,16 @@ function FloorPlan() {
   
 
   useEffect(() => {
-    const fetchAllLocations = async () => {
-      try {
-        const data = await getAllLocations();
-        setSessions(data.responses);
-        console.log(locations)
-      } catch (error) {
-        console.error("Failed to fetch all sessions:", error);
-      }
-    };
-    fetchAllLocations();
+    // const fetchAllLocations = async () => {
+    //   try {
+    //     const data = await getAllLocations();
+    //     setSessions(data.responses);
+    //     console.log(locations)
+    //   } catch (error) {
+    //     console.error("Failed to fetch all sessions:", error);
+    //   }
+    // };
+    // fetchAllLocations();
   }, []);
 
   return (

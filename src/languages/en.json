@@ -14,7 +14,7 @@
     "pricings": "Pricings",
     "users": "Users",
     "sessions": "Sessions",
-    "location": "location",
+    "location": "Location",
     "join_group": "Join existing group session",
     "view_session": "View sessions",
     "create_session": "Create new group session",
@@ -30,6 +30,7 @@
     "no_session": "No existing sessions.",
     "select_group": "Please select a group.",
     "names": "Names",
+    "name": "Name",
     "date": "Date",
     "start_time": "Start time",
     "time_elapsed": "Time elapsed",
@@ -40,6 +41,8 @@
     "my_profile": "My Profile",
     "log_out": "Log out",
      "edit": "Edit",
+     "view": "View",
+     "delete": "Delete",
     "change_password": "Change password",
     "forgot_password": "Forgot password",
     "username": "Username",
@@ -48,5 +51,7 @@
     "lastname": "Last Name",
     "phone": "Phone",
     "email": "Email",
-    "add": "Add"
+    "add": "Add",
+    "delete_q": "Are you sure you want to delete?",
+    "delete_success": "Deleted successfully."
 }

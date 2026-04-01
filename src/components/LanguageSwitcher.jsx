@@ -7,8 +7,6 @@ function LanguageSwitcher() {
 
   return (
     <>
-      {/* <button onClick={() => setLang("en")}>EN</button>
-      <button onClick={() => setLang("th")}>TH</button> */}
        <div className="dropdown dropdown-end">
         <div tabIndex={0} role="button" className="btn m-1">
           {t("lang")}

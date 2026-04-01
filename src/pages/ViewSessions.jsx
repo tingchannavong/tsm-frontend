@@ -19,7 +19,7 @@ function ViewSessions() {
         try {
           const data = await getSessionsByLocationGroup(id, groupId);
           // TO DO GET ESTIMATED PRICE
-          // console.log(data.sameStartTimes)
+          console.log(data.sameStartTimes)
           setSelectedGroup(data.sameStartTimes);
         } catch (error) {
           console.error("Failed to fetch group sessions:", error);
@@ -36,7 +36,7 @@ function ViewSessions() {
         const date = convertDateTimeToDate(each.items[0].startTime);
         const timeElapsed = getElapsedTime(each.items[0].startTime);
         const startTime = each.startTime;
-        return <SessionCard key={startTime} startTime={startTime} people={people} names={names} date={date} timeElapsed={timeElapsed}/>
+        return <SessionCard key={each.id} startTime={startTime} people={people} names={names} date={date} timeElapsed={timeElapsed} group={each}/>
       })
     }
     </div>

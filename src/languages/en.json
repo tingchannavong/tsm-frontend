@@ -53,5 +53,6 @@
     "email": "Email",
     "add": "Add",
     "delete_q": "Are you sure you want to delete?",
-    "delete_success": "Deleted successfully."
+    "delete_success": "Deleted successfully.",
+    "create_success": "Created successfully."
 }

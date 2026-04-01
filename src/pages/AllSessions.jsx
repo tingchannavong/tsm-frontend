@@ -19,7 +19,7 @@ function AllSessions() {
 
   useEffect(() => {
     fetchAllSessions();
-    console.log(sessions)
+    // console.log(sessions)
   }, []);
 
   return (

@@ -1,10 +1,35 @@
+import { useEffect, useState } from "react";
 import { useT } from "../languages/translations";
+import { toast } from "react-toastify";
+import { getOrderPreviewBySessionIds } from "../api/order";
+import { convertToDateString } from "../utils/time";
 
-function SessionCard({ names, people, date, startTime, timeElapsed }) {
+function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
   const t = useT();
+  const [orderPreview, setOrderPreview] = useState();
 
   const subtitleStyles = "text-lg font-bold";
   const infoStyles = "text-md font-normal";
+
+  useEffect(() => {
+    // fetch session ids from group
+    // console.log(group.items);
+    const sessionIds = group.items.map( item => item.id)
+    const previewEndTime = convertToDateString();
+    const body = {sessionIds: sessionIds, endTime: previewEndTime}
+
+    const fetchPricePreview = async () => {
+      try {
+        const data = await getOrderPreviewBySessionIds(body);
+        setOrderPreview(data.responses);
+        // console.log(orderPreview)
+      } catch (error) {
+        toast.error(error.message || 'Fetch preview failed')
+      }
+    }
+    fetchPricePreview()
+  }, []);
+
   return (
     <>
       <div className="p-4 flex grow flex-col gap-4  min-h-full w-full items-start justify-center rounded-2xl shadow-xl ">
@@ -39,9 +64,9 @@ function SessionCard({ names, people, date, startTime, timeElapsed }) {
               ))}
           </div>
         </div>
-        {/* <h1 className={subtitleStyles}>
-          {t("est_price")}: <span className={infoStyles}>~220 THB</span>
-        </h1> */}
+        <h1 className={subtitleStyles}>
+          {t("est_price")}: <span className={infoStyles}>~{orderPreview?.items[0].subTotal} {orderPreview?.items[0].currencyCode}</span>
+        </h1>
       </div>
     </>
   );

@@ -1,9 +1,19 @@
+import { toast } from "react-toastify";
 import { useSessionStore } from "../stores/sessionStore";
 import { convertDateTimeTo24HrTime, convertDateTimeToDate } from "../utils/time";
 
 function DeleteModal() {
        const currentSession = useSessionStore(state => state.currentSession)
     const deleteSession = useSessionStore(state => state.deleteSession)
+
+    const hdlDelete = async () => {
+      try {
+        await deleteSession(currentSession.id)
+        toast.success('Deleted successfully')
+      } catch (error) {
+        toast.error(error.message || 'Cannot delete')
+      }
+    }
 
   if (!currentSession) return null;
 
@@ -22,7 +32,7 @@ function DeleteModal() {
             <button className="btn" onClick={()=>document.getElementById('delete_session_modal').close()}>Cancel</button>
             <button 
               className="btn btn-error ml-2" 
-              onClick={() => deleteSession(currentSession.id)}
+              onClick={hdlDelete}
             >
               Delete Permanently
             </button>

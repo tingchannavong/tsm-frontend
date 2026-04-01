@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createSessionSchema } from "../validations/session.schema.js";
 import { useState } from "react";
 import { createSession } from "../api/session.js";
+import { toast } from "react-toastify";
 
 function NewSessionForm() {
   const t = useT();
@@ -45,8 +46,8 @@ function NewSessionForm() {
     try {
       console.log(data);
       await createSession(data);
-      alert("create session success");
-      // navigate("/");
+      navigate(`/tsm/sessions/${id}`);
+       toast.success(t("create_success"))
     } catch (error) {
       console.log("Status:", error.response.status);
       console.log("Message:", error.response.data.message);

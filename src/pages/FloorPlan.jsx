@@ -39,9 +39,9 @@ function FloorPlan() {
   return (
     <>
       <FeatureHeader title={`${t("tables")} - ${t("floor_plan")}`} />
-      <div className={`${styles.mainContainer} overflow-y-auto`}>
+      <div className={styles.mainContainer}>
         {/* Rows Cols Go! */}
-        <div className={`grid grid-flow-col grid-rows-${rowNum} gap-4 p-4`}>
+        <div className={`grid grid-flow-col grid-rows-5 gap-4 p-4`}>
         {/* <div className={`grid grid-cols-${colNum} grid-rows-${rowNum} gap-4 p-4`}> */}
           {locations && locations.map( table => <Table key={table.id} table={table} onClick={() => hdlGoToLocSessions(table.id)}/>)
           }

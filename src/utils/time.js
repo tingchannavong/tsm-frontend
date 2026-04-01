@@ -1,10 +1,21 @@
-export function convertToDateString(myDate) { 
-  // my date accept input  "YYYY-MM-DDTHH:mm:ss"
+export function convertToDateString(myDate) {
+   // my date accept input  "YYYY-MM-DDTHH:mm:ss"
   // example "2026-04-01T10:15:03"
-  const dateObj = new Date(myDate) || new Date(); // DEFAULT TO CURRENT DATE TIME
-  const dateString = dateObj.toISOString();
+  const dateObj = myDate ? new Date(myDate) : new Date();
 
-  return dateString;
+  if (isNaN(dateObj)) {
+    throw new Error("Invalid date passed to convertToDateString");
+  }
+
+  const pad = (n) => String(n).padStart(2, "0");
+
+  const yyyy = dateObj.getFullYear();
+  const mm = pad(dateObj.getMonth() + 1);
+  const dd = pad(dateObj.getDate());
+  const hh = pad(dateObj.getHours());
+  const min = pad(dateObj.getMinutes());
+
+  return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
 }
 
 export function getElapsedTime(pastDate) {

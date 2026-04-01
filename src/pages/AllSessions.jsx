@@ -7,30 +7,21 @@ import { getAllSessions } from "../api/session.js";
 import { convertDateTimeTo24HrTime, convertDateTimeToDate } from "../utils/time.js";
 import ActionSwitcher from "../components/ActionSwitcher.jsx";
 import { useSessionStore } from "../stores/sessionStore.js";
+import EditModal from "../components/EditSessionModal.jsx";
+import DeleteModal from "../components/DeleteSessionModal.jsx";
+
 
 function AllSessions() {
   const t = useT();
-  // const [sessions, setSessions] = useState([]); 
+ 
  const fetchAllSessions = useSessionStore(state => state.fetchAllSessions)
   const sessions = useSessionStore(state => state.sessions);
+    const currentSession = useSessionStore(state => state.currentSession)
 
   useEffect(() => {
     fetchAllSessions();
-      console.log(sessions)
+    console.log(sessions)
   }, []);
-  
-  // useEffect(() => {
-  //   const fetchAllSessions = async () => {
-  //         try {
-  //           const data = await getAllSessions();
-  //           setSessions(data.responses);
-  //           // console.log(sessions)
-  //         } catch (error) {
-  //           console.error("Failed to fetch all sessions:", error);
-  //         }
-  //       };
-  //   fetchAllSessions();
-  // }, []);
 
   return (
     <>
@@ -124,6 +115,9 @@ function AllSessions() {
     </div>
 
       </div>
+      <EditModal  key={currentSession?.id} /> 
+      <DeleteModal />
+     
     </>
   );
 }

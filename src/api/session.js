@@ -29,3 +29,8 @@ export async function getSessionById(id) {
     const res = await authApi.get(`/api/sessions/${id}`);
     return res.data;
 }
+
+export async function updateSessionById(id, updatedData) {
+    const res = await authApi.patch(`/api/sessions/${id}`, updatedData);
+    return res.data;
+}

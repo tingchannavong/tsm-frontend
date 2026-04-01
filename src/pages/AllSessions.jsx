@@ -3,7 +3,6 @@ import FeatureHeader from "../components/FeatureHeader.jsx";
 import { useT } from "../languages/translations.js";
 import SmallButton from "../components/SmallButton.jsx";
 import { useEffect, useState } from "react";
-import { getAllSessions } from "../api/session.js";
 import { convertDateTimeTo24HrTime, convertDateTimeToDate } from "../utils/time.js";
 import ActionSwitcher from "../components/ActionSwitcher.jsx";
 import { useSessionStore } from "../stores/sessionStore.js";
@@ -115,8 +114,8 @@ function AllSessions() {
     </div>
 
       </div>
-      <EditModal  key={currentSession?.id} /> 
-      <DeleteModal />
+      <EditModal  key={`edit-${currentSession?.id || 'none'}`} /> 
+      <DeleteModal key={`del-${currentSession?.id || 'none'}`}/>
      
     </>
   );

@@ -24,7 +24,7 @@ function DeleteModal() {
               className="btn btn-error ml-2" 
               onClick={() => deleteSession(currentSession.id)}
             >
-              Delete Permanentely
+              Delete Permanently
             </button>
           </form>
         </div>

@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { useT } from "../languages/translations.js";
-import { convertDateTimeTo24HrTime, convertDateTimeToDate } from "../utils/time.js";
-import { deleteSessionById } from "../api/session.js";
 import { toast } from "react-toastify";
 import { useSessionStore } from "../stores/sessionStore.js";
 import Swal from "sweetalert2";
@@ -26,23 +24,6 @@ const openEditModal = () => {
     document.getElementById('edit_session_modal')?.showModal();
   }, 10);
 };
-    
-  
-    // const hdlEdit = (id) => {
-
-    //     console.log(id);
-     
-    // }
-    // const hdlDelete = async (id) => {
-    //      // e.preventDefault();
-    //      try {
-    //         await deleteSession(id);
-    //         toast.success(t("delete_success"));
-    //      } catch (error) {
-    //         console.log(error)
-    //         toast.error(error.message)
-    //      }
-    // }
 
 const actionStyles = "text-white bg-blue-600 font-semibold px-3 py-1 rounded-md hover:bg-blue-100"
 const listStyles = "border border-base-100"

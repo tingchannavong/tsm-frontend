@@ -11,10 +11,12 @@ function EditModal() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    console.log('formdata', formData)
+    console.log(Array.from(formData.entries())); // an entry look like this ['name', 'Yoga']
     const updatedData = Object.fromEntries(formData);
-    console.log(user.id)
-    // updatedData.updateSessionById = user.id;
-    console.log(updatedData)
+    console.log('user id', user.id)
+    // updatedData.updatedById = user.id;
+    console.log('updated data', updatedData)
     
     await updateSession(currentSession.id, updatedData);
     toast.success("update success.")

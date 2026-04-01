@@ -13,17 +13,17 @@ function SessionLayout() {
   const [location, setLocation] = useState(null);
   const [isRoot, setIsRoot] = useState(true);
 
-  // TO DO BACK TO EXACT SESSION INFO PAGE
+  // LATER? BACK TO EXACT SESSION INFO PAGE
   const hdlGoBack = () => navigate(-1);
 
-  useEffect(() => {
-    const rootPath = `/tsm/sessions/${id}`;
-    if (path.pathname === rootPath) {
-      setIsRoot(true);
-    } else {
-      setIsRoot(false);
-    }
-  }, [path.pathname]);
+  // useEffect(() => {
+  //   const rootPath = `/tsm/sessions/${id}`;
+  //   if (path.pathname === rootPath) {
+  //     setIsRoot(true);
+  //   } else {
+  //     setIsRoot(false);
+  //   }
+  // }, [path.pathname]);
 
   useEffect(() => {
     const fetchLocation = async () => {
@@ -42,7 +42,8 @@ function SessionLayout() {
       <h1 className={`${styles.title}`}>
         {t("sessions")} {t("location")}: {location && location.name}
       </h1>
-      {!isRoot && <SmallButton text={t("go_back")} onClick={hdlGoBack} />}
+      {/* {!isRoot && <SmallButton text={t("go_back")} onClick={hdlGoBack} />} */}
+      <SmallButton text={t("go_back")} onClick={hdlGoBack} />
       <Outlet />
     </div>
   );

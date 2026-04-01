@@ -5,7 +5,6 @@ export async function getLocationById(id) {
     return res.data;
 }
 
-
 export async function getAllLocations() {
     const res = await authApi.get(`/api/locations`);
     return res.data;

@@ -5,7 +5,7 @@ function Button(props) {
   const buttonType = type || "button";
   return (
     <button onClick={onClick} type={buttonType}
-    className={`w-full ${bgColor} rounded-2xl p-2 text-white uppercase font-medium`}>
+    className={`w-full rounded-2xl p-2 text-white uppercase font-medium ${bgColor}`}>
         {text}
     </button>
   )

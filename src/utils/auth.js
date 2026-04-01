@@ -8,3 +8,9 @@ export const getHomePath = () => {
     if (user.role === "STAFF") return "/tsm/staff";
     return "/tsm";
 };
+
+export function havePermission() {
+    const user = useAuthStore.getState().user;
+  if (!user) return false;
+  return ["ADMIN", "STAFF"].includes(user.role);
+}

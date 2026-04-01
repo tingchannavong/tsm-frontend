@@ -5,6 +5,11 @@ export async function createSession(body) {
   return res.data;
 }
 
+export async function getSessionById(id) {
+  const res = await authApi.get(`/api/sessions/${id}`);
+  return res.data;
+}
+
 export async function getSessionsByLocation(id) {
   const res = await publicApi.get(`/api/sessions/filter?locationId=${id}`);
   return res.data;
@@ -34,12 +39,12 @@ export async function deleteSessionById(id) {
   return res.data;
 }
 
-export async function getSessionById(id) {
-  const res = await authApi.get(`/api/sessions/${id}`);
+export async function updateSessionById(id, updatedData) {
+  const res = await authApi.patch(`/api/sessions/${id}`, updatedData);
   return res.data;
 }
 
-export async function updateSessionById(id, updatedData) {
-  const res = await authApi.patch(`/api/sessions/${id}`, updatedData);
+export async function endGroupSession(id, updatedData) {
+  const res = await authApi.patch(`/api/sessions/groups/${id}`, updatedData);
   return res.data;
 }

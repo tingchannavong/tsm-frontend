@@ -15,36 +15,35 @@ import AdminLayout from "../layouts/AdminLayout";
 import FloorPlan from "../pages/FloorPlan";
 import UserPage from "../pages/UserPage";
 import AllSessions from "../pages/AllSessions";
+import OrderSummary from "../pages/OrderSummary";
 
-const commonPaths = [{ path: "profile", element: <UserPage /> }, { path: "sessions", element: <AllSessions /> },]
+const commonPaths = [
+  { path: "profile", element: <UserPage /> },
+  { path: "sessions", element: <AllSessions /> },
+  { path: "sessions/order-preview", element: <OrderSummary /> },
+];
 
 const routes = createBrowserRouter([
-  // 1. ADMIN SECTION 
+  // 1. ADMIN SECTION
   {
-    path: "/tsm/admin", 
-    loader: roleLoader("ADMIN"), 
+    path: "/tsm/admin",
+    loader: roleLoader("ADMIN"),
     element: <AdminLayout />,
-    children: [
-      { index: true, element: <AdminPage /> },
-      ...commonPaths
-    ],
+    children: [{ index: true, element: <AdminPage /> }, ...commonPaths],
   },
 
   // 2. STAFF SECTION
   {
-    path: "/tsm/staff", 
-    loader: roleLoader("STAFF"), 
+    path: "/tsm/staff",
+    loader: roleLoader("STAFF"),
     element: <StaffLayout />,
-    children: [
-      { index: true, element: <FloorPlan /> },
-      ...commonPaths
-    ],
+    children: [{ index: true, element: <FloorPlan /> }, ...commonPaths],
   },
 
   // 3. PUBLIC SECTION
   {
     path: "/tsm",
-    loader: publicLoader, 
+    loader: publicLoader,
     element: <MainLayout />,
     errorElement: <ErrorPage />,
     children: [

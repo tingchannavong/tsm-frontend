@@ -1,6 +1,7 @@
 import styles from "../styles/Base.module.css";
 import Button from "./Button";
 import { useT } from "../languages/translations.js";
+import Swal from "sweetalert2";
 
 function UserCard({id, username, firstname, lastname, phone, email}) {
      const t = useT();
@@ -13,8 +14,12 @@ function UserCard({id, username, firstname, lastname, phone, email}) {
     <p className={styles.cardSubtitle}>{t("lastname")}: <span className={styles.cardInfo}>{lastname}</span></p>
     <p className={styles.cardSubtitle}>{t("phone")}: <span className={styles.cardInfo}>{phone}</span></p>
     <p className={styles.cardSubtitle}>{t("email")}: <span className={styles.cardInfo}>{email}</span></p>
-    <Button text={t("edit")} color="bg-[#7A3CEA]"/>
-    <Button text={t("change_password")} color="bg-[#7A3CEA]"/>
+    <Button text={t("edit")} color="bg-[#7A3CEA]"onClick={ () => Swal.fire({
+                  text: "Coming Soon!"
+                })}/>
+    <Button text={t("change_password")} color="bg-[#7A3CEA]" onClick={ () => Swal.fire({
+                  text: "Coming Soon!"
+                })}/>
     </div>
     </>
   )

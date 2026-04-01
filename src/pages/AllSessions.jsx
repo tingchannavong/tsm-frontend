@@ -8,6 +8,7 @@ import ActionSwitcher from "../components/ActionSwitcher.jsx";
 import { useSessionStore } from "../stores/sessionStore.js";
 import EditModal from "../components/EditSessionModal.jsx";
 import DeleteModal from "../components/DeleteSessionModal.jsx";
+import Swal from "sweetalert2";
 
 
 function AllSessions() {
@@ -26,7 +27,9 @@ function AllSessions() {
     <>
       <FeatureHeader title={`${t("session_management")}`} />
       <div className={styles.mainContainer}>
-        <SmallButton text={t("add")} color="bg-[#2D877C] font-semibold"/>
+        <SmallButton text={t("add")} color="bg-[#2D877C] font-semibold" onClick={ () => Swal.fire({
+              text: "Coming Soon!"
+            })}/>
         <p>Filter by status: ACTIVE DEFAULT</p>
         <p>Filter by location: Table 1</p>
         {/* <p>Filter by play date: Today DEFAULT</p> LATER FEAT*/}

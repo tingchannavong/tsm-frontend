@@ -20,6 +20,7 @@
     "create_session": "Create new group session",
     "boardgame_collection": "Go to boardgame collection",
     "start_timer": "Start timer",
+    "end_timer": "End timer",
     "go_back": "Go Back",
     "guest_number": "Guest number",
     "guest": "Guest",
@@ -54,5 +55,11 @@
     "add": "Add",
     "delete_q": "Are you sure you want to delete?",
     "delete_success": "Deleted successfully.",
-    "create_success": "Created successfully."
+    "create_success": "Created successfully.",
+    "end_all_session": "End all sessions",
+    "end_group_session": "End group sessions",
+    "order_summary": "Order Summary",
+    "confirm_end": "Confirm End",
+    "cancel": "Cancel",
+    "choose_guests": "Please choose which guests to end timer."
 }

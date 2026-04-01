@@ -4,6 +4,7 @@ import styles from "../styles/Base.module.css";
 import { useEffect, useState } from "react";
 import { getLocationById } from "../api/location.js";
 import SmallButton from "../components/SmallButton.jsx";
+import { getHomePath, havePermission } from "../utils/auth.js";
 
 function SessionLayout() {
   const t = useT();
@@ -13,8 +14,11 @@ function SessionLayout() {
   const [location, setLocation] = useState(null);
   const [isRoot, setIsRoot] = useState(true);
 
+  const canView = havePermission(); 
+
   // LATER? BACK TO EXACT SESSION INFO PAGE
   const hdlGoBack = () => navigate(-1);
+  const hdlGoToFloorPlan = () => navigate(getHomePath());
 
   // useEffect(() => {
   //   const rootPath = `/tsm/sessions/${id}`;
@@ -43,7 +47,11 @@ function SessionLayout() {
         {t("sessions")} {t("location")}: {location && location.name}
       </h1>
       {/* {!isRoot && <SmallButton text={t("go_back")} onClick={hdlGoBack} />} */}
+      <div className="flex gap-2">
       <SmallButton text={t("go_back")} onClick={hdlGoBack} />
+      {canView &&
+       <SmallButton text={t("floor_plan")} color="bg-[#964B00]" onClick={hdlGoToFloorPlan}/>}
+      </div>
       <Outlet />
     </div>
   );

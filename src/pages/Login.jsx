@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import styles from "../styles/LoginPage.module.css";
 import { useT } from "../languages/translations.js";
 import { getHomePath } from "../utils/auth.js";
+import Swal from "sweetalert2";
 
 function Login() {
   const navigate = useNavigate();
@@ -69,7 +70,9 @@ function Login() {
             <span className={styles.errorText}>{errors.password.message}</span>
           )}
         </div>
-        <p className="text-[#60D2CC] italic underline text-right">
+        <p className="text-[#60D2CC] italic underline text-right" onClick={ () => Swal.fire({
+                  text: "Coming Soon!"
+                })}>
           {t("forgot_password")}
         </p>
         <button type="submit" className={styles.submitButton}>

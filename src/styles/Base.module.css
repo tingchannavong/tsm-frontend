@@ -3,6 +3,12 @@
 .mainContainer {
   @apply flex flex-col grow p-4;
 }
+.bigScreenStyles {
+  @apply xl:w-fit xl:justify-center
+}
+.formCard {
+  @apply space-y-4 w-fit p-8 bg-white rounded-xl shadow-lg border border-gray-100;
+}
 .title {
   @apply text-3xl font-extrabold text-[#2D877C] mb-6;
 }

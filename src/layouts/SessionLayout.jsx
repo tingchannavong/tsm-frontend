@@ -42,7 +42,8 @@ function SessionLayout() {
   }, [id]);
 
   return (
-    <div className={`${styles.mainContainer}`}>
+    <div className={`${styles.mainContainer} xl:items-center`}>
+      <div className={styles.formCard} >
       <h1 className={`${styles.title}`}>
         {t("sessions")} {t("location")}: {location && location.name}
       </h1>
@@ -53,6 +54,7 @@ function SessionLayout() {
        <SmallButton text={t("floor_plan")} color="bg-[#964B00]" onClick={hdlGoToFloorPlan}/>}
       </div>
       <Outlet />
+      </div>
     </div>
   );
 }

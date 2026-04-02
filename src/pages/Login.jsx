@@ -30,9 +30,7 @@ function Login() {
       toast.success(t("login_success"))
       navigate(getHomePath());
     } catch (error) {
-      console.log("Status:", error.response.status);
-      console.log("Message:", error.response.data.message);
-      alert(error.response.data.message);
+      toast.error(error.message || 'Failed Log in');
     }
   };
 

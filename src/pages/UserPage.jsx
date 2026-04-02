@@ -24,11 +24,12 @@ function UserPage() {
   //   const fetchUser = useAuthStore.getState().fetchUser;
   //   fetchUser();
   // }, []);
+  const bigScreenStyles="xl:justify-center xl:items-center";
 
   return (
     <>
       <FeatureHeader title={`${t("my_profile")}`} />
-      <div className={styles.mainContainer}>
+      <div className={`${styles.mainContainer} ${bigScreenStyles}`}>
         <UserCard
           id={user?.id}
           username={user?.username}

@@ -61,5 +61,11 @@
     "order_summary": "Order Summary",
     "confirm_end": "Confirm End",
     "cancel": "Cancel",
-    "choose_guests": "Please choose which guests to end timer."
+    "choose_guests": "Please choose which guests to end timer.",
+    "status": "Status",
+    "active": "Active",
+    "ended": "Ended",
+    "cancelled": "Cancelled",
+    "billed": "Billed",
+    "all": "All"
 }

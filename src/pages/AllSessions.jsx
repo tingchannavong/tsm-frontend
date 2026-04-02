@@ -2,7 +2,7 @@ import styles from "../styles/Base.module.css";
 import FeatureHeader from "../components/FeatureHeader.jsx";
 import { useT } from "../languages/translations.js";
 import SmallButton from "../components/SmallButton.jsx";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   convertDateTimeTo24HrTime,
   convertDateTimeToDate,
@@ -13,6 +13,7 @@ import EditModal from "../components/EditSessionModal.jsx";
 import DeleteModal from "../components/DeleteSessionModal.jsx";
 import Swal from "sweetalert2";
 import StatusSessionDD from "../components/StatusSessionDD.jsx";
+import LocationDD from "../components/LocationDD.jsx";
 
 function AllSessions() {
   const t = useT();
@@ -25,8 +26,6 @@ function AllSessions() {
   const sessions = useSessionStore((state) => state.sessions);
   const currentSession = useSessionStore((state) => state.currentSession);
 
- console.log("RENDER VALUE:", filters.status); 
-
   const handleStatusChange = (newValue) => {
     setFilters((prev) => ({
       ...prev,
@@ -34,16 +33,22 @@ function AllSessions() {
     }));
   };
 
-  const handleFilterChange = (key, value) => {};
+  const handleLocationChange = (newValue) => {
+    setFilters((prev) => ({
+      ...prev,
+      location: newValue,
+    }));
+  };
 
-  useEffect(() => {
-    const filteredData = sessions.filter((session) => {
-      // filter status
-      filters.status === "all" ? session : filters.status === session.status;
-    });
-    console.log(filteredData)
-    // set new filtered data
-  }, [filters]);
+// handle filter of data
+  const filteredData = useMemo(() => {
+    // filter status
+    const filteredStatus = sessions.filter((session) => filters.status === "all" ? session : filters.status === session.status);
+    // filter location
+    const filteredLocation = filteredStatus.filter((session) => filters.location === 'all' ? session : filters.location === session.location.name)
+
+    return filteredLocation;
+  }, [sessions, filters]);
 
   useEffect(() => {
     fetchAllSessions();
@@ -53,7 +58,7 @@ function AllSessions() {
   return (
     <>
       <FeatureHeader title={`${t("session_management")}`} />
-      <div className={styles.mainContainer}>
+      <div className={`${styles.mainContainer} gap-5`}>
         <SmallButton
           text={t("add")}
           color="bg-[#2D877C] font-semibold"
@@ -70,9 +75,15 @@ function AllSessions() {
             onChange={handleStatusChange}
           />
         </div>
-        <p>Filter by location: Table 1</p>
+           <div className="flex gap-2 items-center">
+        <p>Filter by location: </p>
+        <LocationDD 
+        value={filters.location}
+        onChange={handleLocationChange}
+        />
+        </div>
         {/* <p>Filter by play date: Today DEFAULT</p> LATER FEAT*/}
-        <p>Search by guest name: search bar</p>
+        {/* <p>Search by guest name: search bar</p> */}
 
         <div className="w-full max-w-7xl mx-auto p-2 md:p-4">
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
@@ -109,19 +120,19 @@ function AllSessions() {
                 </thead>
 
                 <tbody className="divide-y divide-gray-100">
-                  {sessions.length === 0 ? (
+                  {filteredData.length === 0 ? (
                     <tr>
                       <td
                         colSpan="9"
                         className="px-6 py-12 text-center text-gray-400 italic"
                       >
-                        {sessions === null
+                        {filteredData === null
                           ? "Initialising sessions..."
                           : "No active sessions found."}
                       </td>
                     </tr>
                   ) : (
-                    sessions.map((session) => (
+                    filteredData.map((session) => (
                       // id
                       <tr
                         key={session.id}

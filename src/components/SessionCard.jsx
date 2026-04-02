@@ -5,9 +5,12 @@ import { getOrderPreviewBySessionIds } from "../api/order";
 import { convertToDateString } from "../utils/time";
 import Button from "./Button";
 import Swal from "sweetalert2";
+import { havePermission } from "../utils/auth";
 
 function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
   const t = useT();
+  const canView = havePermission();
+
   const [orderPreview, setOrderPreview] = useState();
   const [isEndTimer, setIsEndTimer] = useState(false);
   const [selectedSessions, setSelectedSessions] = useState([]);
@@ -149,7 +152,7 @@ function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
             {orderPreview?.items[0].currencyCode}
           </span>
         </h1>
-        {!isEndTimer &&
+        {canView && !isEndTimer &&
         <Button
           text={t("end_timer")}
           color="bg-gray-700"

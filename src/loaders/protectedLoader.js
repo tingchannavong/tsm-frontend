@@ -4,13 +4,10 @@ import { isTokenExpired } from "../utils/tokenUtils.js";
 
 function guard(user, allowedRole) {
   const accessToken = useAuthStore.getState().accessToken;
-  console.log('guard')
 
   const tokenExpired = isTokenExpired(accessToken);
-    console.log('token expired', tokenExpired)
 
   if (tokenExpired) {
-    console.log('we are here')
     useAuthStore.getState().logout();
     return redirect("/tsm/login");
   }
@@ -25,7 +22,6 @@ function guard(user, allowedRole) {
 }
 
 export const roleLoader = (allowedRole) => () => {
-    console.log('we are at roleloader')
   const user = useAuthStore.getState().user;
 
   return guard(user, allowedRole);

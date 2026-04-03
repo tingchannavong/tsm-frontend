@@ -12,6 +12,7 @@ import { getHomePath, havePermission } from "../utils/auth.js";
 import Button from "../components/Button.jsx";
 import { toast } from "react-toastify";
 import { mapSessionIdsFromGroup } from "../utils/session.util.js";
+import EditModal from "../components/EditSessionModal.jsx";
 
 function ViewSessions() {
   const canView = havePermission();
@@ -34,7 +35,7 @@ function ViewSessions() {
       });
 
       const pendingEndSessionIds = mapSessionIdsFromGroup(selectedGroup);
-      console.log('pendingEndSessionIds', pendingEndSessionIds)
+   
       sessionStorage.setItem("sessionIds", JSON.stringify(pendingEndSessionIds));
       // GO TO ORDER SUMMARY PREVIEW
       navigate(`${getHomePath()}/sessions/order-preview`);
@@ -90,6 +91,7 @@ function ViewSessions() {
           onClick={hdlEndGroupSession}
         />
       )}
+      <EditModal/>
     </div>
   );
 }

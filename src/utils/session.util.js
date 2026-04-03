@@ -1,5 +1,5 @@
 export function mapSessionIdsFromGroup(groupSessions) {
-  const sessionIds = groupSessions.map((sameStart) =>
+  const sessionIds = groupSessions.flatMap((sameStart) =>
     sameStart.items.map((session) => session.id),
   );
 

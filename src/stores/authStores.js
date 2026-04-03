@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import * as authService from "../api/auth.js";
-import { isTokenExpired } from "../utils/tokenUtils.js";
+import { isTokenExpired } from "../utils/auth.js";
 
 const authConfig = (set, get) => (
     {

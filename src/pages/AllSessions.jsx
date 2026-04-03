@@ -18,7 +18,7 @@ import LocationDD from "../components/LocationDD.jsx";
 function AllSessions() {
   const t = useT();
   const [filters, setFilters] = useState({
-    status: "all",
+    status: "ACTIVE",
     location: "all",
     search: "",
   });

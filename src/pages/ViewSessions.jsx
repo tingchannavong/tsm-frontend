@@ -11,6 +11,7 @@ import {
 import { getHomePath, havePermission } from "../utils/auth.js";
 import Button from "../components/Button.jsx";
 import { toast } from "react-toastify";
+import { mapSessionIdsFromGroup } from "../utils/session.util.js";
 
 function ViewSessions() {
   const canView = havePermission();
@@ -26,14 +27,18 @@ function ViewSessions() {
   const hdlEndGroupSession = () => {
     // get group id
     const fetchEndGroup = async () => {
+      // TO DO END MODAL OF ARE YOU SURE? GROUP SUMMARY
       try {
       await endGroupSession(groupId, {
         status: "ENDED",
       });
-      // TO DO END MODAL OF ARE YOU SURE? GROUP SUMMARY
 
+      const pendingEndSessionIds = mapSessionIdsFromGroup(selectedGroup);
+      console.log('pendingEndSessionIds', pendingEndSessionIds)
+      sessionStorage.setItem("sessionIds", JSON.stringify(pendingEndSessionIds));
       // GO TO ORDER SUMMARY PREVIEW
       navigate(`${getHomePath()}/sessions/order-preview`);
+      // navigate state lost due to public to private loader
     
       toast.success('End sessions success');
       } catch (error) {
@@ -48,7 +53,7 @@ function ViewSessions() {
     const fetchGroupSessions = async () => {
       try {
         const data = await getSessionsByLocationGroup(id, groupId);
-        // console.log(data.sameStartTimes)
+        console.log(data.sameStartTimes)
         setSelectedGroup(data.sameStartTimes);
       } catch (error) {
         console.error("Failed to fetch group sessions:", error);

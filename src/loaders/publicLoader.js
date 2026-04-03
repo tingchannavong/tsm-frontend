@@ -1,4 +1,4 @@
-import { redirect } from "react-router"
+import { redirect } from "react-router-dom"
 import { useAuthStore } from "../stores/authStores"
 
 export const publicLoader = ({ request }) => {

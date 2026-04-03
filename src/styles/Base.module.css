@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .mainContainer {
-  @apply flex flex-col grow p-4;
+  @apply flex flex-col grow p-4 xl:items-center;
 }
 .bigScreenStyles {
   @apply xl:w-fit xl:justify-center

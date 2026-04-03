@@ -1,6 +1,6 @@
 import { redirect } from "react-router-dom";
 import { useAuthStore } from "../stores/authStores.js";
-import { isTokenExpired } from "../utils/tokenUtils.js";
+import { isTokenExpired } from "../utils/auth.js";
 
 function guard(user, allowedRole) {
   const accessToken = useAuthStore.getState().accessToken;

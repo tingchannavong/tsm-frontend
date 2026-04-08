@@ -13,27 +13,43 @@ import FeatureHeader from "../components/FeatureHeader.jsx";
 import OrderLineItemCard from "../components/OrderLineItemCard.jsx";
 import SmallButton from "../components/SmallButton.jsx";
 import { useLocation, useNavigate } from "react-router";
-import { getOrderPreviewBySessionIds } from "../api/order.js";
+import { createOrder, getOrderPreviewBySessionIds } from "../api/order.js";
+import { useAuthStore } from "../stores/authStores.js";
+import { getHomePath } from "../utils/auth.js";
 
 function OrderSummary() {
   const t = useT();
   const navigate = useNavigate();
   const [orderPreview, setOrderPreview] = useState(null);
   const [discount, setDiscount] = useState(0);
-
-  console.log("order", orderPreview);
+  const user = useAuthStore((state) => state.user);
+  const savedIds = sessionStorage.getItem("sessionIds");
 
   const hdlGoBack = () => navigate(-1);
-  const hdlSubmitOrder = () => {
-    // get discount state
-    // get savedIds from session storage
-    // send to backend
+  const hdlSubmitOrder = async (e) => {
+    e.preventDefault();
+    console.log('user', user.id);
+    console.log('discount', discount);
+    console.log('savedIds', savedIds);
+      try {
+            // send to backend
+        const resp = await createOrder({
+          sessionIds: JSON.parse(savedIds),
+          createdById: user.id,
+          discount: discount
+        });
+        console.log(resp);
+        toast.success('Order created successfully')
+        // go to table page
+        // navigate(getHomePath());
+
+      } catch (error) {
+        console.error(error.message || 'Failed to created order');
+      }
+
   };
 
-  // const hdlDiscountChange = };
-
   useEffect(() => {
-    const savedIds = sessionStorage.getItem("sessionIds");
 
     var sessionIds;
     if (savedIds) {
@@ -46,7 +62,7 @@ function OrderSummary() {
         const data = await getOrderPreviewBySessionIds({
           sessionIds: sessionIds,
         });
-        console.log(data.responses);
+        // console.log(data.responses);
         setOrderPreview(data.responses);
       } catch (error) {
         toast.error(error.message || "Fetch preview failed");

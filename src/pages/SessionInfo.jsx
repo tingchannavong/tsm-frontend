@@ -96,7 +96,7 @@ function SessionInfo() {
               <button
                 className="btn"
                 type="submit"
-                onClick={(e) => handleModalSubmit(e)}
+                onClick={handleModalSubmit}
               >
                 Submit
               </button>

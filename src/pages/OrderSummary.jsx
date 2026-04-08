@@ -4,6 +4,7 @@ import {
   convertDateTimeToDate,
   convertToDateString,
   getElapsedTime,
+  convertMinToHour
 } from "../utils/time.js";
 import Button from "../components/Button.jsx";
 import { toast } from "react-toastify";
@@ -20,8 +21,16 @@ function OrderSummary() {
   const [orderPreview, setOrderPreview] = useState(null);
   const [discount, setDiscount] = useState(0);
 
-const hdlGoBack = () => navigate(-1);
-  const hdlSubmitOrder = () => {};
+  console.log("order", orderPreview);
+
+  const hdlGoBack = () => navigate(-1);
+  const hdlSubmitOrder = () => {
+    // get discount state
+    // get savedIds from session storage
+    // send to backend
+  };
+
+  // const hdlDiscountChange = };
 
   useEffect(() => {
     const savedIds = sessionStorage.getItem("sessionIds");
@@ -37,7 +46,7 @@ const hdlGoBack = () => navigate(-1);
         const data = await getOrderPreviewBySessionIds({
           sessionIds: sessionIds,
         });
-        console.log(data.responses)
+        console.log(data.responses);
         setOrderPreview(data.responses);
       } catch (error) {
         toast.error(error.message || "Fetch preview failed");
@@ -57,24 +66,32 @@ const hdlGoBack = () => navigate(-1);
             <p>Date: {convertDateTimeToDate(new Date())}</p>
             <p>Hourly Price: {orderPreview?.items[0].basePrice * 60} {orderPreview?.items[0].currencyCode}</p>
           </div>
-          {orderPreview.items &&
-          orderPreview.items.map( (line, i) =>  <OrderLineItemCard key={line.displayName} index={i} displayName={line.displayName}
+          {orderPreview?.items && Array.isArray(orderPreview.items) ?
+          orderPreview.items.map( (line, i) =>  
+          { 
+            return <OrderLineItemCard key={line.displayName} index={i} displayName={line.displayName}
           quantity={line.quantity}
           unitPrice={line.unitPrice}
           subTotal={line.subTotal}
           currency={line.currencyCode}
-          />)
+          durationHours={convertMinToHour(line.durationMin)}
+          />}
+        ) :
+          ( <p>Loading summary...</p>)
           }
-          <div className="flex flex-col items-end p-4">
-            <p>Discount: Enter..{orderPreview.discount}..</p>
-            <p>Total: {orderPreview.netTotal ? orderPreview.netTotal: "N/A"} {orderPreview.items[0].currencyCode}</p>
+          <div className="flex flex-col items-end p-4 gap-4">
+            <div className="flex gap-2 items-center">
+               <label>Discount:</label>
+            <input type="text" className="input w-25" placeholder="Enter discount..." name="discount" value={discount} onChange={(e) => {setDiscount(e.target.value)}}/>
+            </div>
+            <p>Total: {orderPreview?.netTotal} {orderPreview?.items[0].currencyCode}</p>
           </div>
-          {/* <pre>{JSON.stringify(orderPreview, null, 2)}</pre> */}
           <Button
             text={t("submit")}
             color="bg-black"
             onClick={hdlSubmitOrder}
           />
+          <pre>{JSON.stringify(orderPreview, null, 2)}</pre>
         </div>
       </div>
     </>

@@ -16,11 +16,13 @@ import FloorPlan from "../pages/FloorPlan";
 import UserPage from "../pages/UserPage";
 import AllSessions from "../pages/AllSessions";
 import OrderSummary from "../pages/OrderSummary";
+import AllOrders from "../pages/AllOrders";
 
 const commonPaths = [
   { path: "profile", element: <UserPage /> },
   { path: "sessions", element: <AllSessions /> },
   { path: "sessions/order-preview", element: <OrderSummary /> },
+  { path: "orders", element: <AllOrders /> },
 ];
 
 const routes = createBrowserRouter([

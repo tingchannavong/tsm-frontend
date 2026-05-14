@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { ChairIcon, ProfileIcon, TimerIcon } from "../icons";
+import { ChairIcon, OrderIcon, ProfileIcon, TimerIcon } from "../icons";
 import { useT } from "../languages/translations.js";
 
 
@@ -20,6 +20,12 @@ function StaffNavBar() {
       <div className={navBoxStyles}>
         <TimerIcon className="h-16 w-16" />
         <p>{t("sessions")}</p>
+      </div>
+      </Link>
+      <Link to="orders">
+      <div className={navBoxStyles}>
+        <OrderIcon className="h-16 w-16" />
+        <p>{t("orders")}</p>
       </div>
       </Link>
       <Link to="profile">

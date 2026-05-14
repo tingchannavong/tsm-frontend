@@ -4,7 +4,8 @@ import { useAuthStore } from "../stores/authStores.js";
 // create axios instance
 const baseConfig = {
     baseURL: import.meta.env.VITE_BASE_URL,
-    timeout: 5000
+    timeout: 5000,
+    withCredentials: true
 };
 
 export const publicApi = axios.create(baseConfig);

@@ -41,7 +41,7 @@ function OrderSummary() {
         console.log(resp);
         toast.success('Order created successfully')
         // go to table page
-        // navigate(getHomePath());
+        navigate(getHomePath());
 
       } catch (error) {
         console.error(error.message || 'Failed to created order');
@@ -88,7 +88,7 @@ function OrderSummary() {
             return <OrderLineItemCard key={line.displayName} index={i} displayName={line.displayName}
           quantity={line.quantity}
           unitPrice={line.unitPrice}
-          subTotal={line.subTotal}
+          subTotal={line.subTotal.toLocaleString()}
           currency={line.currencyCode}
           durationHours={convertMinToHour(line.durationMin)}
           />}
@@ -100,14 +100,14 @@ function OrderSummary() {
                <label>Discount:</label>
             <input type="text" className="input w-25" placeholder="Enter discount..." name="discount" value={discount} onChange={(e) => {setDiscount(e.target.value)}}/>
             </div>
-            <p>Total: {orderPreview?.netTotal} {orderPreview?.items[0].currencyCode}</p>
+            <p>Total: {orderPreview?.netTotal.toLocaleString()} {orderPreview?.items[0].currencyCode}</p>
           </div>
           <Button
             text={t("submit")}
             color="bg-black"
             onClick={hdlSubmitOrder}
           />
-          <pre>{JSON.stringify(orderPreview, null, 2)}</pre>
+          {/* <pre>{JSON.stringify(orderPreview, null, 2)}</pre> */}
         </div>
       </div>
     </>

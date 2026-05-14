@@ -67,5 +67,7 @@
     "ended": "Ended",
     "cancelled": "Cancelled",
     "billed": "Billed",
-    "all": "All"
+    "all": "All",
+    "orders": "Orders",
+    "order_management": "Order Management"
 }

@@ -30,7 +30,7 @@ function LocationDD({ value, onChange }) {
         </option>
         {locations && locations.map((each) => (
           <>
-        <option value={each.name}>
+        <option value={each.name} key={each.id}>
           {each.name}
         </option>
           </>

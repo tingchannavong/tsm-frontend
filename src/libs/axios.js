@@ -3,7 +3,7 @@ import { useAuthStore } from "../stores/authStores.js";
 
 // create axios instance
 const baseConfig = {
-    baseURL: "http://localhost:9999",
+    baseURL: import.meta.env.VITE_BASE_URL,
     timeout: 5000
 };
 

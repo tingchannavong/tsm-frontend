@@ -22,10 +22,6 @@ function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
 
   const hdlEndTimer = () => {
     setIsEndTimer(true);
-    // check which sessionId is ticked
-    // compile to sessionIds array
-    // send update to backend
-    // GO TO ORDER PREVIEW
   };
 
   const hdlCheckboxChange = (sessionId) => {
@@ -46,11 +42,14 @@ function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
   };
 
   const hdlSubmit = () => {
-    console.log("slected IDs:", selectedSessions);
+      // check which sessionId is ticked, ensure it is in array [108]
+    console.log("selected session IDs:", selectedSessions);
     Swal.fire({
       text: "Coming Soon!"
     })
-    // API NEED BACKEND FIRST
+    // send array [] individual IDs for backend to update
+    // GO TO ORDER PREVIEW route
+
     setIsEndTimer(false);
     setSelectedSessions([]);
   };

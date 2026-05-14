@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 import StatusSessionDD from "../components/StatusSessionDD.jsx";
 import LocationDD from "../components/LocationDD.jsx";
 
+// To fix all still use session template
 function AllOrders() {
   const t = useT();
   const [filters, setFilters] = useState({

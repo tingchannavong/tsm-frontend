@@ -1,4 +1,4 @@
-import { AdminIcon, ChairIcon, MoneyIcon, ProfileIcon, TimerIcon } from "../icons/index.jsx";
+import { AdminIcon, ChairIcon, OrderIcon, MoneyIcon, ProfileIcon, TimerIcon } from "../icons/index.jsx";
 import { useT } from "../languages/translations.js";
 import { Link } from "react-router";
 

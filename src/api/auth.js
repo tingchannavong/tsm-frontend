@@ -8,6 +8,11 @@ export async function login(username, password) {
     return res.data;
 }
 
+export async function logout() {
+    const res = await authApi.post("/api/auth/logout");
+    return res.data;
+}
+
 export async function fetchMe() {
     const res = await authApi.get("/api/auth/me");
     return res.data;

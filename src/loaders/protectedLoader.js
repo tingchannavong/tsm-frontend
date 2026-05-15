@@ -3,14 +3,6 @@ import { useAuthStore } from "../stores/authStores.js";
 import { isTokenExpired } from "../utils/auth.js";
 
 function guard(user, allowedRole) {
-  // const accessToken = useAuthStore.getState().accessToken;
-
-  // const tokenExpired = isTokenExpired(accessToken);
-
-  // if (tokenExpired) {
-  //   useAuthStore.getState().logout();
-  //   return redirect("/tsm/login");
-  // }
 
   if (!user) return redirect("/tsm/login");
 

@@ -41,21 +41,25 @@ authApi.interceptors.response.use(
     console.log("originalRequest error.config", originalRequest);
 
     // in case error because access token is expired
-    if (error?.response?.status === 401 && !originalRequest._retry) {
+    if (error?.response?.status === 401 && originalRequest.url !== "/api/auth/refresh-token") {
       try {
         // go to refresh token check route, request new access token pls
         const res = await authApi.get("/api/auth/refresh-token");
-        console.log("res", res.data);
+        // console.log("res", res.data);
         const newAccessToken = res.data.access_token;
         useAuthStore.setState({
           accessToken: newAccessToken,
         });
 
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        originalRequest._retry = true;
+
         // this ask the authApi to call original request again
         return authApi(originalRequest);
       } catch (error) {
+        useAuthStore.setState({
+          accessToken: null,
+          user: null
+        });
         console.log("error at 401 response", error);
         return Promise.reject(error);
       }

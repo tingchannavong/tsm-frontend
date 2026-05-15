@@ -10,7 +10,10 @@ const authConfig = (set, get) => (
         login: async (username, password) => {
             // connect backend API here
             const userData = await authService.login(username, password);
-            set({accessToken: userData.access_token});
+            set({
+                accessToken: userData.access_token,
+                // user: userData.user
+            });
 
             await get().fetchUser();
         },
@@ -25,7 +28,8 @@ const authConfig = (set, get) => (
             const userData = await authService.fetchMe();
             set({user: userData})    
         },
-        logout: () => {
+        logout: async () => {
+            await authService.logout();
             set({accessToken: null, user: null });
         }
     }

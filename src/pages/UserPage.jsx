@@ -14,16 +14,17 @@ function UserPage() {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
-  function hdlLogout() {
-    logout();
+  async function hdlLogout() {
+    await logout();
     navigate("/tsm/login");
   }
 
   // useEffect(() => {
-    // LATER: when separate fetch user logic from user service
+  //   // Later
   //   const fetchUser = useAuthStore.getState().fetchUser;
   //   fetchUser();
   // }, []);
+
   const bigScreenStyles="xl:justify-center xl:items-center";
 
   return (

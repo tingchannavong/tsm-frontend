@@ -147,7 +147,7 @@ function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
         <h1 className={subtitleStyles}>
           {t("est_price")}:{" "}
           <span className={infoStyles}>
-            ~{orderPreview?.items[0].subTotal}{" "}
+            ~{orderPreview?.items[0].subTotal.toLocaleString()}{" "}
             {orderPreview?.items[0].currencyCode}
           </span>
         </h1>

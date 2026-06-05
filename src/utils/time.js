@@ -27,11 +27,11 @@ export function getElapsedTime(pastDate) {
   const seconds = Math.floor(diffInMins / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
+  // const days = Math.floor(hours / 24);
 
   return {
-    days: days,
-    hours: hours % 24,
+    // days: days,
+    hours: hours, //% 24
     minutes: minutes % 60,
     seconds: seconds % 60,
   };

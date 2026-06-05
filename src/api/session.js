@@ -48,3 +48,8 @@ export async function endGroupSession(id, updatedData) {
   const res = await authApi.patch(`/api/sessions/groups/${id}`, updatedData);
   return res.data;
 }
+
+export async function endIndividualSessions(endData) {
+  const res = await authApi.patch(`/api/sessions/end`, endData);
+  return res.data;
+}

@@ -30,18 +30,21 @@ function ViewSessions() {
     const fetchEndGroup = async () => {
       // TO DO END MODAL OF ARE YOU SURE? GROUP SUMMARY
       try {
-      await endGroupSession(groupId, {
+      const data = await endGroupSession(groupId, {
         status: "ENDED",
       });
+      console.log('data.responses', data.responses)
 
-      const pendingEndSessionIds = mapSessionIdsFromGroup(selectedGroup);
+      // const pendingEndSessionIds = mapSessionIdsFromGroup(selectedGroup);
+      // console.log('pendingEndSessionIds', pendingEndSessionIds);
    
-      sessionStorage.setItem("sessionIds", JSON.stringify(pendingEndSessionIds));
+      sessionStorage.setItem("sessionIds", JSON.stringify(data.responses.sessionIds));
+      // toast.success('End group sessions success.');
+
       // GO TO ORDER SUMMARY PREVIEW
       navigate(`${getHomePath()}/sessions/order-preview`);
       // navigate state lost due to public to private loader
     
-      toast.success('End sessions success');
       } catch (error) {
         toast.error(error.message || 'End session request failed.')
       }

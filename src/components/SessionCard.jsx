@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { useT } from "../languages/translations";
 import { toast } from "react-toastify";
 import { getOrderPreviewBySessionIds } from "../api/order";
 import { convertToDateString } from "../utils/time";
 import Button from "./Button";
 import Swal from "sweetalert2";
-import { havePermission } from "../utils/auth";
+import { getHomePath, havePermission } from "../utils/auth.js";
+import { endIndividualSessions } from "../api/session.js";
 
 function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
   const t = useT();
+  const navigate = useNavigate();
   const canView = havePermission();
 
   const [orderPreview, setOrderPreview] = useState();
@@ -42,14 +45,27 @@ function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
   };
 
   const hdlSubmit = () => {
-      // check which sessionId is ticked, ensure it is in array [108]
-    console.log("selected session IDs:", selectedSessions);
-    Swal.fire({
-      text: "Coming Soon!"
-    })
-    // send array [] individual IDs for backend to update
-    // GO TO ORDER PREVIEW route
-
+    const fetchEndIndividualSessions = async () => {
+      try {
+        await endIndividualSessions({
+        status: "ENDED",
+        sessionIds: selectedSessions
+      })
+        // check which sessionId is ticked, ensure it is in array [108]
+        console.log("selected session IDs:", selectedSessions);
+        sessionStorage.setItem("sessionIds", JSON.stringify(selectedSessions));
+        toast.success('End individual sessions success');
+        // GO TO ORDER SUMMARY PREVIEW
+        navigate(`${getHomePath()}/sessions/order-preview`);
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message || "End session request failed.");
+      }
+    };
+    // Swal.fire({
+    //   text: "Coming Soon!"
+    // })
+    fetchEndIndividualSessions();
     setIsEndTimer(false);
     setSelectedSessions([]);
   };
@@ -131,17 +147,17 @@ function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
         </div>
         {isEndTimer && (
           <>
-          <p>{t("choose_guests")}</p>
-                <Button
-                  text={t("confirm_end")}
-                  color="bg-red-700"
-                  onClick={hdlSubmit}
-                />
-                <Button
-                  text={t("cancel")}
-                  color="bg-gray-400"
-                  onClick={() => setIsEndTimer(false)}
-                />
+            <p>{t("choose_guests")}</p>
+            <Button
+              text={t("confirm_end")}
+              color="bg-red-700"
+              onClick={hdlSubmit}
+            />
+            <Button
+              text={t("cancel")}
+              color="bg-gray-400"
+              onClick={() => setIsEndTimer(false)}
+            />
           </>
         )}
         <h1 className={subtitleStyles}>
@@ -151,13 +167,13 @@ function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
             {orderPreview?.items[0].currencyCode}
           </span>
         </h1>
-        {canView && !isEndTimer &&
-        <Button
-          text={t("end_timer")}
-          color="bg-gray-700"
-          onClick={hdlEndTimer}
-        />
-        }
+        {canView && !isEndTimer && (
+          <Button
+            text={t("end_timer")}
+            color="bg-gray-700"
+            onClick={hdlEndTimer}
+          />
+        )}
       </div>
     </>
   );

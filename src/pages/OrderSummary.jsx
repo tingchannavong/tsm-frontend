@@ -88,9 +88,9 @@ function OrderSummary() {
             return <OrderLineItemCard key={line.displayName} index={i} displayName={line.displayName}
           quantity={line.quantity}
           unitPrice={line.unitPrice}
-          subTotal={line.subTotal.toLocaleString()}
+          subTotal={line.subTotal?.toLocaleString()}
           currency={line.currencyCode}
-          durationHours={convertMinToHour(line.durationMin)}
+          durationMin={line.durationMin}
           />}
         ) :
           ( <p>Loading summary...</p>)
@@ -100,7 +100,7 @@ function OrderSummary() {
                <label>Discount:</label>
             <input type="text" className="input w-25" placeholder="Enter discount..." name="discount" value={discount} onChange={(e) => {setDiscount(e.target.value)}}/>
             </div>
-            <p>Total: {orderPreview?.netTotal.toLocaleString()} {orderPreview?.items[0].currencyCode}</p>
+            <p>Total: {orderPreview?.netTotal?.toLocaleString()} {orderPreview?.items[0].currencyCode}</p>
           </div>
           <Button
             text={t("submit")}

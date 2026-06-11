@@ -62,9 +62,6 @@ function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
         toast.error(error.message || "End session request failed.");
       }
     };
-    // Swal.fire({
-    //   text: "Coming Soon!"
-    // })
     fetchEndIndividualSessions();
     setIsEndTimer(false);
     setSelectedSessions([]);

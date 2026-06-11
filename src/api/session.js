@@ -1,4 +1,5 @@
 import { authApi, publicApi } from "../libs/axios";
+import { appendQueryParams } from "../utils/core.js";
 
 export async function createSession(body) {
   const res = await publicApi.post(`/api/sessions`, body);
@@ -24,13 +25,7 @@ export async function getSessionsByLocationGroup(locationId, groupId) {
 
 export async function getAllSessions(filters) {
   let api = "/api/sessions";
-
-  if (filters && Object.keys(filters).length > 0) {
-      const params = new URLSearchParams(filters).toString();
-      api += `?${params}`;
-  }
-
-  const res = await authApi.get(api);
+  const res = await authApi.get(appendQueryParams(api, filters));
   return res.data;
 }
 

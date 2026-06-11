@@ -7,8 +7,8 @@ export const useOrderStore = create((set, get) => ({
   setCurrentOrder: (order) => set({ currentOrder: order }),
   clearCurrentOrder: () => set({ currentOrder: null }),
 
-  fetchAllOrders: async () => {
-    const data = await getAllOrders();
+  fetchAllOrders: async (filters) => {
+    const data = await getAllOrders(filters);
     set({ orders: data.responses });
   },
 

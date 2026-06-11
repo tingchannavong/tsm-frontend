@@ -1,4 +1,5 @@
 import { authApi, publicApi } from "../libs/axios";
+import { appendQueryParams } from "../utils/core.js";
 
 export async function getOrderPreviewBySessionIds(body) {
   // console.log('payload', body);
@@ -12,7 +13,10 @@ export async function createOrder(body) {
   return res.data;
 }
 
-export async function getAllOrders() {
-  const res = await authApi.get(`/api/orders`);
+export async function getAllOrders(filters) {
+  let api = "/api/orders";
+  const res = await authApi.get(appendQueryParams(api, filters));
   return res.data;
 }
+
+

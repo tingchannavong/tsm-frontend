@@ -13,8 +13,8 @@ export const useSessionStore = create((set, get) => ({
     set({ currentSession: null }); 
   },
 
-  fetchAllSessions: async () => {
-    const data = await getAllSessions();
+  fetchAllSessions: async (filters) => {
+    const data = await getAllSessions(filters);
     set({ sessions: data.responses });
     set({ currentSession: null });
   },

@@ -19,8 +19,10 @@ function AllSessions() {
   const t = useT();
   const [filters, setFilters] = useState({
     status: "ACTIVE",
-    location: "all",
+    locationId: "all",
     search: "",
+    page: 1,
+    limit: 20
   });
   const fetchAllSessions = useSessionStore((state) => state.fetchAllSessions);
   const sessions = useSessionStore((state) => state.sessions);
@@ -36,24 +38,24 @@ function AllSessions() {
   const handleLocationChange = (newValue) => {
     setFilters((prev) => ({
       ...prev,
-      location: newValue,
+      locationId: newValue,
     }));
+    console.log('filters', filters)
   };
 
-// handle filter of data
-  const filteredData = useMemo(() => {
-    // filter status
-    const filteredStatus = sessions.filter((session) => filters.status === "all" ? session : filters.status === session.status);
-    // filter location
-    const filteredLocation = filteredStatus.filter((session) => filters.location === 'all' ? session : filters.location === session.location.name)
+// handle filter of data with UseMemo
+  // const filteredData = useMemo(() => {
+  //   // filter status
+  //   const filteredStatus = sessions.filter((session) => filters.status === "all" ? session : filters.status === session.status);
+  //   // filter location
+  //   const filteredLocation = filteredStatus.filter((session) => filters.location === 'all' ? session : filters.location === session.location.name)
 
-    return filteredLocation;
-  }, [sessions, filters]);
+  //   return filteredLocation;
+  // }, [sessions, filters]);
 
   useEffect(() => {
-    fetchAllSessions();
-    // console.log(sessions)
-  }, []);
+    fetchAllSessions(filters);
+  }, [filters]);
 
   return (
     <>
@@ -78,7 +80,7 @@ function AllSessions() {
            <div className="flex gap-2 items-center">
         <p>{t("filter_location")}: </p>
         <LocationDD 
-        value={filters.location}
+        value={filters.locationId}
         onChange={handleLocationChange}
         />
         </div>
@@ -120,19 +122,19 @@ function AllSessions() {
                 </thead>
 
                 <tbody className="divide-y divide-gray-100">
-                  {filteredData.length === 0 ? (
+                  {sessions.length === 0 ? (
                     <tr>
                       <td
                         colSpan="9"
                         className="px-6 py-12 text-center text-gray-400 italic"
                       >
-                        {filteredData === null
+                        {sessions === null
                           ? "Initialising sessions..."
-                          : "No active sessions found."}
+                          : "No sessions found."}
                       </td>
                     </tr>
                   ) : (
-                    filteredData.map((session) => (
+                    sessions.map((session) => (
                       // id
                       <tr
                         key={session.id}

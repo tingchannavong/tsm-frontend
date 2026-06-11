@@ -21,7 +21,8 @@ function AllOrders() {
   const t = useT();
   const [filters, setFilters] = useState({
     status: "PAID",
-    search: "",
+    startDate: "",
+    endDate: ""
   });
   
   const fetchAllOrders = useOrderStore((state) => state.fetchAllOrders);
@@ -35,27 +36,10 @@ function AllOrders() {
     }));
   };
 
-  // const handleLocationChange = (newValue) => {
-  //   setFilters((prev) => ({
-  //     ...prev,
-  //     location: newValue,
-  //   }));
-  // };
-
-// handle filter of data
-  // const filteredData = useMemo(() => {
-  //   // filter status
-  //   const filteredStatus = sessions.filter((session) => filters.status === "all" ? session : filters.status === session.status);
-  //   // filter location
-  //   const filteredLocation = filteredStatus.filter((session) => filters.location === 'all' ? session : filters.location === session.location.name)
-
-  //   return filteredLocation;
-  // }, [sessions, filters]);
-
   useEffect(() => {
     fetchAllOrders();
     console.log(orders);
-  }, []);
+  }, [filters]);
 
   return (
     <>

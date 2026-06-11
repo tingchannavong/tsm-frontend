@@ -14,18 +14,19 @@ import DeleteModal from "../components/DeleteSessionModal.jsx";
 import Swal from "sweetalert2";
 import StatusSessionDD from "../components/StatusSessionDD.jsx";
 import LocationDD from "../components/LocationDD.jsx";
+import { useOrderStore } from "../stores/orderStores.js";
 
 // To fix all still use session template
 function AllOrders() {
   const t = useT();
   const [filters, setFilters] = useState({
-    status: "ACTIVE",
-    location: "all",
+    status: "PAID",
     search: "",
   });
-  const fetchAllSessions = useSessionStore((state) => state.fetchAllSessions);
-  const sessions = useSessionStore((state) => state.sessions);
-  const currentSession = useSessionStore((state) => state.currentSession);
+  
+  const fetchAllOrders = useOrderStore((state) => state.fetchAllOrders);
+  const orders = useOrderStore((state) => state.orders);
+  const currentOrder = useOrderStore((state) => state.currentOrder);
 
   const handleStatusChange = (newValue) => {
     setFilters((prev) => ({
@@ -34,57 +35,42 @@ function AllOrders() {
     }));
   };
 
-  const handleLocationChange = (newValue) => {
-    setFilters((prev) => ({
-      ...prev,
-      location: newValue,
-    }));
-  };
+  // const handleLocationChange = (newValue) => {
+  //   setFilters((prev) => ({
+  //     ...prev,
+  //     location: newValue,
+  //   }));
+  // };
 
 // handle filter of data
-  const filteredData = useMemo(() => {
-    // filter status
-    const filteredStatus = sessions.filter((session) => filters.status === "all" ? session : filters.status === session.status);
-    // filter location
-    const filteredLocation = filteredStatus.filter((session) => filters.location === 'all' ? session : filters.location === session.location.name)
+  // const filteredData = useMemo(() => {
+  //   // filter status
+  //   const filteredStatus = sessions.filter((session) => filters.status === "all" ? session : filters.status === session.status);
+  //   // filter location
+  //   const filteredLocation = filteredStatus.filter((session) => filters.location === 'all' ? session : filters.location === session.location.name)
 
-    return filteredLocation;
-  }, [sessions, filters]);
+  //   return filteredLocation;
+  // }, [sessions, filters]);
 
   useEffect(() => {
-    fetchAllSessions();
-    // console.log(sessions)
+    fetchAllOrders();
+    console.log(orders);
   }, []);
 
   return (
     <>
       <FeatureHeader title={`${t("order_management")}`} />
       <div className={`${styles.mainContainer} gap-5`}>
-        {/* <SmallButton
-          text={t("add")}
-          color="bg-[#2D877C] font-semibold"
-          onClick={() =>
-            Swal.fire({
-              text: "Coming Soon!",
-            })
-          }
-        /> */}
         <div className="flex gap-2 items-center">
-          <p>Filter by status: </p>{" "}
+          <p>{t("filter_status")}: </p>{" "}
           <StatusSessionDD
             value={filters.status}
             onChange={handleStatusChange}
           />
         </div>
            <div className="flex gap-2 items-center">
-        <p>Filter by location: </p>
-        <LocationDD 
-        value={filters.location}
-        onChange={handleLocationChange}
-        />
+            <p>{t("filter_order_date")}: Today DEFAULT</p>
         </div>
-        {/* <p>Filter by play date: Today DEFAULT</p> LATER FEAT*/}
-        {/* <p>Search by guest name: search bar</p> */}
 
         <div className="w-full max-w-7xl mx-auto p-2 md:p-4">
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
@@ -94,101 +80,81 @@ function AllOrders() {
                   <tr>
                     {/* Sticky ID column for mobile */}
                     <th className="sticky left-0 z-10 bg-purple-200 px-4 py-4 font-bold">
-                      Start Time
+                      ID
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap">
-                      Location
+                      {t("order_date")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap">
-                      Name
+                      {t("grand_total")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap">
-                      Group Id
+                       {t("discount")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap">
-                      End Time
+                       {t("net_total")}
                     </th>
-                    <th className="px-4 py-4 font-medium whitespace-nowrap">
-                      Play Date
+                     <th className="px-4 py-4 font-medium whitespace-nowrap">
+                       {t("currency")}
                     </th>
-                    <th className="px-4 py-4 font-medium whitespace-nowrap">
-                      Status
+                     <th className="px-4 py-4 font-medium whitespace-nowrap">
+                      {t("status")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap text-center">
-                      Action
+                      {t("action")}
                     </th>
                   </tr>
                 </thead>
 
                 <tbody className="divide-y divide-gray-100">
-                  {filteredData.length === 0 ? (
+                  {orders?.length === 0 ? (
                     <tr>
                       <td
                         colSpan="9"
                         className="px-6 py-12 text-center text-gray-400 italic"
                       >
-                        {filteredData === null
-                          ? "Initialising sessions..."
-                          : "No active sessions found."}
+                        {orders === null
+                          ? "Initialising orders..."
+                          : "No orders found."}
                       </td>
                     </tr>
                   ) : (
-                    filteredData.map((session) => (
+                    orders?.map((order) => (
                       // id
                       <tr
-                        key={session.id}
+                        key={order.id}
                         className="hover:bg-blue-50/30 transition-colors"
                       >
                         {/* Sticky first column */}
                         <td className="sticky left-0 z-10 bg-white px-4 py-4 font-semibold text-gray-900 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] group-hover:bg-blue-50">
-                          {convertDateTimeTo24HrTime(session.startTime)}
+                          {order.id}
                         </td>
 
                         <td className="px-4 py-4 whitespace-nowrap font-mono text-xs text-gray-500">
-                          {session.location.name}
+                          {`${convertDateTimeToDate(order.createdAt)}, ${convertDateTimeTo24HrTime(order.createdAt)}`}
                         </td>
 
                         <td className="px-4 py-4 whitespace-nowrap font-medium text-gray-800 capitalize">
-                          {session.name}
+                          {order.grandTotal.toLocaleString()}
                         </td>
 
                         <td className="px-4 py-4 whitespace-nowrap font-mono text-xs text-gray-500">
-                          {session.groupId.split("-")[0]}...
+                          {order.discount == 0 ? "None" : order.discount.toLocaleString()}
                         </td>
 
                         <td className="px-4 py-4 whitespace-nowrap text-gray-500">
-                          {session.endTime
-                            ? convertDateTimeTo24HrTime(session.endTime)
-                            : "N/A"}
+                          {order.netTotal.toLocaleString()}
                         </td>
 
                         <td className="px-4 py-4 whitespace-nowrap text-gray-500">
-                          {session.startTime
-                            ? convertDateTimeToDate(session.startTime)
-                            : "N/A"}
+                          {order.orderDetails[0].currencyCode}
                         </td>
 
-                        <td className="px-4 py-4 whitespace-nowrap">
-                          <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              session.status === "ACTIVE"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-gray-100 text-gray-600"
-                            }`}
-                          >
-                            <span
-                              className={`w-1.5 h-1.5 mr-1.5 rounded-full ${
-                                session.status === "ACTIVE"
-                                  ? "bg-green-500"
-                                  : "bg-gray-400"
-                              }`}
-                            ></span>
-                            {session.status}
-                          </span>
+                        <td className="px-4 py-4 whitespace-nowrap text-gray-500">
+                          {order.status}
                         </td>
-
                         <td className="px-4 py-4 text-center whitespace-nowrap">
-                          <ActionSwitcher id={session.id} session={session} />
+                          <ActionSwitcher id={order.id} session={order} />
                         </td>
                       </tr>
                     ))
@@ -199,8 +165,8 @@ function AllOrders() {
           </div>
         </div>
       </div>
-      <EditModal key={`edit-${currentSession?.id || "none"}`} />
-      <DeleteModal key={`del-${currentSession?.id || "none"}`} />
+      <EditModal key={`edit-${currentOrder?.id || "none"}`} />
+      <DeleteModal key={`del-${currentOrder?.id || "none"}`} />
     </>
   );
 }

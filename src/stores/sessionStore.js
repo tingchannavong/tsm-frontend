@@ -3,7 +3,7 @@ import { deleteSessionById, getAllSessions, updateSessionById } from "../api/ses
 
 export const useSessionStore = create((set, get) => ({
   sessions: [],
-  currentSession: null,
+  currentSession: {},
   setCurrentSession: (session) => set({ currentSession: session }),
   clearCurrentSession: () => set({ currentSession: null }),
 

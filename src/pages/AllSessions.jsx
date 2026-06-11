@@ -69,21 +69,21 @@ function AllSessions() {
           }
         />
         <div className="flex gap-2 items-center">
-          <p>Filter by status: </p>{" "}
+          <p>{t("filter_status")}: </p>{" "}
           <StatusSessionDD
             value={filters.status}
             onChange={handleStatusChange}
           />
         </div>
            <div className="flex gap-2 items-center">
-        <p>Filter by location: </p>
+        <p>{t("filter_location")}: </p>
         <LocationDD 
         value={filters.location}
         onChange={handleLocationChange}
         />
         </div>
-        {/* <p>Filter by play date: Today DEFAULT</p> LATER FEAT*/}
-        {/* <p>Search by guest name: search bar</p> */}
+        <p>{t("filter_session_date")}: Today DEFAULT</p>
+        <p>{t("search_name")}: search bar</p>
 
         <div className="w-full max-w-7xl mx-auto p-2 md:p-4">
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
@@ -93,28 +93,28 @@ function AllSessions() {
                   <tr>
                     {/* Sticky ID column for mobile */}
                     <th className="sticky left-0 z-10 bg-purple-200 px-4 py-4 font-bold">
-                      Start Time
+                      {t("start_time")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap">
-                      Location
+                      {t("location")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap">
-                      Name
+                      {t("name")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap">
-                      Group Id
+                      {t("group_id")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap">
-                      End Time
+                      {t("end_time")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap">
-                      Play Date
+                      {t("session_date")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap">
-                      Status
+                       {t("status")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap text-center">
-                      Action
+                       {t("action")}
                     </th>
                   </tr>
                 </thead>

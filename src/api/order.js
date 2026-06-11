@@ -11,3 +11,8 @@ export async function createOrder(body) {
   const res = await authApi.post(`/api/orders`, body);
   return res.data;
 }
+
+export async function getAllOrders() {
+  const res = await authApi.get(`/api/orders`);
+  return res.data;
+}

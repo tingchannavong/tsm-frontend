@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   convertDateTimeTo24HrTime,
   convertDateTimeToDate,
+  convertToDateString,
 } from "../utils/time.js";
 import ActionSwitcher from "../components/ActionSwitcher.jsx";
 import { useSessionStore } from "../stores/sessionStore.js";
@@ -22,8 +23,11 @@ function AllSessions() {
     locationId: "all",
     search: "",
     page: 1,
-    limit: 20
+    limit: 20,
+    startDate: new Date().toISOString().split('T')[0],
+    endDate: new Date().toISOString().split('T')[0]
   });
+  const [showFilter, setShowFilter] = useState(false);
   const fetchAllSessions = useSessionStore((state) => state.fetchAllSessions);
   const sessions = useSessionStore((state) => state.sessions);
   const currentSession = useSessionStore((state) => state.currentSession);
@@ -40,53 +44,77 @@ function AllSessions() {
       ...prev,
       locationId: newValue,
     }));
-    console.log('filters', filters)
   };
 
-// handle filter of data with UseMemo
-  // const filteredData = useMemo(() => {
-  //   // filter status
-  //   const filteredStatus = sessions.filter((session) => filters.status === "all" ? session : filters.status === session.status);
-  //   // filter location
-  //   const filteredLocation = filteredStatus.filter((session) => filters.location === 'all' ? session : filters.location === session.location.name)
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({
+      ...prev,
+      [name]: value,  
+    }));
+  };
 
-  //   return filteredLocation;
-  // }, [sessions, filters]);
+  const hdlSubmitFilters = () => {
+      fetchAllSessions(filters)
+      setShowFilter(false)
+      console.log('filters at submit', filters)
+  }
 
   useEffect(() => {
     fetchAllSessions(filters);
-  }, [filters]);
+  }, []);
 
   return (
     <>
       <FeatureHeader title={`${t("session_management")}`} />
       <div className={`${styles.mainContainer} gap-5`}>
-        <SmallButton
-          text={t("add")}
-          color="bg-[#2D877C] font-semibold"
-          onClick={() =>
-            Swal.fire({
-              text: "Coming Soon!",
-            })
-          }
-        />
-        <div className="flex gap-2 items-center">
-          <p>{t("filter_status")}: </p>{" "}
-          <StatusSessionDD
-            value={filters.status}
-            onChange={handleStatusChange}
+        <div className="flex gap-2">
+          <SmallButton
+            text={t("add")}
+            color="bg-[#2D877C] font-semibold"
+            onClick={() =>
+              Swal.fire({
+                text: "Coming Soon!",
+              })
+            }
+          />
+          <SmallButton
+            text={t("filter")}
+            color="bg-blue-600 font-semibold"
+            onClick={() => setShowFilter(true)}
           />
         </div>
-           <div className="flex gap-2 items-center">
-        <p>{t("filter_location")}: </p>
-        <LocationDD 
-        value={filters.locationId}
-        onChange={handleLocationChange}
-        />
-        </div>
-        <p>{t("filter_session_date")}: Today DEFAULT</p>
         <p>{t("search_name")}: search bar</p>
 
+        {showFilter && (
+          <form onSubmit={hdlSubmitFilters} className="flex flex-col gap-5 border p-4">
+            <div className="flex gap-2 items-center">
+              <p>{t("filter_status")}: </p>{" "}
+              <StatusSessionDD
+                value={filters.status}
+                onChange={handleStatusChange}
+              />
+            </div>
+            <div className="flex gap-2 items-center">
+              <p>{t("filter_location")}: </p>
+              <LocationDD
+                value={filters.locationId}
+                onChange={handleLocationChange}
+              />
+            </div>
+            <p>{t("filter_session_date")}:</p>
+            <div className="flex gap-2 items-center">
+                <label className="label">Start Date</label>
+                  <input type="date" name="startDate" className="input input-bordered" value={filters.startDate} onChange={handleFilterChange} />
+            </div>
+            <div className="flex gap-2 items-center">
+                <label className="label">End Date</label>
+                  <input type="date" name="endDate" className="input input-bordered" value={filters.endDate} onChange={handleFilterChange} />
+            </div>
+            <button type="submit" className="bg-blue-600 font-semibold mx-auto text-white p-2 rounded">{t("submit")}</button>
+          </form>
+          
+        )}
         <div className="w-full max-w-7xl mx-auto p-2 md:p-4">
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
             <div className="overflow-x-auto">
@@ -113,10 +141,10 @@ function AllSessions() {
                       {t("session_date")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap">
-                       {t("status")}
+                      {t("status")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap text-center">
-                       {t("action")}
+                      {t("action")}
                     </th>
                   </tr>
                 </thead>
@@ -129,8 +157,8 @@ function AllSessions() {
                         className="px-6 py-12 text-center text-gray-400 italic"
                       >
                         {sessions === null
-                          ? "Initialising sessions..."
-                          : "No sessions found."}
+                          ? t("init_sessions")
+                          : t("no_session_found")}
                       </td>
                     </tr>
                   ) : (

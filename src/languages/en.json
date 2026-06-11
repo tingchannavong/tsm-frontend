@@ -29,6 +29,10 @@
     "people": "people",
     "started": "started",
     "no_session": "No existing sessions.",
+    "no_session_found": "No sessions found.",
+    "init_sessions": "Initialising sessions...",
+    "no_order_found": "No orders found.",
+    "init_orders": "Initialising orders...",
     "select_group": "Please select a group.",
     "names": "Names",
     "name": "Name",
@@ -75,6 +79,7 @@
     "all": "All",
     "orders": "Orders",
     "order_management": "Order Management",
+    "filter": "Filters",
     "filter_status": "Filter by status",
     "filter_location": "Filter by location",
     "filter_session_date": "Filter by session date range",
@@ -83,5 +88,6 @@
     "grand_total": "Grand Total",
     "net_total": "Net Total",
     "discount": "Discount",
-    "currency": "Currency"
+    "currency": "Currency",
+    "submit": "Submit"
 }

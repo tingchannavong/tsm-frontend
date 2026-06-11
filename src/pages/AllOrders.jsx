@@ -98,8 +98,8 @@ function AllOrders() {
                         className="px-6 py-12 text-center text-gray-400 italic"
                       >
                         {orders === null
-                          ? "Initialising orders..."
-                          : "No orders found."}
+                           ? t("init_orders") 
+                          : t("no_order_found")}
                       </td>
                     </tr>
                   ) : (

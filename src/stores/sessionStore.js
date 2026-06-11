@@ -14,9 +14,14 @@ export const useSessionStore = create((set, get) => ({
   },
 
   fetchAllSessions: async (filters) => {
-    const data = await getAllSessions(filters);
-    set({ sessions: data.responses });
-    set({ currentSession: null });
+    try {
+      const data = await getAllSessions(filters);
+      set({ sessions: data.responses });
+      set({ currentSession: null });
+    
+    } catch (error) {
+      alert(error.response.data.message);
+    }
   },
   deleteSession: async (id) => {
     await deleteSessionById(id);

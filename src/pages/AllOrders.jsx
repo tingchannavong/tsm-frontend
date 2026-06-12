@@ -29,6 +29,9 @@ function AllOrders() {
   const orders = useOrderStore((state) => state.orders);
   const currentOrder = useOrderStore((state) => state.currentOrder);
 
+   // Watch the form filters. Whenever a user clicks a dropdown useEffect can run again
+  // const activeFilters = watch();
+
   const handleStatusChange = (newValue) => {
     setFilters((prev) => ({
       ...prev,

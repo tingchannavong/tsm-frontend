@@ -32,7 +32,7 @@ function NewSessionForm() {
       groupId: groupId,
       locationId: id,
     },
-    resolver: zodResolver(createSessionSchema),
+    // resolver: zodResolver(createSessionSchema),
   });
 
   const hdlChange = (e) => {

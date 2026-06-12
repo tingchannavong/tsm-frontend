@@ -2,7 +2,7 @@ import styles from "../styles/Base.module.css";
 import FeatureHeader from "../components/FeatureHeader.jsx";
 import { useT } from "../languages/translations.js";
 import SmallButton from "../components/SmallButton.jsx";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   convertDateTimeTo24HrTime,
   convertDateTimeToDate,
@@ -16,20 +16,24 @@ import Swal from "sweetalert2";
 import StatusSessionDD from "../components/StatusSessionDD.jsx";
 import LocationDD from "../components/LocationDD.jsx";
 import { useForm } from "react-hook-form";
+import SearchBar from "../components/SearchBar.jsx";
 // import { GetSessionsSchema } from "../validations/session.schema.js";
 
 function AllSessions() {
   const t = useT();
-  const [showFilter, setShowFilter] = useState(false);
-  const [nameSearch, setNameSearch] = useState("");
 
   const fetchAllSessions = useSessionStore((state) => state.fetchAllSessions);
   const sessions = useSessionStore((state) => state.sessions);
   const currentSession = useSessionStore((state) => state.currentSession);
 
+  const [showFilter, setShowFilter] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const {
     register,
     handleSubmit,
+    watch,
     getValues,
     formState: { errors },
   } = useForm({
@@ -44,15 +48,25 @@ function AllSessions() {
     // resolver: zodResolver(GetSessionsSchema),
   });
 
-  const submitData = (data) => {
-    fetchAllSessions(data);
+  const submitData = (filtersPayload) => {
+    // set URL param
+    fetchAllSessions(filtersPayload);
     setShowFilter(false);
-    // console.log("filters at submit", filters);
   };
 
   useEffect(() => {
-    const initialFilters = getValues();
-    fetchAllSessions(initialFilters);
+    try {
+      setIsLoading(true);
+      // if params from URL exist, get params
+      // else get from default
+      const initialFilters = getValues();
+      fetchAllSessions(initialFilters);
+    } catch (error) {
+      console.log(error);
+      alert(error.response.data.message);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   return (
@@ -75,32 +89,16 @@ function AllSessions() {
             onClick={() => setShowFilter(!showFilter)}
           />
         </div>
-        <label className="input">
-          <svg
-            className="h-[1em] opacity-50"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <g
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              strokeWidth="2.5"
-              fill="none"
-              stroke="currentColor"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </g>
-          </svg>
-          <input type="search" required placeholder={t("search_name")} />
-        </label>
+        {isLoading && (
+          <p className="text-xs text-gray-400">Searching archive...</p>
+        )}
 
         {showFilter && (
           <form
             onSubmit={handleSubmit(submitData)}
-            className="flex flex-col gap-5 border p-4"
+            className="flex flex-col gap-5 border p-4 "
           >
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center justify-between">
               <p>{t("filter_status")}: </p>{" "}
               <StatusSessionDD {...register("status")} />
             </div>
@@ -124,6 +122,32 @@ function AllSessions() {
                 type="date"
                 className="input input-bordered"
               />
+            </div>
+            {/* search bar  */}
+            <div>
+              <label className="input">
+                <svg
+                  className="h-[1em] opacity-50"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <g
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                    strokeWidth="2.5"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                  </g>
+                </svg>
+                <input
+                  {...register("name")}
+                  type="text"
+                  placeholder={t("search_name")}
+                />
+              </label>
             </div>
             <button
               type="submit"

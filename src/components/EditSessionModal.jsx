@@ -25,27 +25,29 @@ function EditModal() {
 
   if (!currentSession) return null;
 
+  const formLineStyles = "form-control flex gap-2 justify-between" ;
+
   return (
     <dialog id="edit_session_modal" className="modal">
       <div className="modal-box">
         <h3 className="font-bold text-lg">Edit Session</h3>
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          <div className="form-control">
+          <div className={formLineStyles}>
             <label className="label">Name</label>
             <input name="name" className="input input-bordered" defaultValue={currentSession.name} />
           </div>
 
-            <div className="form-control flex-1">
+            <div className={formLineStyles}>
               <label className="label">Start Time</label>
               <input type="datetime-local" name="startTime" className="input input-bordered" defaultValue={convertToDateString(currentSession.startTime)} />
             </div>
-            <div className="form-control flex-1">
+            <div className={formLineStyles}>
               <label className="label">End Time</label>
               <input type="datetime-local" name="endTime" className="input input-bordered" defaultValue={currentSession.endTime ? convertToDateString(currentSession.endTime): "N/A"} />
             </div>
        
 
-          <div className="form-control">
+          <div className={formLineStyles}>
             <label className="label">Status</label>
             <select name="status" className="select select-bordered" defaultValue={currentSession.status}>
               <option value="ACTIVE">Active</option>

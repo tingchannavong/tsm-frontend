@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 function AllSessions() {
   const t = useT();
   const [showFilter, setShowFilter] = useState(false);
+  const [nameSearch, setNameSearch] = useState("");
 
   const fetchAllSessions = useSessionStore((state) => state.fetchAllSessions);
   const sessions = useSessionStore((state) => state.sessions);
@@ -35,7 +36,6 @@ function AllSessions() {
     defaultValues: {
       status: "ACTIVE",
       locationId: "all",
-      search: "",
       page: 1,
       limit: 20,
       startDate: new Date().toISOString().split("T")[0],
@@ -72,10 +72,28 @@ function AllSessions() {
           <SmallButton
             text={t("filter")}
             color="bg-blue-600 font-semibold"
-            onClick={() => setShowFilter(true)}
+            onClick={() => setShowFilter(!showFilter)}
           />
         </div>
-        <p>{t("search_name")}: search bar</p>
+        <label className="input">
+          <svg
+            className="h-[1em] opacity-50"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <g
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              strokeWidth="2.5"
+              fill="none"
+              stroke="currentColor"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </g>
+          </svg>
+          <input type="search" required placeholder={t("search_name")} />
+        </label>
 
         {showFilter && (
           <form
@@ -84,15 +102,11 @@ function AllSessions() {
           >
             <div className="flex gap-2 items-center">
               <p>{t("filter_status")}: </p>{" "}
-              <StatusSessionDD
-                {...register("status")}
-              />
+              <StatusSessionDD {...register("status")} />
             </div>
             <div className="flex gap-2 items-center">
               <p>{t("filter_location")}: </p>
-              <LocationDD
-                {...register("locationId")}
-              />
+              <LocationDD {...register("locationId")} />
             </div>
             <p>{t("filter_session_date")}:</p>
             <div className="flex gap-2 items-center">

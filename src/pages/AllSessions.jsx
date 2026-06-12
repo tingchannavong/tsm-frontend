@@ -15,53 +15,44 @@ import DeleteModal from "../components/DeleteSessionModal.jsx";
 import Swal from "sweetalert2";
 import StatusSessionDD from "../components/StatusSessionDD.jsx";
 import LocationDD from "../components/LocationDD.jsx";
+import { useForm } from "react-hook-form";
+// import { GetSessionsSchema } from "../validations/session.schema.js";
 
 function AllSessions() {
   const t = useT();
-  const [filters, setFilters] = useState({
-    status: "ACTIVE",
-    locationId: "all",
-    search: "",
-    page: 1,
-    limit: 20,
-    startDate: new Date().toISOString().split('T')[0],
-    endDate: new Date().toISOString().split('T')[0]
-  });
   const [showFilter, setShowFilter] = useState(false);
+
   const fetchAllSessions = useSessionStore((state) => state.fetchAllSessions);
   const sessions = useSessionStore((state) => state.sessions);
   const currentSession = useSessionStore((state) => state.currentSession);
 
-  const handleStatusChange = (newValue) => {
-    setFilters((prev) => ({
-      ...prev,
-      status: newValue,
-    }));
-  };
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      status: "ACTIVE",
+      locationId: "all",
+      search: "",
+      page: 1,
+      limit: 20,
+      startDate: new Date().toISOString().split("T")[0],
+      endDate: new Date().toISOString().split("T")[0],
+    },
+    // resolver: zodResolver(GetSessionsSchema),
+  });
 
-  const handleLocationChange = (newValue) => {
-    setFilters((prev) => ({
-      ...prev,
-      locationId: newValue,
-    }));
+  const submitData = (data) => {
+    fetchAllSessions(data);
+    setShowFilter(false);
+    // console.log("filters at submit", filters);
   };
-
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({
-      ...prev,
-      [name]: value,  
-    }));
-  };
-
-  const hdlSubmitFilters = () => {
-      fetchAllSessions(filters)
-      setShowFilter(false)
-      console.log('filters at submit', filters)
-  }
 
   useEffect(() => {
-    fetchAllSessions(filters);
+    const initialFilters = getValues();
+    fetchAllSessions(initialFilters);
   }, []);
 
   return (
@@ -87,33 +78,46 @@ function AllSessions() {
         <p>{t("search_name")}: search bar</p>
 
         {showFilter && (
-          <form onSubmit={hdlSubmitFilters} className="flex flex-col gap-5 border p-4">
+          <form
+            onSubmit={handleSubmit(submitData)}
+            className="flex flex-col gap-5 border p-4"
+          >
             <div className="flex gap-2 items-center">
               <p>{t("filter_status")}: </p>{" "}
               <StatusSessionDD
-                value={filters.status}
-                onChange={handleStatusChange}
+                {...register("status")}
               />
             </div>
             <div className="flex gap-2 items-center">
               <p>{t("filter_location")}: </p>
               <LocationDD
-                value={filters.locationId}
-                onChange={handleLocationChange}
+                {...register("locationId")}
               />
             </div>
             <p>{t("filter_session_date")}:</p>
             <div className="flex gap-2 items-center">
-                <label className="label">Start Date</label>
-                  <input type="date" name="startDate" className="input input-bordered" value={filters.startDate} onChange={handleFilterChange} />
+              <label className="label">Start Date</label>
+              <input
+                {...register("startDate")}
+                type="date"
+                className="input input-bordered"
+              />
             </div>
             <div className="flex gap-2 items-center">
-                <label className="label">End Date</label>
-                  <input type="date" name="endDate" className="input input-bordered" value={filters.endDate} onChange={handleFilterChange} />
+              <label className="label">End Date</label>
+              <input
+                {...register("endDate")}
+                type="date"
+                className="input input-bordered"
+              />
             </div>
-            <button type="submit" className="bg-blue-600 font-semibold mx-auto text-white p-2 rounded">{t("submit")}</button>
+            <button
+              type="submit"
+              className="bg-blue-600 font-semibold mx-auto text-white p-2 rounded"
+            >
+              {t("submit")}
+            </button>
           </form>
-          
         )}
         <div className="w-full max-w-7xl mx-auto p-2 md:p-4">
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">

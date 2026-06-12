@@ -15,9 +15,9 @@ function NewSessionForm() {
   const navigate = useNavigate();
   const { id } = useParams();
   const path = useLocation();
-  const groupId = path.state ? path.state.groupId: null;
+  const groupId = path.state ? path.state.groupId : null;
 
-  const [isGenNames, setIsGenNames ] = useState(false)
+  const [isGenNames, setIsGenNames] = useState(false);
 
   const {
     register,
@@ -30,14 +30,13 @@ function NewSessionForm() {
       names: [],
       pricingId: 1,
       groupId: groupId,
-      locationId: id
+      locationId: id,
     },
+    resolver: zodResolver(createSessionSchema),
   });
 
-  //  resolver: zodResolver(createSessionSchema),
-
-    const hdlChange = (e) => {
-    setIsGenNames(e.target.checked); 
+  const hdlChange = (e) => {
+    setIsGenNames(e.target.checked);
   };
 
   const guestNumber = watch("people") || 0;
@@ -45,9 +44,10 @@ function NewSessionForm() {
   const submitData = async (data) => {
     try {
       console.log(data);
+      console.log('errors', errors)
       await createSession(data);
       navigate(`/tsm/sessions/${id}`);
-       toast.success(t("create_success"))
+      toast.success(t("create_success"));
     } catch (error) {
       console.log("Status:", error.response.status);
       console.log("Message:", error.response.data.message);
@@ -57,7 +57,9 @@ function NewSessionForm() {
 
   return (
     <div>
-      <h1 className={`${styles.subtitle}`}>{groupId ? t("join_group") : t("create_session")}</h1>
+      <h1 className={`${styles.subtitle}`}>
+        {groupId ? t("join_group") : t("create_session")}
+      </h1>
       <form onSubmit={handleSubmit(submitData)}>
         <fieldset className="fieldset">
           <Input
@@ -67,19 +69,24 @@ function NewSessionForm() {
             register={register}
             name="people"
           />
+          {errors.people && (
+            <span className={styles.errorText}>{errors.people?.message}</span>
+          )}
           <label htmlFor="">
-            <input type="checkbox" checked={isGenNames} onChange={hdlChange} /> {t("auto-generate_names")}
+            <input type="checkbox" checked={isGenNames} onChange={hdlChange} />{" "}
+            {t("auto-generate_names")}
           </label>
 
-          {!isGenNames && Array.from({ length: guestNumber }).map((_, index) => (
-            <Input
-              key={index}
-              label={`${t("guest")} ${index + 1}`}
-              placeholder={`${t("enter_name")} ${index + 1}`}
-              register={register}
-              name={`names.${index}`}
-            />
-          ))}
+          {!isGenNames &&
+            Array.from({ length: guestNumber }).map((_, index) => (
+              <Input
+                key={index}
+                label={`${t("guest")} ${index + 1}`}
+                placeholder={`${t("enter_name")} ${index + 1}`}
+                register={register}
+                name={`names.${index}`}
+              />
+            ))}
         </fieldset>
         <Button text={t("start_timer")} color="bg-black" type="submit" />
       </form>

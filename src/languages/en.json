@@ -18,6 +18,7 @@
     "join_group": "Join existing group session",
     "view_session": "View sessions",
     "create_session": "Create new group session",
+    "create_order": "Create New Order",
     "boardgame_collection": "Go to boardgame collection",
     "start_timer": "Start timer",
     "end_timer": "End timer",

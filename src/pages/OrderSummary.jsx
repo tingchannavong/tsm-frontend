@@ -59,7 +59,7 @@ function OrderSummary() {
         const data = await getOrderPreviewBySessionIds({
           sessionIds: sessionIds,
         });
-        // console.log(data.responses);
+        console.log(data.responses);
         setOrderPreview(data.responses);
       } catch (error) {
         toast.error(error.message || "Fetch preview failed");
@@ -81,8 +81,7 @@ function OrderSummary() {
               Hourly Price: {orderPreview?.items[0].basePrice * 60}{" "}
               {orderPreview?.items[0].currencyCode}
             </p>
-          </div>
-          {orderPreview?.items && Array.isArray(orderPreview.items) ? (
+            {orderPreview?.items && Array.isArray(orderPreview.items) ? (
             orderPreview.items.map((line, i) => {
               return (
                 <OrderLineItemCard
@@ -100,6 +99,7 @@ function OrderSummary() {
           ) : (
             <p>Loading summary...</p>
           )}
+          </div>
           <div className="flex flex-col items-end p-4 gap-4">
             <div className="flex gap-2 items-center">
               <label>Discount:</label>

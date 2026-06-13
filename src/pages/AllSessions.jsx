@@ -13,23 +13,28 @@ import { useSessionStore } from "../stores/sessionStore.js";
 import EditModal from "../components/EditSessionModal.jsx";
 import DeleteModal from "../components/DeleteSessionModal.jsx";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 import StatusSessionDD from "../components/StatusSessionDD.jsx";
 import LocationDD from "../components/LocationDD.jsx";
 import { useForm } from "react-hook-form";
 import SearchBar from "../components/SearchBar.jsx";
+import { endIndividualSessions } from "../api/session.js";
+import { useNavigate } from "react-router";
+import { getHomePath, havePermission } from "../utils/auth.js";
 // import { GetSessionsSchema } from "../validations/session.schema.js";
 
 function AllSessions() {
   const t = useT();
+  const navigate = useNavigate();
 
   const fetchAllSessions = useSessionStore((state) => state.fetchAllSessions);
   const sessions = useSessionStore((state) => state.sessions);
   const currentSession = useSessionStore((state) => state.currentSession);
 
+  const [selectedSessions, setSelectedSessions] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(1);
 
   const {
     register,
@@ -49,7 +54,7 @@ function AllSessions() {
         status: "ACTIVE",
         locationId: "all",
         page: 1,
-        limit: 20,
+        limit: 5,
         startDate: new Date().toISOString().split("T")[0],
         endDate: new Date().toISOString().split("T")[0],
       };
@@ -62,6 +67,49 @@ function AllSessions() {
 
     // resolver: zodResolver(GetSessionsSchema),
   });
+
+  const hdlCheckboxChange = (sessionId) => {
+    setSelectedSessions((prev) =>
+      prev.includes(sessionId)
+        ? prev.filter((id) => id !== sessionId)
+        : [...prev, sessionId],
+    );
+  };
+
+  const hdlSelectAll = (e) => {
+    if (e.target.checked) {
+      const allIds = sessions.map((s) => s.id);
+      setSelectedSessions(allIds);
+    } else {
+      setSelectedSessions([]);
+    }
+  };
+
+  const hdlCreateOrder = () => {
+    if (selectedSessions.length === 0) {
+      toast.error('Please select sessions to create order!');
+      return;
+    }
+
+    const fetchEndIndividualSessions = async () => {
+      try {
+        await endIndividualSessions({
+          status: "ENDED",
+          sessionIds: selectedSessions,
+        });
+        console.log("selected session IDs:", selectedSessions);
+        sessionStorage.setItem("sessionIds", JSON.stringify(selectedSessions));
+        toast.success("End individual sessions success");
+        // GO TO ORDER SUMMARY PREVIEW
+        navigate(`${getHomePath()}/sessions/order-preview`);
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message || "End session request failed.");
+      }
+    };
+    fetchEndIndividualSessions();
+    setSelectedSessions([]);
+  };
 
   const submitData = (filtersPayload) => {
     // set URL param
@@ -96,23 +144,16 @@ function AllSessions() {
       <div className={`${styles.mainContainer} gap-5`}>
         <div className="flex gap-2">
           <SmallButton
-            text={t("add")}
-            color="bg-[#2D877C] font-semibold"
-            onClick={() =>
-              Swal.fire({
-                text: "Coming Soon!",
-              })
-            }
-          />
-          <SmallButton
             text={t("filter")}
             color="bg-blue-600 font-semibold"
             onClick={() => setShowFilter(!showFilter)}
           />
+          <SmallButton
+            text={t("create_order")}
+            color="bg-[#2D877C] font-semibold w-40"
+            onClick={hdlCreateOrder}
+          />
         </div>
-        {isLoading && (
-          <p className="text-xs text-gray-400">Searching archive...</p>
-        )}
 
         {showFilter && (
           <form
@@ -196,7 +237,8 @@ function AllSessions() {
             </div>
           </form>
         )}
-        <div className="w-full max-w-7xl mx-auto p-2 md:p-4">
+
+        <div className="w-full max-w-7xl mx-auto p-2 flex flex-col gap-5">
           {/* Table design */}
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
             <div className="overflow-x-auto">
@@ -204,6 +246,16 @@ function AllSessions() {
                 <thead className="text-xs text-gray-800 uppercase font-bold bg-purple-200 border-b">
                   <tr>
                     {/* Sticky ID column for mobile */}
+                    <th className="sticky left-0 z-10 bg-purple-200 px-4 py-4 font-bold">
+                      <input
+                        type="checkbox"
+                        onChange={hdlSelectAll}
+                        checked={selectedSessions.length === sessions.length}
+                      />
+                    </th>
+                    <th className="sticky left-0 z-10 bg-purple-200 px-4 py-4 font-bold">
+                      ID
+                    </th>
                     <th className="sticky left-0 z-10 bg-purple-200 px-4 py-4 font-bold">
                       {t("start_time")}
                     </th>
@@ -251,6 +303,17 @@ function AllSessions() {
                         className="hover:bg-blue-50/30 transition-colors"
                       >
                         {/* Sticky first column */}
+                        <td className="sticky left-0 z-10 bg-white px-4 py-4 font-semibold text-gray-900 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] group-hover:bg-blue-50">
+                          <input
+                            type="checkbox"
+                            value={session.id}
+                            checked={selectedSessions.includes(session.id)}
+                            onChange={() => hdlCheckboxChange(session.id)}
+                          />
+                        </td>
+                        <td className="sticky left-0 z-10 bg-white px-4 py-4 font-semibold text-gray-900 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] group-hover:bg-blue-50">
+                          {session.id}
+                        </td>
                         <td className="sticky left-0 z-10 bg-white px-4 py-4 font-semibold text-gray-900 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] group-hover:bg-blue-50">
                           {convertDateTimeTo24HrTime(session.startTime)}
                         </td>
@@ -308,18 +371,20 @@ function AllSessions() {
               </table>
             </div>
           </div>
+
           {/* paginmation Component */}
           <div className="flex justify-center gap-2">
-            <label htmlFor="show records">Show:
-            <select>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">20</option>
-              <option value="40">20</option>
-              <option value="50">20</option>
-            </select>
+            <p>Results: How many?</p>
+            <label htmlFor="show records">
+              Show:
+              <select>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+              </select>
             </label>
-
           </div>
         </div>
       </div>

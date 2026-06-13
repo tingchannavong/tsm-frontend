@@ -43,8 +43,8 @@ function NewSessionForm() {
 
   const submitData = async (data) => {
     try {
-      console.log(data);
-      console.log('errors', errors)
+      // console.log(data);
+      // console.log('errors', errors)
       await createSession(data);
       navigate(`/tsm/sessions/${id}`);
       toast.success(t("create_success"));

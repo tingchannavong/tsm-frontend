@@ -41,7 +41,7 @@ function AllOrders() {
 
   useEffect(() => {
     fetchAllOrders();
-    console.log(orders);
+    // console.log(orders);
   }, [filters]);
 
   return (
@@ -122,7 +122,7 @@ function AllOrders() {
                         </td>
 
                         <td className="px-4 py-4 whitespace-nowrap font-medium text-gray-800 capitalize">
-                          {order.grandTotal.toLocaleString()}
+                          {order.grandTotal ? Number(order.grandTotal).toLocaleString() : '-'}
                         </td>
 
                         <td className="px-4 py-4 whitespace-nowrap font-mono text-xs text-gray-500">
@@ -130,7 +130,7 @@ function AllOrders() {
                         </td>
 
                         <td className="px-4 py-4 whitespace-nowrap text-gray-500">
-                          {order.netTotal.toLocaleString()}
+                          {order.netTotal ? Number(order.netTotal).toLocaleString() : '-'}
                         </td>
 
                         <td className="px-4 py-4 whitespace-nowrap text-gray-500">

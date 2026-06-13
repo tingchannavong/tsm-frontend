@@ -10,7 +10,7 @@ function OrderLineItemCard({index, displayName, quantity, unitPrice, subTotal, c
         <p>{index+1}. {displayName} ({durationMin > 60 ? (convertMinToHour(durationMin) + " hours"): (durationMin + " minutes")}  )</p>
          <p className="ml-3">x {quantity}</p>
         <div className="flex justify-between">
-         <p>Price: {unitPrice} </p>
+         <p>Price: {unitPrice?.toLocaleString()} </p>
         <p>{subTotal} {currency}</p>
         </div>
       </div>

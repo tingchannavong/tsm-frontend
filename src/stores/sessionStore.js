@@ -16,9 +16,9 @@ export const useSessionStore = create((set, get) => ({
   fetchAllSessions: async (filters) => {
     try {
       const data = await getAllSessions(filters);
-      set({ sessions: data.responses });
+      set({ sessions: data.responses.result });
       set({ currentSession: null });
-    
+      return data;
     } catch (error) {
       alert(error.response.data.message);
     }

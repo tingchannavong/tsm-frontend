@@ -130,6 +130,7 @@ function AllSessions() {
       setIsLoading(true);
       const initialFilters = getValues();
       fetchAllSessions(initialFilters);
+
     } catch (error) {
       console.log(error);
       alert(error.response.data.message);

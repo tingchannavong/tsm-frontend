@@ -28,28 +28,51 @@ function AllSessions() {
 
   const [showFilter, setShowFilter] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(1);
 
   const {
     register,
     handleSubmit,
     watch,
     getValues,
+    reset,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      status: "ACTIVE",
-      locationId: "all",
-      page: 1,
-      limit: 20,
-      startDate: new Date().toISOString().split("T")[0],
-      endDate: new Date().toISOString().split("T")[0],
-    },
+    defaultValues: (() => {
+      const params = new URLSearchParams(window.location.search);
+      // console.log('params', params);
+      // params.entries() loop through key-value pair, Object.fromEntries() make it into object
+      const urlFilters = Object.fromEntries(params.entries());
+
+      const defaultFilters = {
+        status: "ACTIVE",
+        locationId: "all",
+        page: 1,
+        limit: 20,
+        startDate: new Date().toISOString().split("T")[0],
+        endDate: new Date().toISOString().split("T")[0],
+      };
+
+      return {
+        ...defaultFilters,
+        ...urlFilters,
+      };
+    })(),
+
     // resolver: zodResolver(GetSessionsSchema),
   });
 
   const submitData = (filtersPayload) => {
     // set URL param
+    const currentURL = new URL(window.location.href);
+    const newParams = new URLSearchParams(filtersPayload);
+    // console.log('newParams', newParams);
+    // console.log('.toString()', newParams.toString())
+    currentURL.search = newParams.toString();
+    // console.log('.search', currentURL.search )
+    window.history.pushState({}, "", currentURL);
+
     fetchAllSessions(filtersPayload);
     setShowFilter(false);
   };
@@ -57,8 +80,6 @@ function AllSessions() {
   useEffect(() => {
     try {
       setIsLoading(true);
-      // if params from URL exist, get params
-      // else get from default
       const initialFilters = getValues();
       fetchAllSessions(initialFilters);
     } catch (error) {
@@ -149,15 +170,34 @@ function AllSessions() {
                 />
               </label>
             </div>
-            <button
-              type="submit"
-              className="bg-blue-600 font-semibold mx-auto text-white p-2 rounded"
-            >
-              {t("submit")}
-            </button>
+            <div className="flex justify-center gap-4">
+              <button
+                type="button"
+                className="bg-black font-semibold text-white p-2 rounded w-20"
+                onClick={() =>
+                  reset({
+                    status: "all",
+                    locationId: "all",
+                    page: 1,
+                    limit: 20,
+                    startDate: "",
+                    endDate: "",
+                  })
+                }
+              >
+                {t("reset")}
+              </button>
+              <button
+                type="submit"
+                className="bg-blue-600 font-semibold text-white p-2 rounded w-20"
+              >
+                {t("submit")}
+              </button>
+            </div>
           </form>
         )}
         <div className="w-full max-w-7xl mx-auto p-2 md:p-4">
+          {/* Table design */}
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left text-gray-600 border-collapse">
@@ -267,6 +307,19 @@ function AllSessions() {
                 </tbody>
               </table>
             </div>
+          </div>
+          {/* paginmation Component */}
+          <div className="flex justify-center gap-2">
+            <label htmlFor="show records">Show:
+            <select>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">20</option>
+              <option value="40">20</option>
+              <option value="50">20</option>
+            </select>
+            </label>
+
           </div>
         </div>
       </div>

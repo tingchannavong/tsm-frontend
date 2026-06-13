@@ -89,5 +89,6 @@
     "net_total": "Net Total",
     "discount": "Discount",
     "currency": "Currency",
-    "submit": "Submit"
+    "submit": "Submit",
+    "reset": "Reset"
 }

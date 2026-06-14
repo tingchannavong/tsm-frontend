@@ -22,7 +22,7 @@ import { endIndividualSessions } from "../api/session.js";
 import { useNavigate, useParams } from "react-router";
 import { getHomePath, havePermission } from "../utils/auth.js";
 import { ur } from "zod/v4/locales";
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from "react-router-dom";
 // import { GetSessionsSchema } from "../validations/session.schema.js";
 
 function AllSessions() {
@@ -38,14 +38,14 @@ function AllSessions() {
   const [isLoading, setIsLoading] = useState(false);
 
   const defaultFilters = {
-        status: "ACTIVE",
-        locationId: "all",
-        page: 1,
-        limit: 10,
-        startDate: new Date().toISOString().split("T")[0],
-        endDate: new Date().toISOString().split("T")[0],
-      };
-  
+    status: "ACTIVE",
+    locationId: "all",
+    page: 1,
+    limit: 10,
+    startDate: "",
+    endDate: new Date().toISOString().split("T")[0],
+  };
+
   const [searchParams, setSearchParams] = useSearchParams(defaultFilters);
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState();
@@ -59,7 +59,7 @@ function AllSessions() {
     reset,
     formState: { errors },
   } = useForm({
-     defaultValues: (() => {
+    defaultValues: (() => {
       const urlFilters = Object.fromEntries([...searchParams]);
       return {
         ...defaultFilters,
@@ -112,21 +112,31 @@ function AllSessions() {
     setSelectedSessions([]);
   };
 
-  const hdlLimitChange = (e)=> {
-    setValue('limit', e.target.value);
-    setSearchParams((prev) => ({...Object.fromEntries(prev), page: '1', limit: e.target.value }));
-  }
+  const hdlLimitChange = (e) => {
+    setValue("limit", e.target.value);
+    setSearchParams((prev) => ({
+      ...Object.fromEntries(prev),
+      page: "1",
+      limit: e.target.value,
+    }));
+  };
 
-  const hdlPageChange = (pageNumber)=> {
-    setValue('page', pageNumber);
-    setSearchParams((prev) => ({...Object.fromEntries(prev), page: pageNumber}));
-  }
+  const hdlPageChange = (pageNumber) => {
+    setValue("page", pageNumber);
+    setSearchParams((prev) => ({
+      ...Object.fromEntries(prev),
+      page: pageNumber,
+    }));
+  };
 
   const submitData = (filtersPayload) => {
     // set URL search params
-    console.log('filtersPayload', filtersPayload);
-    setSearchParams((prev) => ({...Object.fromEntries(prev), ...filtersPayload}));
-    console.log(Object.fromEntries(searchParams))
+    console.log("filtersPayload", filtersPayload);
+    setSearchParams((prev) => ({
+      ...Object.fromEntries(prev),
+      ...filtersPayload,
+    }));
+    console.log(Object.fromEntries(searchParams));
     setShowFilter(false);
   };
 
@@ -147,7 +157,7 @@ function AllSessions() {
   };
 
   useEffect(() => {
-    console.log('when refetch', Object.fromEntries([...searchParams]))
+    console.log("when refetch", Object.fromEntries([...searchParams]));
     fetchData(Object.fromEntries([...searchParams]));
   }, [searchParams]);
 
@@ -386,7 +396,7 @@ function AllSessions() {
             </div>
           </div>
         </div>
-        {/* paginmation Component */}
+        {/* pagination Component */}
         <div>
           <div className="flex justify-center gap-2">
             <label htmlFor="show records">
@@ -401,31 +411,62 @@ function AllSessions() {
             </label>
           </div>
           <div className="flex gap-2">
-            <p>Pages:</p>
-            {getValues('page') == '1' ? 
-            <></>
-            : 
-            <button onClick={()=>{
-              const currentPage = getValues('page');
-              setValue('page', currentPage - 1);
-              setSearchParams((prev) => ({...Object.fromEntries(prev), page: currentPage - 1}));
-            }}>Prev</button>
-            }
-          {
-            Array.from({length: totalPages}, (_, i) => {
-              const pageNumber = i+1;
-              return <button key={pageNumber} onClick={() => hdlPageChange(pageNumber)} className={pageNumber == getValues('page') ? "bg-blue-400" : "bg-base-100"}>{pageNumber}</button>
-            })
-          }
-          {getValues('page') == totalPages ? 
-            <></>
-            : 
-            <button onClick={()=>{
-              const currentPage = getValues('page');
-              setValue('page', currentPage + 1);
-              setSearchParams((prev) => ({...Object.fromEntries(prev), page: currentPage + 1}));
-            }}>Next</button>
-            }
+            {getValues("page") == 1 ? (
+              <></>
+            ) : (
+              <>
+                <p>Pages:</p>
+                {getValues("page") == "1" ? (
+                  <></>
+                ) : (
+                  <button
+                    onClick={() => {
+                      const currentPage = getValues("page");
+                      setValue("page", currentPage - 1);
+                      setSearchParams((prev) => ({
+                        ...Object.fromEntries(prev),
+                        page: currentPage - 1,
+                      }));
+                    }}
+                  >
+                    Prev
+                  </button>
+                )}
+                {Array.from({ length: totalPages }, (_, i) => {
+                  const pageNumber = i + 1;
+                  return (
+                    <button
+                      key={pageNumber}
+                      onClick={() => hdlPageChange(pageNumber)}
+                      className={
+                        pageNumber == getValues("page")
+                          ? "bg-blue-400"
+                          : "bg-base-100"
+                      }
+                    >
+                      {pageNumber}
+                    </button>
+                  );
+                })}
+                {getValues("page") == totalPages ? (
+                  <></>
+                ) : (
+                  <button
+                    onClick={() => {
+                      const currentPage = getValues("page");
+                      setValue("page", currentPage + 1);
+                      setSearchParams((prev) => ({
+                        ...Object.fromEntries(prev),
+                        page: currentPage + 1,
+                      }));
+                    }}
+                  >
+                    Next
+                  </button>
+                )}
+                {/* end pages */}
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -12,9 +12,9 @@ import { useSessionStore } from "../stores/sessionStore.js";
 import EditModal from "../components/EditSessionModal.jsx";
 import DeleteModal from "../components/DeleteSessionModal.jsx";
 import Swal from "sweetalert2";
-import StatusSessionDD from "../components/StatusSessionDD.jsx";
-import LocationDD from "../components/LocationDD.jsx";
 import { useOrderStore } from "../stores/orderStores.js";
+import Dropdown from "../components/Dropdown.jsx";
+import SearchBar from "../components/SearchBar.jsx";
 
 // To fix all still use session template
 function AllOrders() {
@@ -22,14 +22,14 @@ function AllOrders() {
   const [filters, setFilters] = useState({
     status: "PAID",
     startDate: "",
-    endDate: ""
+    endDate: "",
   });
-  
+
   const fetchAllOrders = useOrderStore((state) => state.fetchAllOrders);
   const orders = useOrderStore((state) => state.orders);
   const currentOrder = useOrderStore((state) => state.currentOrder);
 
-   // Watch the form filters. Whenever a user clicks a dropdown useEffect can run again
+  // Watch the form filters. Whenever a user clicks a dropdown useEffect can run again
   // const activeFilters = watch();
 
   const handleStatusChange = (newValue) => {
@@ -50,14 +50,37 @@ function AllOrders() {
       <div className={`${styles.mainContainer} gap-5`}>
         <div className="flex gap-2 items-center">
           <p>{t("filter_status")}: </p>{" "}
-          <StatusSessionDD
+          <select
+            name="orderStatus"
+            id=""
             value={filters.status}
             onChange={handleStatusChange}
-          />
+          >
+            <option value="PAID">Paid</option>
+            <option value="UNPAID">Unpaid</option>
+          </select>
         </div>
-           <div className="flex gap-2 items-center">
-            <p>{t("filter_order_date")}: Today DEFAULT</p>
+        <div className="flex gap-2 items-center">
+          <p>{t("filter_order_date")}: </p>
+          {/* date */}
+          <div className="flex gap-2 items-center">
+            <label className="label">Start Date</label>
+            <input
+              // {...register("startDate")}
+              type="date"
+              className="input input-bordered"
+            />
+          </div>
+          <div className="flex gap-2 items-center">
+            <label className="label">End Date</label>
+            <input
+              // {...register("endDate")}
+              type="date"
+              className="input input-bordered"
+            />
+          </div>
         </div>
+        <SearchBar placeholder="Search by order ID..."/>
 
         <div className="w-full max-w-7xl mx-auto p-2 md:p-4">
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
@@ -76,15 +99,15 @@ function AllOrders() {
                       {t("grand_total")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap">
-                       {t("discount")}
+                      {t("discount")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap">
-                       {t("net_total")}
+                      {t("net_total")}
                     </th>
-                     <th className="px-4 py-4 font-medium whitespace-nowrap">
-                       {t("currency")}
+                    <th className="px-4 py-4 font-medium whitespace-nowrap">
+                      {t("currency")}
                     </th>
-                     <th className="px-4 py-4 font-medium whitespace-nowrap">
+                    <th className="px-4 py-4 font-medium whitespace-nowrap">
                       {t("status")}
                     </th>
                     <th className="px-4 py-4 font-medium whitespace-nowrap text-center">
@@ -101,7 +124,7 @@ function AllOrders() {
                         className="px-6 py-12 text-center text-gray-400 italic"
                       >
                         {orders === null
-                           ? t("init_orders") 
+                          ? t("init_orders")
                           : t("no_order_found")}
                       </td>
                     </tr>
@@ -122,15 +145,21 @@ function AllOrders() {
                         </td>
 
                         <td className="px-4 py-4 whitespace-nowrap font-medium text-gray-800 capitalize">
-                          {order.grandTotal ? Number(order.grandTotal).toLocaleString() : '-'}
+                          {order.grandTotal
+                            ? Number(order.grandTotal).toLocaleString()
+                            : "-"}
                         </td>
 
                         <td className="px-4 py-4 whitespace-nowrap font-mono text-xs text-gray-500">
-                          {order.discount == 0 ? "None" : order.discount.toLocaleString()}
+                          {order.discount == 0
+                            ? "None"
+                            : order.discount.toLocaleString()}
                         </td>
 
                         <td className="px-4 py-4 whitespace-nowrap text-gray-500">
-                          {order.netTotal ? Number(order.netTotal).toLocaleString() : '-'}
+                          {order.netTotal
+                            ? Number(order.netTotal).toLocaleString()
+                            : "-"}
                         </td>
 
                         <td className="px-4 py-4 whitespace-nowrap text-gray-500">

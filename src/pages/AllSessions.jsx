@@ -10,7 +10,7 @@ import {
 } from "../utils/time.js";
 import ActionSwitcher from "../components/ActionSwitcher.jsx";
 import { useSessionStore } from "../stores/sessionStore.js";
-import EditModal from "../components/EditSessionModal.jsx";
+import EditSessionModal from "../components/EditSessionModal.jsx";
 import DeleteModal from "../components/DeleteSessionModal.jsx";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
@@ -32,6 +32,7 @@ function AllSessions() {
   const fetchAllSessions = useSessionStore((state) => state.fetchAllSessions);
   const sessions = useSessionStore((state) => state.sessions);
   const currentSession = useSessionStore((state) => state.currentSession);
+  const setCurrentSession = useSessionStore(state => state.setCurrentSession);
 
   const [selectedSessions, setSelectedSessions] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
@@ -69,6 +70,7 @@ function AllSessions() {
     // resolver: zodResolver(GetSessionsSchema),
   });
 
+// CREATE ORDER FEATURE
   const hdlCheckboxChange = (sessionId) => {
     setSelectedSessions((prev) =>
       prev.includes(sessionId)
@@ -112,6 +114,7 @@ function AllSessions() {
     setSelectedSessions([]);
   };
 
+// PAGINATION AND FILTERS
   const hdlLimitChange = (e) => {
     setValue("limit", e.target.value);
     setSearchParams((prev) => ({
@@ -139,6 +142,24 @@ function AllSessions() {
     console.log(Object.fromEntries(searchParams));
     setShowFilter(false);
   };
+
+// ACTION SWITCHER
+const getSessionActions = (session) => [
+    {
+      label: t("edit"),
+      onClick: () => {
+        setCurrentSession(session);
+        setTimeout(() => document.getElementById("edit_session_modal")?.showModal(), 10);
+      },
+    },
+    {
+      label: t("delete"),
+      onClick: () => {
+        setCurrentSession(session);
+        setTimeout(() => document.getElementById("delete_session_modal")?.showModal(), 10);
+      },
+    },
+  ];
 
   const fetchData = async (filters) => {
     try {
@@ -386,7 +407,7 @@ function AllSessions() {
                         </td>
 
                         <td className="px-4 py-4 text-center whitespace-nowrap">
-                          <ActionSwitcher id={session.id} session={session} />
+                          <ActionSwitcher actions={getSessionActions(session)}/>
                         </td>
                       </tr>
                     ))
@@ -470,7 +491,7 @@ function AllSessions() {
           </div>
         </div>
       </div>
-      <EditModal key={`edit-${currentSession?.id || "none"}`} />
+      <EditSessionModal key={`edit-${currentSession?.id || "none"}`} />
       <DeleteModal key={`del-${currentSession?.id || "none"}`} />
     </>
   );

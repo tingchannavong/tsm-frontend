@@ -1,5 +1,9 @@
 import { create } from "zustand";
-import { deleteSessionById, getAllSessions, updateSessionById } from "../api/session";
+import {
+  deleteSessionById,
+  getAllSessions,
+  updateSessionById,
+} from "../api/session";
 
 export const useSessionStore = create((set, get) => ({
   sessions: [],
@@ -9,8 +13,13 @@ export const useSessionStore = create((set, get) => ({
 
   updateSession: async (id, updatedData) => {
     await updateSessionById(id, updatedData);
-    await get().fetchAllSessions();
-    set({ currentSession: null }); 
+    set({ currentSession: null });
+    set((state) => ({
+      sessions: state.sessions.map((session) =>
+        session.id === id ? { ...session, ...updatedData } : session,
+      ),
+      currentSession: null,
+    }));
   },
 
   fetchAllSessions: async (filters) => {
@@ -27,7 +36,7 @@ export const useSessionStore = create((set, get) => ({
     await deleteSessionById(id);
     set((state) => ({
       sessions: state.sessions.filter((s) => s.id !== id),
+      currentSession: null,
     }));
-    set({ currentSession: null });
   },
 }));

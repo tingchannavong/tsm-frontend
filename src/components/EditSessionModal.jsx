@@ -3,29 +3,25 @@ import { convertToDateString } from "../utils/time";
 import { useAuthStore } from "../stores/authStores.js";
 import { toast } from "react-toastify";
 
-function EditModal() {
-    const currentSession = useSessionStore(state => state.currentSession)
-    const updateSession = useSessionStore(state => state.updateSession)
-      const user = useAuthStore((state) => state.user);
+function EditSessionModal() {
+  const currentSession = useSessionStore((state) => state.currentSession);
+  const updateSession = useSessionStore((state) => state.updateSession);
+  const user = useAuthStore((state) => state.user);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    // console.log('formdata', formData)
-    // console.log(Array.from(formData.entries())); // an entry look like this ['name', 'Yoga']
-    const updatedData = Object.fromEntries(formData);
-    //console.log('user id', user.id)
-    // updatedData.updatedById = user.id;
-    //console.log('updated data', updatedData)
-    
-    await updateSession(currentSession.id, updatedData);
-    toast.success("update success.")
-    document.getElementById('edit_session_modal').close();
+  
+      const formData = new FormData(e.target);
+      // console.log(Array.from(formData.entries())); // an entry look like this ['name', 'Yoga']
+      const updatedData = Object.fromEntries(formData);
+      await updateSession(currentSession.id, updatedData);
+      toast.success("update success.");
+      document.getElementById("edit_session_modal").close();
   };
 
   if (!currentSession) return null;
 
-  const formLineStyles = "form-control flex gap-2 justify-between" ;
+  const formLineStyles = "form-control flex gap-2 justify-between";
 
   return (
     <dialog id="edit_session_modal" className="modal">
@@ -34,22 +30,43 @@ function EditModal() {
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <div className={formLineStyles}>
             <label className="label">Name</label>
-            <input name="name" className="input input-bordered" defaultValue={currentSession.name} />
+            <input
+              name="name"
+              className="input input-bordered"
+              defaultValue={currentSession.name}
+            />
           </div>
 
-            <div className={formLineStyles}>
-              <label className="label">Start Time</label>
-              <input type="datetime-local" name="startTime" className="input input-bordered" defaultValue={convertToDateString(currentSession.startTime)} />
-            </div>
-            <div className={formLineStyles}>
-              <label className="label">End Time</label>
-              <input type="datetime-local" name="endTime" className="input input-bordered" defaultValue={currentSession.endTime ? convertToDateString(currentSession.endTime): "N/A"} />
-            </div>
-       
+          <div className={formLineStyles}>
+            <label className="label">Start Time</label>
+            <input
+              type="datetime-local"
+              name="startTime"
+              className="input input-bordered"
+              defaultValue={convertToDateString(currentSession.startTime)}
+            />
+          </div>
+          <div className={formLineStyles}>
+            <label className="label">End Time</label>
+            <input
+              type="datetime-local"
+              name="endTime"
+              className="input input-bordered"
+              defaultValue={
+                currentSession.endTime
+                  ? convertToDateString(currentSession.endTime)
+                  : "N/A"
+              }
+            />
+          </div>
 
           <div className={formLineStyles}>
             <label className="label">Status</label>
-            <select name="status" className="select select-bordered" defaultValue={currentSession.status}>
+            <select
+              name="status"
+              className="select select-bordered"
+              defaultValue={currentSession.status}
+            >
               <option value="ACTIVE">Active</option>
               <option value="ENDED">Ended</option>
               <option value="CANCELLED">Cancelled</option>
@@ -57,13 +74,23 @@ function EditModal() {
           </div>
 
           <div className="modal-action">
-            <button type="button" className="btn" onClick={() => {document.getElementById('edit_session_modal').close(); }}>Cancel</button>
-            <button type="submit" className="btn btn-primary">Save Changes</button>
+            <button
+              type="button"
+              className="btn"
+              onClick={() => {
+                document.getElementById("edit_session_modal").close();
+              }}
+            >
+              Cancel
+            </button>
+            <button type="submit" className="btn btn-primary">
+              Save Changes
+            </button>
           </div>
         </form>
       </div>
     </dialog>
   );
-};
+}
 
-export default EditModal
+export default EditSessionModal;

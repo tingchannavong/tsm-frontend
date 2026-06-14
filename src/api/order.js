@@ -19,4 +19,14 @@ export async function getAllOrders(filters) {
   return res.data;
 }
 
+export async function updateOrderById(id, updatedData) {
+  const res = await authApi.patch(`/api/orders/${id}`, updatedData);
+  return res.data;
+}
+
+export async function deleteOrderById(id) {
+  const res = await authApi.delete(`/api/orders/${id}`);
+  return res.data;
+}
+
 

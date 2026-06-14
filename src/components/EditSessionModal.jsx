@@ -14,7 +14,7 @@ function EditSessionModal() {
       const formData = new FormData(e.target);
       // console.log(Array.from(formData.entries())); // an entry look like this ['name', 'Yoga']
       const updatedData = Object.fromEntries(formData);
-      await updateSession(currentSession.id, updatedData);
+      await updateSession(currentSession.id, {...updatedData, updatedById: user.id});
       toast.success("update success.");
       document.getElementById("edit_session_modal").close();
   };

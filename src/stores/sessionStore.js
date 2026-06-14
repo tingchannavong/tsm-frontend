@@ -13,7 +13,6 @@ export const useSessionStore = create((set, get) => ({
 
   updateSession: async (id, updatedData) => {
     await updateSessionById(id, updatedData);
-    set({ currentSession: null });
     set((state) => ({
       sessions: state.sessions.map((session) =>
         session.id === id ? { ...session, ...updatedData } : session,

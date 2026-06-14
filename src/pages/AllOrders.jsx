@@ -8,13 +8,12 @@ import {
   convertDateTimeToDate,
 } from "../utils/time.js";
 import ActionSwitcher from "../components/ActionSwitcher.jsx";
-import { useSessionStore } from "../stores/sessionStore.js";
-import EditModal from "../components/EditSessionModal.jsx";
-import DeleteModal from "../components/DeleteSessionModal.jsx";
 import Swal from "sweetalert2";
 import { useOrderStore } from "../stores/orderStores.js";
 import Dropdown from "../components/Dropdown.jsx";
 import SearchBar from "../components/SearchBar.jsx";
+import EditOrderModal from "../components/EditOrderModal.jsx";
+import DeleteOrderModal from "../components/DeleteOrderModal.jsx";
 
 // To fix all still use session template
 function AllOrders() {
@@ -28,9 +27,25 @@ function AllOrders() {
   const fetchAllOrders = useOrderStore((state) => state.fetchAllOrders);
   const orders = useOrderStore((state) => state.orders);
   const currentOrder = useOrderStore((state) => state.currentOrder);
+  const setCurrentOrder = useOrderStore((state) => state.setCurrentOrder);
 
-  // Watch the form filters. Whenever a user clicks a dropdown useEffect can run again
-  // const activeFilters = watch();
+  // ACTION SWITCHER
+const getOrderActions = (order) => [
+    {
+      label: t("edit"),
+      onClick: () => {
+        setCurrentOrder(order);
+        setTimeout(() => document.getElementById("edit_order_modal")?.showModal(), 10);
+      },
+    },
+    // {
+    //   label: t("delete"),
+    //   onClick: () => {
+    //     setCurrentOrder(order);
+    //     setTimeout(() => document.getElementById("delete_order_modal")?.showModal(), 10);
+    //   },
+    // },
+  ];
 
   const handleStatusChange = (newValue) => {
     setFilters((prev) => ({
@@ -170,7 +185,7 @@ function AllOrders() {
                           {order.status}
                         </td>
                         <td className="px-4 py-4 text-center whitespace-nowrap">
-                          <ActionSwitcher id={order.id} session={order} />
+                          <ActionSwitcher actions={getOrderActions(order)} />
                         </td>
                       </tr>
                     ))
@@ -181,8 +196,8 @@ function AllOrders() {
           </div>
         </div>
       </div>
-      <EditModal key={`edit-${currentOrder?.id || "none"}`} />
-      <DeleteModal key={`del-${currentOrder?.id || "none"}`} />
+      <EditOrderModal key={`edit-${currentOrder?.id || "none"}`} />
+      <DeleteOrderModal key={`del-${currentOrder?.id || "none"}`} />
     </>
   );
 }

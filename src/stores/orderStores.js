@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { getAllOrders } from "../api/order.js";
+import { deleteOrderById, getAllOrders, updateOrderById } from "../api/order.js";
 
 export const useOrderStore = create((set, get) => ({
   orders: [],
@@ -12,19 +12,23 @@ export const useOrderStore = create((set, get) => ({
     set({ orders: data.responses });
   },
 
-// To unpaid
-//   updateOrder: async (id, updatedData) => {
-//     await updateSessionById(id, updatedData);
-//     await get().fetchAllSessions();
-//     set({ currentSession: null }); 
-//   },
+  updateOrder: async (id, updatedData) => {
+    await updateOrderById(id, updatedData);
+    set((state) => ({
+      orders: state.orders.map((order) =>
+        order.id === id ? { ...order, ...updatedData } : order,
+      ),
+      currentOrder: null,
+    }));
+  },
 
-// deleteOrder: async (id) => {
-//     await deleteSessionById(id);
-//     set((state) => ({
-//       sessions: state.sessions.filter((s) => s.id !== id),
-//     }));
-//     set({ currentSession: null });
-//   },
-
+  deleteOrder: async (id) => {
+      await deleteOrderById(id);
+      set((state) => (
+        {
+        orders: state.orders.filter((o) => o.id !== id),
+        currentSession: null
+      }
+    ));
+    },
 }));

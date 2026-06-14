@@ -11,7 +11,7 @@ import {
 import ActionSwitcher from "../components/ActionSwitcher.jsx";
 import { useSessionStore } from "../stores/sessionStore.js";
 import EditSessionModal from "../components/EditSessionModal.jsx";
-import DeleteModal from "../components/DeleteSessionModal.jsx";
+import DeleteSessionModal from "../components/DeleteSessionModal.jsx";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import StatusSessionDD from "../components/StatusSessionDD.jsx";
@@ -492,7 +492,7 @@ const getSessionActions = (session) => [
         </div>
       </div>
       <EditSessionModal key={`edit-${currentSession?.id || "none"}`} />
-      <DeleteModal key={`del-${currentSession?.id || "none"}`} />
+      <DeleteSessionModal key={`del-${currentSession?.id || "none"}`} />
     </>
   );
 }

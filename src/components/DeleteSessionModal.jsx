@@ -2,8 +2,8 @@ import { toast } from "react-toastify";
 import { useSessionStore } from "../stores/sessionStore";
 import { convertDateTimeTo24HrTime, convertDateTimeToDate } from "../utils/time";
 
-function DeleteModal() {
-       const currentSession = useSessionStore(state => state.currentSession)
+function DeleteSessionModal() {
+    const currentSession = useSessionStore(state => state.currentSession)
     const deleteSession = useSessionStore(state => state.deleteSession)
 
     const hdlDelete = async () => {
@@ -43,4 +43,4 @@ function DeleteModal() {
   );
 };
 
-export default DeleteModal
+export default DeleteSessionModal

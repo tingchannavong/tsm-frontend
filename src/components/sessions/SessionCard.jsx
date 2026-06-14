@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { useT } from "../languages/translations";
+import { useT } from "../../languages/translations.js";
 import { toast } from "react-toastify";
-import { getOrderPreviewBySessionIds } from "../api/order";
-import { convertToDateString } from "../utils/time";
-import Button from "./Button";
+import { getOrderPreviewBySessionIds } from "../../api/order.js";
+import { convertToDateString } from "../../utils/time.js";
+import Button from "../Button.jsx";
 import Swal from "sweetalert2";
-import { getHomePath, havePermission } from "../utils/auth.js";
-import { endIndividualSessions } from "../api/session.js";
+import { getHomePath, havePermission } from "../../utils/auth.js";
+import { endIndividualSessions } from "../../api/session.js";
 
 function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
   const t = useT();

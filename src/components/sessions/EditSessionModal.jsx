@@ -1,6 +1,6 @@
-import { useSessionStore } from "../stores/sessionStore";
-import { convertToDateString } from "../utils/time";
-import { useAuthStore } from "../stores/authStores.js";
+import { useSessionStore } from "../../stores/sessionStore";
+import { convertToDateString } from "../../utils/time.js";
+import { useAuthStore } from "../../stores/authStores.js";
 import { toast } from "react-toastify";
 
 function EditSessionModal() {

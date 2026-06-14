@@ -1,7 +1,7 @@
-import { convertToDateString } from "../utils/time";
-import { useAuthStore } from "../stores/authStores.js";
+import { convertToDateString } from "../../utils/time.js";
+import { useAuthStore } from "../../stores/authStores.js";
 import { toast } from "react-toastify";
-import { useOrderStore } from "../stores/orderStores.js";
+import { useOrderStore } from "../../stores/orderStores.js";
 
 function EditOrderModal() {
     const currentOrder = useOrderStore((state) => state.currentOrder);

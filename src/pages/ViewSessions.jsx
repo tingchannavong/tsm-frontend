@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SessionCard from "../components/SessionCard";
+import SessionCard from "../components/sessions/SessionCard";
 import { useT } from "../languages/translations";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { endGroupSession, getSessionsByLocationGroup } from "../api/session.js";
@@ -12,7 +12,7 @@ import { getHomePath, havePermission } from "../utils/auth.js";
 import Button from "../components/Button.jsx";
 import { toast } from "react-toastify";
 import { mapSessionIdsFromGroup } from "../utils/session.util.js";
-import EditModal from "../components/EditSessionModal.jsx";
+// import EditModal from "../components/sessions/EditSessionModal.jsx";
 
 function ViewSessions() {
   const canView = havePermission();
@@ -95,7 +95,7 @@ function ViewSessions() {
           onClick={hdlEndGroupSession}
         />
       )}
-      <EditModal/>
+      {/* <EditModal/> */}
     </div>
   );
 }

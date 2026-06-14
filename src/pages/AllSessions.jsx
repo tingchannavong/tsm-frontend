@@ -10,11 +10,11 @@ import {
 } from "../utils/time.js";
 import ActionSwitcher from "../components/ActionSwitcher.jsx";
 import { useSessionStore } from "../stores/sessionStore.js";
-import EditSessionModal from "../components/EditSessionModal.jsx";
-import DeleteSessionModal from "../components/DeleteSessionModal.jsx";
+import EditSessionModal from "../components/sessions/EditSessionModal.jsx";
+import DeleteSessionModal from "../components/sessions/DeleteSessionModal.jsx";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
-import StatusSessionDD from "../components/StatusSessionDD.jsx";
+import StatusSessionDD from "../components/sessions/StatusSessionDD.jsx";
 import LocationDD from "../components/LocationDD.jsx";
 import { useForm } from "react-hook-form";
 import SearchBar from "../components/SearchBar.jsx";
@@ -23,6 +23,7 @@ import { useNavigate, useParams } from "react-router";
 import { getHomePath, havePermission } from "../utils/auth.js";
 import { ur } from "zod/v4/locales";
 import { useSearchParams } from "react-router-dom";
+import SessionFilterCard from "../components/sessions/SessionFilterCard.jsx";
 // import { GetSessionsSchema } from "../validations/session.schema.js";
 
 function AllSessions() {
@@ -198,7 +199,7 @@ const getSessionActions = (session) => [
             onClick={hdlCreateOrder}
           />
         </div>
-
+        <SessionFilterCard submitData={submitData} searchParams={searchParams} defaultFilters={defaultFilters}/>
         {showFilter && (
           <form
             onSubmit={handleSubmit(submitData)}

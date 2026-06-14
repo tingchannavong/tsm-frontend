@@ -10,7 +10,7 @@ import Button from "../components/Button.jsx";
 import { toast } from "react-toastify";
 import styles from "../styles/Base.module.css";
 import FeatureHeader from "../components/FeatureHeader.jsx";
-import OrderLineItemCard from "../components/OrderLineItemCard.jsx";
+import OrderLineItemCard from "../components/orders/OrderLineItemCard.jsx";
 import SmallButton from "../components/SmallButton.jsx";
 import { useLocation, useNavigate } from "react-router";
 import { createOrder, getOrderPreviewBySessionIds } from "../api/order.js";

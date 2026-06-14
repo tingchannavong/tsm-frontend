@@ -1,10 +1,10 @@
 import styles from "../styles/Base.module.css";
-import FeatureHeader from "../components/FeatureHeader.jsx";
-import { useT } from "../languages/translations.js";
-import SmallButton from "../components/SmallButton.jsx";
+import FeatureHeader from "../FeatureHeader.jsx";
+import { useT } from "../../languages/translations.js";
+import SmallButton from "../SmallButton.jsx";
 import { useEffect, useState } from "react";
-import { getAllSessions } from "../api/session.js";
-import { convertDateTimeTo24HrTime } from "../utils/time.js";
+import { getAllSessions } from "../../api/session.js";
+import { convertDateTimeTo24HrTime } from "../../utils/time.js";
 
 function SessionTable() {
     // from all sessions

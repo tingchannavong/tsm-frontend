@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
-import { useOrderStore } from "../stores/orderStores.js";
-import { convertDateTimeTo24HrTime, convertDateTimeToDate } from "../utils/time";
+import { useOrderStore } from "../../stores/orderStores.js";
+import { convertDateTimeTo24HrTime, convertDateTimeToDate } from "../../utils/time.js";
 
 function DeleteOrderModal() {
     const currentOrder = useOrderStore((state) => state.currentOrder);

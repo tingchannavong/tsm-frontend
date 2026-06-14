@@ -12,8 +12,8 @@ import Swal from "sweetalert2";
 import { useOrderStore } from "../stores/orderStores.js";
 import Dropdown from "../components/Dropdown.jsx";
 import SearchBar from "../components/SearchBar.jsx";
-import EditOrderModal from "../components/EditOrderModal.jsx";
-import DeleteOrderModal from "../components/DeleteOrderModal.jsx";
+import EditOrderModal from "../components/orders/EditOrderModal.jsx";
+import DeleteOrderModal from "../components/orders/DeleteOrderModal.jsx";
 
 // To fix all still use session template
 function AllOrders() {

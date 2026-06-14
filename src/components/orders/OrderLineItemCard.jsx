@@ -1,5 +1,5 @@
-import { useT } from "../languages/translations";
-import { convertMinToHour } from "../utils/time.js";
+import { useT } from "../../languages/translations.js";
+import { convertMinToHour } from "../../utils/time.js";
 
 function OrderLineItemCard({index, displayName, quantity, unitPrice, subTotal, currency, durationMin}) {
     const t = useT();

@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
-import { useSessionStore } from "../stores/sessionStore";
-import { convertDateTimeTo24HrTime, convertDateTimeToDate } from "../utils/time";
+import { useSessionStore } from "../../stores/sessionStore";
+import { convertDateTimeTo24HrTime, convertDateTimeToDate } from "../../utils/time.js";
 
 function DeleteSessionModal() {
     const currentSession = useSessionStore(state => state.currentSession)

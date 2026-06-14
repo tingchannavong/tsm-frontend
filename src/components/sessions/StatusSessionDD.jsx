@@ -1,4 +1,4 @@
-import { useT } from "../languages/translations.js";
+import { useT } from "../../languages/translations.js";
 import { forwardRef } from "react";
 
 const StatusSessionDD = forwardRef(({ ...props }, ref) => {

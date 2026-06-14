@@ -11,7 +11,7 @@ function Table({ table, onClick }) {
     const fetchActiveSessions = async () => {
       try {
         const sessions = await getAllSessions({ status: "ACTIVE", locationId: table.id });
-        setTablePeople(sessions.responses.length)
+        setTablePeople(sessions.responses.result.length)
       } catch (error) {
         toast.error(error.message || "Failed to fetch sessions");
       }

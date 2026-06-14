@@ -19,8 +19,10 @@ import LocationDD from "../components/LocationDD.jsx";
 import { useForm } from "react-hook-form";
 import SearchBar from "../components/SearchBar.jsx";
 import { endIndividualSessions } from "../api/session.js";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { getHomePath, havePermission } from "../utils/auth.js";
+import { ur } from "zod/v4/locales";
+import { useSearchParams } from 'react-router-dom';
 // import { GetSessionsSchema } from "../validations/session.schema.js";
 
 function AllSessions() {
@@ -34,37 +36,36 @@ function AllSessions() {
   const [selectedSessions, setSelectedSessions] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(1);
+
+  const defaultFilters = {
+        status: "ACTIVE",
+        locationId: "all",
+        page: 1,
+        limit: 10,
+        startDate: new Date().toISOString().split("T")[0],
+        endDate: new Date().toISOString().split("T")[0],
+      };
+  
+  const [searchParams, setSearchParams] = useSearchParams(defaultFilters);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalRecords, setTotalRecords] = useState();
 
   const {
     register,
     handleSubmit,
     watch,
     getValues,
+    setValue,
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues: (() => {
-      const params = new URLSearchParams(window.location.search);
-      // console.log('params', params);
-      // params.entries() loop through key-value pair, Object.fromEntries() make it into object
-      const urlFilters = Object.fromEntries(params.entries());
-
-      const defaultFilters = {
-        status: "ACTIVE",
-        locationId: "all",
-        page: 1,
-        limit: 5,
-        startDate: new Date().toISOString().split("T")[0],
-        endDate: new Date().toISOString().split("T")[0],
-      };
-
+     defaultValues: (() => {
+      const urlFilters = Object.fromEntries([...searchParams]);
       return {
         ...defaultFilters,
         ...urlFilters,
       };
     })(),
-
     // resolver: zodResolver(GetSessionsSchema),
   });
 
@@ -87,7 +88,7 @@ function AllSessions() {
 
   const hdlCreateOrder = () => {
     if (selectedSessions.length === 0) {
-      toast.error('Please select sessions to create order!');
+      toast.error("Please select sessions to create order!");
       return;
     }
 
@@ -111,33 +112,44 @@ function AllSessions() {
     setSelectedSessions([]);
   };
 
-  const submitData = (filtersPayload) => {
-    // set URL param
-    const currentURL = new URL(window.location.href);
-    const newParams = new URLSearchParams(filtersPayload);
-    // console.log('newParams', newParams);
-    // console.log('.toString()', newParams.toString())
-    currentURL.search = newParams.toString();
-    // console.log('.search', currentURL.search )
-    window.history.pushState({}, "", currentURL);
+  const hdlLimitChange = (e)=> {
+    setValue('limit', e.target.value);
+    setSearchParams((prev) => ({...Object.fromEntries(prev), page: '1', limit: e.target.value }));
+  }
 
-    fetchAllSessions(filtersPayload);
+  const hdlPageChange = (pageNumber)=> {
+    setValue('page', pageNumber);
+    setSearchParams((prev) => ({...Object.fromEntries(prev), page: pageNumber}));
+  }
+
+  const submitData = (filtersPayload) => {
+    // set URL search params
+    console.log('filtersPayload', filtersPayload);
+    setSearchParams((prev) => ({...Object.fromEntries(prev), ...filtersPayload}));
+    console.log(Object.fromEntries(searchParams))
     setShowFilter(false);
   };
 
-  useEffect(() => {
+  const fetchData = async (filters) => {
     try {
       setIsLoading(true);
-      const initialFilters = getValues();
-      fetchAllSessions(initialFilters);
-
+      const data = await fetchAllSessions(filters);
+      console.log("data", data);
+      // set total Pages
+      setTotalPages(data.responses.totalPages);
+      setTotalRecords(data.responses.totalRecords);
     } catch (error) {
       console.log(error);
       alert(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    console.log('when refetch', Object.fromEntries([...searchParams]))
+    fetchData(Object.fromEntries([...searchParams]));
+  }, [searchParams]);
 
   return (
     <>
@@ -240,6 +252,7 @@ function AllSessions() {
         )}
 
         <div className="w-full max-w-7xl mx-auto p-2 flex flex-col gap-5">
+          <p>Search / Filter Results: {totalRecords}</p>
           {/* Table design */}
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
             <div className="overflow-x-auto">
@@ -372,13 +385,13 @@ function AllSessions() {
               </table>
             </div>
           </div>
-
-          {/* paginmation Component */}
+        </div>
+        {/* paginmation Component */}
+        <div>
           <div className="flex justify-center gap-2">
-            <p>Results: How many?</p>
             <label htmlFor="show records">
               Show:
-              <select>
+              <select onChange={hdlLimitChange}>
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="30">30</option>
@@ -386,6 +399,33 @@ function AllSessions() {
                 <option value="50">50</option>
               </select>
             </label>
+          </div>
+          <div className="flex gap-2">
+            <p>Pages:</p>
+            {getValues('page') == '1' ? 
+            <></>
+            : 
+            <button onClick={()=>{
+              const currentPage = getValues('page');
+              setValue('page', currentPage - 1);
+              setSearchParams((prev) => ({...Object.fromEntries(prev), page: currentPage - 1}));
+            }}>Prev</button>
+            }
+          {
+            Array.from({length: totalPages}, (_, i) => {
+              const pageNumber = i+1;
+              return <button key={pageNumber} onClick={() => hdlPageChange(pageNumber)} className={pageNumber == getValues('page') ? "bg-blue-400" : "bg-base-100"}>{pageNumber}</button>
+            })
+          }
+          {getValues('page') == totalPages ? 
+            <></>
+            : 
+            <button onClick={()=>{
+              const currentPage = getValues('page');
+              setValue('page', currentPage + 1);
+              setSearchParams((prev) => ({...Object.fromEntries(prev), page: currentPage + 1}));
+            }}>Next</button>
+            }
           </div>
         </div>
       </div>

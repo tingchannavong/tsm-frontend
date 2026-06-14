@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import StatusSessionDD from "./StatusSessionDD.jsx";
 import LocationDD from "../LocationDD.jsx";
 
-function SessionFilterCard({submitData, searchParams, defaultFilters}) {
+function SessionFilterCard({setSearchParams, searchParams, setShowFilter, defaultFilters}) {
 const t = useT();
 
   const {
@@ -24,6 +24,17 @@ const t = useT();
     })(),
     // resolver: zodResolver(GetSessionsSchema),
   });
+
+    const submitData = (filtersPayload) => {
+    // set URL search params
+    console.log("filtersPayload", filtersPayload);
+    setSearchParams((prev) => ({
+      ...Object.fromEntries(prev),
+      ...filtersPayload,
+    }));
+    console.log(Object.fromEntries(searchParams));
+    setShowFilter(false);
+  };
 
   return (
     <form

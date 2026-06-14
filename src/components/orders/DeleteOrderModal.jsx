@@ -24,7 +24,7 @@ function DeleteOrderModal() {
         <div className="py-4 space-y-2">
           <p><strong>Order ID:</strong> {currentOrder.id}</p>
           <p><strong>Date:</strong> {convertDateTimeToDate(currentOrder.createdAt)}</p>
-          <p><strong>Net Total:</strong> {Number(currentOrder?.netTotal)?.toLocaleString()} {currentOrder.orderDetails[0].currencyCode}</p>
+          <p><strong>Net Total:</strong> {Number(currentOrder?.netTotal)?.toLocaleString()} THB</p>
           <p><strong>Status:</strong> {currentOrder.status}</p>
         </div>
         <div className="modal-action">

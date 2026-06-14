@@ -24,6 +24,7 @@ import { getHomePath, havePermission } from "../utils/auth.js";
 import { ur } from "zod/v4/locales";
 import { useSearchParams } from "react-router-dom";
 import SessionFilterCard from "../components/sessions/SessionFilterCard.jsx";
+import Pagination from "../components/Pagination.jsx";
 // import { GetSessionsSchema } from "../validations/session.schema.js";
 
 function AllSessions() {
@@ -36,7 +37,6 @@ function AllSessions() {
   const setCurrentSession = useSessionStore(state => state.setCurrentSession);
 
   const [selectedSessions, setSelectedSessions] = useState([]);
-  const [showFilter, setShowFilter] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const defaultFilters = {
@@ -51,27 +51,9 @@ function AllSessions() {
   const [searchParams, setSearchParams] = useSearchParams(defaultFilters);
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState();
+  const [showFilter, setShowFilter] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    getValues,
-    setValue,
-    reset,
-    formState: { errors },
-  } = useForm({
-    defaultValues: (() => {
-      const urlFilters = Object.fromEntries([...searchParams]);
-      return {
-        ...defaultFilters,
-        ...urlFilters,
-      };
-    })(),
-    // resolver: zodResolver(GetSessionsSchema),
-  });
-
-// CREATE ORDER FEATURE
+  // CREATE ORDER FEATURE
   const hdlCheckboxChange = (sessionId) => {
     setSelectedSessions((prev) =>
       prev.includes(sessionId)
@@ -113,35 +95,6 @@ function AllSessions() {
     };
     fetchEndIndividualSessions();
     setSelectedSessions([]);
-  };
-
-// PAGINATION AND FILTERS
-  const hdlLimitChange = (e) => {
-    setValue("limit", e.target.value);
-    setSearchParams((prev) => ({
-      ...Object.fromEntries(prev),
-      page: "1",
-      limit: e.target.value,
-    }));
-  };
-
-  const hdlPageChange = (pageNumber) => {
-    setValue("page", pageNumber);
-    setSearchParams((prev) => ({
-      ...Object.fromEntries(prev),
-      page: pageNumber,
-    }));
-  };
-
-  const submitData = (filtersPayload) => {
-    // set URL search params
-    console.log("filtersPayload", filtersPayload);
-    setSearchParams((prev) => ({
-      ...Object.fromEntries(prev),
-      ...filtersPayload,
-    }));
-    console.log(Object.fromEntries(searchParams));
-    setShowFilter(false);
   };
 
 // ACTION SWITCHER
@@ -199,88 +152,8 @@ const getSessionActions = (session) => [
             onClick={hdlCreateOrder}
           />
         </div>
-        <SessionFilterCard submitData={submitData} searchParams={searchParams} defaultFilters={defaultFilters}/>
         {showFilter && (
-          <form
-            onSubmit={handleSubmit(submitData)}
-            className="flex flex-col gap-5 border p-4 "
-          >
-            <div className="flex gap-2 items-center justify-between">
-              <p>{t("filter_status")}: </p>{" "}
-              <StatusSessionDD {...register("status")} />
-            </div>
-            <div className="flex gap-2 items-center">
-              <p>{t("filter_location")}: </p>
-              <LocationDD {...register("locationId")} />
-            </div>
-            <p>{t("filter_session_date")}:</p>
-            <div className="flex gap-2 items-center">
-              <label className="label">Start Date</label>
-              <input
-                {...register("startDate")}
-                type="date"
-                className="input input-bordered"
-              />
-            </div>
-            <div className="flex gap-2 items-center">
-              <label className="label">End Date</label>
-              <input
-                {...register("endDate")}
-                type="date"
-                className="input input-bordered"
-              />
-            </div>
-            {/* search bar  */}
-            <div>
-              <label className="input">
-                <svg
-                  className="h-[1em] opacity-50"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <g
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                    strokeWidth="2.5"
-                    fill="none"
-                    stroke="currentColor"
-                  >
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.3-4.3"></path>
-                  </g>
-                </svg>
-                <input
-                  {...register("name")}
-                  type="text"
-                  placeholder={t("search_name")}
-                />
-              </label>
-            </div>
-            <div className="flex justify-center gap-4">
-              <button
-                type="button"
-                className="bg-black font-semibold text-white p-2 rounded w-20"
-                onClick={() =>
-                  reset({
-                    status: "all",
-                    locationId: "all",
-                    page: 1,
-                    limit: 20,
-                    startDate: "",
-                    endDate: "",
-                  })
-                }
-              >
-                {t("reset")}
-              </button>
-              <button
-                type="submit"
-                className="bg-blue-600 font-semibold text-white p-2 rounded w-20"
-              >
-                {t("submit")}
-              </button>
-            </div>
-          </form>
+        <SessionFilterCard setSearchParams={setSearchParams} searchParams={searchParams} setShowFilter={setShowFilter} defaultFilters={defaultFilters}/>
         )}
 
         <div className="w-full max-w-7xl mx-auto p-2 flex flex-col gap-5">
@@ -418,79 +291,9 @@ const getSessionActions = (session) => [
             </div>
           </div>
         </div>
-        {/* pagination Component */}
-        <div>
-          <div className="flex justify-center gap-2">
-            <label htmlFor="show records">
-              Show:
-              <select onChange={hdlLimitChange}>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-                <option value="40">40</option>
-                <option value="50">50</option>
-              </select>
-            </label>
-          </div>
-          <div className="flex gap-2">
-            {getValues("page") == 1 ? (
-              <></>
-            ) : (
-              <>
-                <p>Pages:</p>
-                {getValues("page") == "1" ? (
-                  <></>
-                ) : (
-                  <button
-                    onClick={() => {
-                      const currentPage = getValues("page");
-                      setValue("page", currentPage - 1);
-                      setSearchParams((prev) => ({
-                        ...Object.fromEntries(prev),
-                        page: currentPage - 1,
-                      }));
-                    }}
-                  >
-                    Prev
-                  </button>
-                )}
-                {Array.from({ length: totalPages }, (_, i) => {
-                  const pageNumber = i + 1;
-                  return (
-                    <button
-                      key={pageNumber}
-                      onClick={() => hdlPageChange(pageNumber)}
-                      className={
-                        pageNumber == getValues("page")
-                          ? "bg-blue-400"
-                          : "bg-base-100"
-                      }
-                    >
-                      {pageNumber}
-                    </button>
-                  );
-                })}
-                {getValues("page") == totalPages ? (
-                  <></>
-                ) : (
-                  <button
-                    onClick={() => {
-                      const currentPage = getValues("page");
-                      setValue("page", currentPage + 1);
-                      setSearchParams((prev) => ({
-                        ...Object.fromEntries(prev),
-                        page: currentPage + 1,
-                      }));
-                    }}
-                  >
-                    Next
-                  </button>
-                )}
-                {/* end pages */}
-              </>
-            )}
-          </div>
-        </div>
+        { totalRecords == 0 ? <></> : 
+        <Pagination searchParams={searchParams} setSearchParams={setSearchParams} totalPages={totalPages}/>
+        }
       </div>
       <EditSessionModal key={`edit-${currentSession?.id || "none"}`} />
       <DeleteSessionModal key={`del-${currentSession?.id || "none"}`} />

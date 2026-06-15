@@ -9,7 +9,9 @@ export const useOrderStore = create((set, get) => ({
 
   fetchAllOrders: async (filters) => {
     const data = await getAllOrders(filters);
+    console.log('data at zustand', data)
     set({ orders: data.responses.result });
+    return data;
   },
 
   updateOrder: async (id, updatedData) => {

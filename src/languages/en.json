@@ -91,5 +91,7 @@
     "discount": "Discount",
     "currency": "Currency",
     "submit": "Submit",
-    "reset": "Reset"
+    "reset": "Reset",
+    "next": "Next",
+    "prev": "Prev"
 }

@@ -1,6 +1,9 @@
-import React from 'react'
+import styles from "../styles/Base.module.css";
+import SmallButton from "./SmallButton";
+import { useT } from "../languages/translations.js";
 
 function Pagination({searchParams, setSearchParams, totalPages}) {
+  const t = useT();
 
   // PAGINATION AND FILTERS
   const hdlLimitChange = (e) => {
@@ -19,38 +22,42 @@ function Pagination({searchParams, setSearchParams, totalPages}) {
     }));
   };
 
+  const pageButtonsStyle = "bg-base-300 font-semibold w-15 p-1 rounded-sm"
+  const pageNumberStyle = "bg-base-300 w-10 h-10 rounded-full"
+  const activePageNumberStyle = "bg-blue-300 w-10 h-10 rounded-full"
+
   return (
     <div>
-       <div>
-          <div className="flex justify-center gap-2">
+       <div className="flex gap-10">
+        {/* SHOW SECTION  */}
+            <div className="flex justify-start items-center gap-2">
             <label htmlFor="show records">
               Show:
-              <select onChange={hdlLimitChange}>
+              </label>
+              <select onChange={hdlLimitChange} className=" bg-gray-100 rounded-sm z-1 w-15 p-2 shadow-sm border-black;">
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="30">30</option>
                 <option value="40">40</option>
                 <option value="50">50</option>
               </select>
-            </label>
-          </div>
-          <div className="flex gap-2">
-            {/* pages */}
-              <>
-                <p>Pages:</p>
+            </div>
+            {/* PAGES SECTION */}
+              <div className="flex justify-start items-center gap-4">
                 {searchParams.get("page") == "1" ? (
                   <></>
                 ) : (
                   <button
+                    className={pageButtonsStyle}
                     onClick={() => {
                       const currentPage = searchParams.get("page");
                       setSearchParams((prev) => ({
                         ...Object.fromEntries(prev),
-                        page: currentPage - 1,
+                        page: Number(currentPage) - 1,
                       }));
                     }}
                   >
-                    Prev
+                    {t("prev")}
                   </button>
                 )}
                 {Array.from({ length: totalPages }, (_, i) => {
@@ -61,8 +68,8 @@ function Pagination({searchParams, setSearchParams, totalPages}) {
                       onClick={() => hdlPageChange(pageNumber)}
                       className={
                         pageNumber == searchParams.get("page")
-                          ? "bg-blue-400"
-                          : "bg-base-100"
+                          ? activePageNumberStyle
+                          : pageNumberStyle
                       }
                     >
                       {pageNumber}
@@ -71,8 +78,9 @@ function Pagination({searchParams, setSearchParams, totalPages}) {
                 })}
                 {searchParams.get("page") == totalPages ? (
                   <></>
-                ) : (
+                ) :    (
                   <button
+                    className={pageButtonsStyle}
                     onClick={() => {
                       const currentPage = searchParams.get("page");
                       setSearchParams((prev) => ({
@@ -81,14 +89,16 @@ function Pagination({searchParams, setSearchParams, totalPages}) {
                       }));
                     }}
                   >
-                    Next
+                    {t("next")}
                   </button>
-                )}
+                )
+                
+                }
                 {/* end pages */}
-              </>
+              </div>
+
           </div>
         </div>
-    </div>
   )
 }
 

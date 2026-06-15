@@ -18,7 +18,6 @@ import { useForm } from "react-hook-form";
 import { endIndividualSessions } from "../api/session.js";
 import { useNavigate, useParams } from "react-router";
 import { getHomePath, havePermission } from "../utils/auth.js";
-// import { ur } from "zod/v4/locales";
 import { useSearchParams } from "react-router-dom";
 import SessionFilterCard from "../components/sessions/SessionFilterCard.jsx";
 import Pagination from "../components/Pagination.jsx";
@@ -47,7 +46,7 @@ function AllSessions() {
 
   const [searchParams, setSearchParams] = useSearchParams(defaultFilters);
   const [totalPages, setTotalPages] = useState(1);
-  const [totalRecords, setTotalRecords] = useState();
+  const [totalRecords, setTotalRecords] = useState(0);
   const [showFilter, setShowFilter] = useState(false);
 
   // CREATE ORDER FEATURE
@@ -126,12 +125,12 @@ const getSessionActions = (session) => [
     } finally {
       setIsLoading(false);
     }
-  };
+  }
 
   useEffect(() => {
-    console.log("when refetch", Object.fromEntries([...searchParams]));
+    // console.log("when refetch", Object.fromEntries([...searchParams]));
     fetchData(Object.fromEntries([...searchParams]));
-  }, [searchParams]);
+  }, [searchParams, setSearchParams]);
 
   return (
     <>
@@ -154,7 +153,7 @@ const getSessionActions = (session) => [
         )}
 
         <div className="w-full max-w-7xl mx-auto p-2 flex flex-col gap-5">
-          <p>Search / Filter Results: {totalRecords}</p>
+          <p>Search / Filter Results: <strong>{totalRecords}</strong></p>
           {/* Table design */}
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
             <div className="overflow-x-auto">

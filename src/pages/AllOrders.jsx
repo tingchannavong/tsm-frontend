@@ -10,25 +10,26 @@ import {
 import ActionSwitcher from "../components/ActionSwitcher.jsx";
 import Swal from "sweetalert2";
 import { useOrderStore } from "../stores/orderStores.js";
-import Dropdown from "../components/Dropdown.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import EditOrderModal from "../components/orders/EditOrderModal.jsx";
 import DeleteOrderModal from "../components/orders/DeleteOrderModal.jsx";
 import { useSearchParams } from "react-router-dom";
+import Pagination from "../components/Pagination.jsx"
 
-// To fix all still use session template
 function AllOrders() {
   const t = useT();
 
   const defaultFilters = {
-    status: "PAID",
+    status: "all",
+    page: 1,
+    limit: 10,
     startDate: "",
-    endDate: "",
+    endDate: new Date().toISOString().split("T")[0],
   };
 
   const [searchParams, setSearchParams] = useSearchParams(defaultFilters);
   const [totalPages, setTotalPages] = useState(1);
-  const [totalRecords, setTotalRecords] = useState();
+  const [totalRecords, setTotalRecords] = useState(0);
 
   const fetchAllOrders = useOrderStore((state) => state.fetchAllOrders);
   const orders = useOrderStore((state) => state.orders);
@@ -64,13 +65,24 @@ function AllOrders() {
   // };
 
   const onSearch = useCallback((searchObject) => {
-    fetchAllOrders(searchObject);
+    fetchData(searchObject);
   }, []); 
 
+  const fetchData = async (filters) => {
+    try {
+      const data = await fetchAllOrders(filters);
+      console.log('data', data)
+      setTotalPages(data.responses.totalPages);
+      setTotalRecords(data.responses.totalRecords);
+    } catch (error) {
+      console.log(error);
+      alert(error.responses.data.message);
+    } 
+  }
+
   useEffect(() => {
-    fetchAllOrders();
-    // console.log(orders);
-  }, []);
+    fetchData(Object.fromEntries([...searchParams]));
+  }, [searchParams, setSearchParams]);
 
   return (
     <>
@@ -82,12 +94,12 @@ function AllOrders() {
         <div className="flex gap-2 items-center">
           <p>{t("filter_status")}: </p>{" "}
           <select name="orderStatus" className={styles.dropDown}>
+            <option value="all">All</option>
             <option value="PAID">Paid</option>
             <option value="UNPAID">Unpaid</option>
           </select>
         </div>
           <p>{t("filter_order_date")}: </p>
-        {/* date */}
         <div className="flex gap-2 items-center">
           <div className="flex gap-2 items-center">
             <label className="label">Start Date</label>
@@ -106,7 +118,9 @@ function AllOrders() {
         </div>
          </div>
 
-        <div className="w-full max-w-7xl mx-auto p-2 md:p-4">
+        {/* TABLE AREA */}
+        <div className="w-full max-w-7xl mx-auto p-2 flex flex-col gap-5">
+          <p>Search / Filter Results: <strong>{totalRecords}</strong></p>
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left text-gray-600 border-collapse">
@@ -204,6 +218,7 @@ function AllOrders() {
             </div>
           </div>
         </div>
+        <Pagination searchParams={searchParams} setSearchParams={setSearchParams} totalPages={totalPages}/>
       </div>
       <EditOrderModal key={`edit-${currentOrder?.id || "none"}`} />
       <DeleteOrderModal key={`del-${currentOrder?.id || "none"}`} />

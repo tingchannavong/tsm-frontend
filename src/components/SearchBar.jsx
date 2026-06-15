@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 
-function SearchBar({onSearch, placeholder = "Search..."}) {
+function SearchBar({onSearch, searchField, placeholder = "Search..."}) {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    if (searchTerm.trim() === "") return;
+
     const delayedDebounceTimer = setTimeout(() => {
-        onSearch(searchTerm.trim());
+        onSearch({[searchField]: searchTerm.trim()});
     }, 400);
 
     return () => clearTimeout(delayedDebounceTimer); // clean up

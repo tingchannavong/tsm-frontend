@@ -1,6 +1,6 @@
+import styles from "../../styles/Base.module.css";
 import { useT } from "../../languages/translations.js";
 import { useForm } from "react-hook-form";
-import StatusSessionDD from "./StatusSessionDD.jsx";
 import LocationDD from "../LocationDD.jsx";
 
 function SessionFilterCard({setSearchParams, searchParams, setShowFilter, defaultFilters}) {
@@ -43,7 +43,13 @@ const t = useT();
           >
             <div className="flex gap-2 items-center justify-between">
               <p>{t("filter_status")}: </p>{" "}
-              <StatusSessionDD {...register("status")} />
+               <select {...register("status")} className={styles.dropDown}  >
+                <option value="ACTIVE">{t("active")}</option>
+                <option value="ENDED">{t("ended")}</option>
+                <option value="BILLED">{t("billed")}</option>
+                <option value="CANCELLED">{t("cancelled")}</option>
+                <option value="all">{t("all")}</option>
+            </select>
             </div>
             <div className="flex gap-2 items-center">
               <p>{t("filter_location")}: </p>

@@ -2,7 +2,7 @@ import styles from "../styles/Base.module.css";
 import FeatureHeader from "../components/FeatureHeader.jsx";
 import { useT } from "../languages/translations.js";
 import SmallButton from "../components/SmallButton.jsx";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   convertDateTimeTo24HrTime,
   convertDateTimeToDate,
@@ -14,15 +14,21 @@ import Dropdown from "../components/Dropdown.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import EditOrderModal from "../components/orders/EditOrderModal.jsx";
 import DeleteOrderModal from "../components/orders/DeleteOrderModal.jsx";
+import { useSearchParams } from "react-router-dom";
 
 // To fix all still use session template
 function AllOrders() {
   const t = useT();
-  const [filters, setFilters] = useState({
+
+  const defaultFilters = {
     status: "PAID",
     startDate: "",
     endDate: "",
-  });
+  };
+
+  const [searchParams, setSearchParams] = useSearchParams(defaultFilters);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalRecords, setTotalRecords] = useState();
 
   const fetchAllOrders = useOrderStore((state) => state.fetchAllOrders);
   const orders = useOrderStore((state) => state.orders);
@@ -30,12 +36,15 @@ function AllOrders() {
   const setCurrentOrder = useOrderStore((state) => state.setCurrentOrder);
 
   // ACTION SWITCHER
-const getOrderActions = (order) => [
+  const getOrderActions = (order) => [
     {
       label: t("edit"),
       onClick: () => {
         setCurrentOrder(order);
-        setTimeout(() => document.getElementById("edit_order_modal")?.showModal(), 10);
+        setTimeout(
+          () => document.getElementById("edit_order_modal")?.showModal(),
+          10,
+        );
       },
     },
     // {
@@ -47,41 +56,42 @@ const getOrderActions = (order) => [
     // },
   ];
 
-  const handleStatusChange = (newValue) => {
-    setFilters((prev) => ({
-      ...prev,
-      status: newValue,
-    }));
-  };
+  // const handleStatusChange = (newValue) => {
+  //   setFilters((prev) => ({
+  //     ...prev,
+  //     status: newValue,
+  //   }));
+  // };
+
+  const onSearch = useCallback((searchObject) => {
+    fetchAllOrders(searchObject);
+  }, []); 
 
   useEffect(() => {
     fetchAllOrders();
     // console.log(orders);
-  }, [filters]);
+  }, []);
 
   return (
     <>
       <FeatureHeader title={`${t("order_management")}`} />
       <div className={`${styles.mainContainer} gap-5`}>
+        {/* FILTER AREA */}
+        <div className="flex gap-4 flex-col justify-between items-start">
+          <SearchBar placeholder="Search by order ID..." onSearch={onSearch} searchField={"id"}/>
         <div className="flex gap-2 items-center">
           <p>{t("filter_status")}: </p>{" "}
-          <select
-            name="orderStatus"
-            id=""
-            value={filters.status}
-            onChange={handleStatusChange}
-          >
+          <select name="orderStatus" className={styles.dropDown}>
             <option value="PAID">Paid</option>
             <option value="UNPAID">Unpaid</option>
           </select>
         </div>
-        <div className="flex gap-2 items-center">
           <p>{t("filter_order_date")}: </p>
-          {/* date */}
+        {/* date */}
+        <div className="flex gap-2 items-center">
           <div className="flex gap-2 items-center">
             <label className="label">Start Date</label>
             <input
-              // {...register("startDate")}
               type="date"
               className="input input-bordered"
             />
@@ -89,13 +99,12 @@ const getOrderActions = (order) => [
           <div className="flex gap-2 items-center">
             <label className="label">End Date</label>
             <input
-              // {...register("endDate")}
               type="date"
               className="input input-bordered"
             />
           </div>
         </div>
-        <SearchBar placeholder="Search by order ID..."/>
+         </div>
 
         <div className="w-full max-w-7xl mx-auto p-2 md:p-4">
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">

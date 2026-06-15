@@ -21,3 +21,6 @@
 .cardInfo {
   @apply text-lg font-normal;
 }
+.dropDown {
+  @apply bg-gray-100 rounded-sm z-1 w-52 p-2 shadow-sm border-black;
+}

@@ -69,10 +69,12 @@ function AllSessions() {
 
   const hdlCreateOrder = () => {
     if (selectedSessions.length === 0) {
+      console.log('0 session');
+      alert('Please select sessions to create order.')
       toast.error("Please select sessions to create order!");
       return;
     }
-
+    console.log('we do this')
     const fetchEndIndividualSessions = async () => {
       try {
         await endIndividualSessions({
@@ -121,7 +123,7 @@ const getSessionActions = (session) => [
       setTotalRecords(data.responses.totalRecords);
     } catch (error) {
       console.log(error);
-      alert(error.response.data.message);
+      toast.error(error.response.data.message);
     } finally {
       setIsLoading(false);
     }

@@ -14,7 +14,8 @@ import SearchBar from "../components/SearchBar.jsx";
 import EditOrderModal from "../components/orders/EditOrderModal.jsx";
 import DeleteOrderModal from "../components/orders/DeleteOrderModal.jsx";
 import { useSearchParams } from "react-router-dom";
-import Pagination from "../components/Pagination.jsx"
+import Pagination from "../components/Pagination.jsx";
+import { toast } from "react-toastify";
 
 function AllOrders() {
   const t = useT();
@@ -57,28 +58,29 @@ function AllOrders() {
     // },
   ];
 
-  // const handleStatusChange = (newValue) => {
-  //   setFilters((prev) => ({
-  //     ...prev,
-  //     status: newValue,
-  //   }));
-  // };
-
   const onSearch = useCallback((searchObject) => {
     fetchData(searchObject);
-  }, []); 
+  }, []);
+
+  const hdlShowOrderDetails = (orderId) => {
+    
+  }
 
   const fetchData = async (filters) => {
     try {
       const data = await fetchAllOrders(filters);
-      console.log('data', data)
       setTotalPages(data.responses.totalPages);
       setTotalRecords(data.responses.totalRecords);
     } catch (error) {
       console.log(error);
-      alert(error.responses.data.message);
-    } 
-  }
+      toast.error(error.response.data.message);
+    }
+  };
+
+  useEffect(() => {
+    const picker = document.getElementById('endDatePicker');
+    picker.value = defaultFilters.endDate; 
+  }, [])
 
   useEffect(() => {
     fetchData(Object.fromEntries([...searchParams]));
@@ -90,37 +92,65 @@ function AllOrders() {
       <div className={`${styles.mainContainer} gap-5`}>
         {/* FILTER AREA */}
         <div className="flex gap-4 flex-col justify-between items-start">
-          <SearchBar placeholder="Search by order ID..." onSearch={onSearch} searchField={"id"}/>
-        <div className="flex gap-2 items-center">
-          <p>{t("filter_status")}: </p>{" "}
-          <select name="orderStatus" className={styles.dropDown}>
-            <option value="all">All</option>
-            <option value="PAID">Paid</option>
-            <option value="UNPAID">Unpaid</option>
-          </select>
-        </div>
+          <SearchBar
+            placeholder="Search by order ID..."
+            onSearch={onSearch}
+            searchField={"id"}
+          />
+          <div className="flex gap-2 items-center">
+            <p>{t("filter_status")}: </p>{" "}
+            <select
+              name="orderStatus"
+              className={styles.dropDown}
+              onChange={(e) =>
+                setSearchParams((prev) => ({
+                  ...Object.fromEntries(prev),
+                  status: e.target.value,
+                }))
+              }
+            >
+              <option value="all">All</option>
+              <option value="PAID">Paid</option>
+              <option value="UNPAID">Unpaid</option>
+            </select>
+          </div>
           <p>{t("filter_order_date")}: </p>
-        <div className="flex gap-2 items-center">
           <div className="flex gap-2 items-center">
-            <label className="label">Start Date</label>
-            <input
-              type="date"
-              className="input input-bordered"
-            />
-          </div>
-          <div className="flex gap-2 items-center">
-            <label className="label">End Date</label>
-            <input
-              type="date"
-              className="input input-bordered"
-            />
+            <div className="flex gap-2 items-center">
+              <label className="label">Start Date</label>
+              <input
+                type="date"
+                className="input input-bordered"
+                onChange={(e) =>
+                  setSearchParams((prev) => ({
+                    ...Object.fromEntries(prev),
+                    startDate: e.target.value,
+                  }))
+                }
+              />
+            </div>
+            <div className="flex gap-2 items-center">
+              <label className="label">End Date</label>
+              <input
+                type="date"
+                className="input input-bordered"
+                id="endDatePicker"
+                onChange={(e) =>
+                  setSearchParams((prev) => ({
+                    ...Object.fromEntries(prev),
+                    endDate: e.target.value,
+                  }))
+                }
+              />
+            </div>
           </div>
         </div>
-         </div>
 
         {/* TABLE AREA */}
         <div className="w-full max-w-7xl mx-auto p-2 flex flex-col gap-5">
-          <p>Search / Filter Results: <strong>{totalRecords}</strong></p>
+          <p>
+            Search / Filter Results: <strong>{totalRecords}</strong>
+          </p>
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left text-gray-600 border-collapse">
@@ -172,6 +202,7 @@ function AllOrders() {
                       <tr
                         key={order.id}
                         className="hover:bg-blue-50/30 transition-colors"
+                        onClick={hdlShowOrderDetails(order.id)}
                       >
                         {/* Sticky first column */}
                         <td className="sticky left-0 z-10 bg-white px-4 py-4 font-semibold text-gray-900 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] group-hover:bg-blue-50">
@@ -218,7 +249,11 @@ function AllOrders() {
             </div>
           </div>
         </div>
-        <Pagination searchParams={searchParams} setSearchParams={setSearchParams} totalPages={totalPages}/>
+        <Pagination
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+          totalPages={totalPages}
+        />
       </div>
       <EditOrderModal key={`edit-${currentOrder?.id || "none"}`} />
       <DeleteOrderModal key={`del-${currentOrder?.id || "none"}`} />

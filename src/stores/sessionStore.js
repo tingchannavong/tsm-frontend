@@ -4,6 +4,7 @@ import {
   getAllSessions,
   updateSessionById,
 } from "../api/session";
+import { toast } from "react-toastify";
 
 export const useSessionStore = create((set, get) => ({
   sessions: [],
@@ -22,14 +23,10 @@ export const useSessionStore = create((set, get) => ({
   },
 
   fetchAllSessions: async (filters) => {
-    try {
       const data = await getAllSessions(filters);
       set({ sessions: data.responses.result });
       set({ currentSession: null });
       return data;
-    } catch (error) {
-      alert(error.response.data.message);
-    }
   },
   deleteSession: async (id) => {
     await deleteSessionById(id);

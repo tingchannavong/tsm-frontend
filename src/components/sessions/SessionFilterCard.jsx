@@ -3,6 +3,7 @@ import { useT } from "../../languages/translations.js";
 import { useForm } from "react-hook-form";
 import { getAllLocations } from "../../api/location.js";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 function SessionFilterCard({
   setSearchParams,
@@ -54,6 +55,7 @@ function SessionFilterCard({
         console.log('locations', locations)
       } catch (error) {
         console.error("Failed to fetch all sessions:", error);
+        toast.error(error.response.data.message);
       }
     };
     fetchAllLocations();
@@ -77,6 +79,7 @@ function SessionFilterCard({
       <div className="flex gap-2 justify-between">
         <p>{t("filter_location")}: </p>
         <select {...register("locationId")} className={styles.dropDown}>
+          <option value="all">{t("all")}</option>
           {locations &&
             locations.map((each) => (
                 <option value={each.id}>{each.name}</option>

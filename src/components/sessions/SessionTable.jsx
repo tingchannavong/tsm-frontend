@@ -12,7 +12,7 @@ function SessionTable() {
 const [sessions, setSessions] = useState([]); 
 
   useEffect(() => {
-    const fetchAllSessions = async () => {
+    const fetchData = async () => {
           try {
             const data = await getAllSessions();
             setSessions(data.responses);
@@ -20,7 +20,7 @@ const [sessions, setSessions] = useState([]);
             console.error("Failed to fetch all sessions:", error);
           }
         };
-    fetchAllSessions();
+    fetchData();
   }, []);
 
   return (

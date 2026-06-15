@@ -1,7 +1,8 @@
 import styles from "../../styles/Base.module.css";
 import { useT } from "../../languages/translations.js";
 import { useForm } from "react-hook-form";
-import LocationDD from "../LocationDD.jsx";
+import Dropdown from "../Dropdown.jsx";
+import { getAllLocations } from "../../api/location.js";
 
 function SessionFilterCard({setSearchParams, searchParams, setShowFilter, defaultFilters}) {
 const t = useT();
@@ -51,9 +52,9 @@ const t = useT();
                 <option value="all">{t("all")}</option>
             </select>
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 justify-between">
               <p>{t("filter_location")}: </p>
-              <LocationDD {...register("locationId")} />
+              <Dropdown {...register("locationId")} placeholder={t("all")} fetchFn={() => getAllLocations()} valueKey="id" labelKey="name" />
             </div>
             <p>{t("filter_session_date")}:</p>
             <div className="flex gap-2 items-center">

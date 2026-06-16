@@ -73,17 +73,15 @@ function ViewSessions() {
         selectedGroup.map((each, i) => {
           const people = each.items.length;
           const names = each.items.map((item) => item.name);
-          const date = convertDateTimeToDate(each.items[0].startTime);
-          const timeElapsed = getElapsedTime(each.items[0].startTime);
+          const startTimeStr = each.items[0].startTime;
           const startTime = each.startTime;
           return (
             <SessionCard
-              key={each.id}
+              key={`session-card-${i}`}
               startTime={startTime}
+              startTimeStr={startTimeStr}
               people={people}
               names={names}
-              date={date}
-              timeElapsed={timeElapsed}
               group={each}
             />
           );

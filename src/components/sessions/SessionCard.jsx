@@ -3,20 +3,31 @@ import { useNavigate } from "react-router";
 import { useT } from "../../languages/translations.js";
 import { toast } from "react-toastify";
 import { getOrderPreviewBySessionIds } from "../../api/order.js";
-import { convertToDateString } from "../../utils/time.js";
+import { convertDateTimeToDate, convertToDateString, formatMsToTime, getElapsedTime } from "../../utils/time.js";
 import Button from "../Button.jsx";
 import Swal from "sweetalert2";
 import { getHomePath, havePermission } from "../../utils/auth.js";
 import { endIndividualSessions } from "../../api/session.js";
 
-function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
+function SessionCard({ names, people, startTime, startTimeStr, group }) {
   const t = useT();
   const navigate = useNavigate();
   const canView = havePermission();
 
+  const timeElapsed = getElapsedTime(startTimeStr);
+
   const [orderPreview, setOrderPreview] = useState();
   const [isEndTimer, setIsEndTimer] = useState(false);
   const [selectedSessions, setSelectedSessions] = useState([]);
+  
+  // TIMER COUNTING UP
+  const [now, setNow] = useState(() => Date.now());
+
+  const hdlStopWatch = (startTimeStr) => { 
+    const startTimeMs = new Date(startTimeStr).getTime();
+    const timeDiffMs = now - startTimeMs;
+    return formatMsToTime(timeDiffMs);
+  }
 
   const sessions = group.items;
 
@@ -84,26 +95,25 @@ function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
       }
     };
     fetchPricePreview();
+    const interval = setInterval(() => {
+      setNow(Date.now()); // Tick once per second for EVERYONE
+    }, 1000);
+
+    return () => clearInterval(interval);
+
   }, []);
 
   return (
     <>
       <div className="p-4 flex grow flex-col gap-4  min-h-full w-full items-start justify-center rounded-2xl shadow-xl ">
         <h1 className={subtitleStyles}>
+          {t("date")}: <span className={infoStyles}>{convertDateTimeToDate(startTimeStr)}</span>
+        </h1>
+        <h1 className={subtitleStyles}>
           {t("start_time")}: <span className={infoStyles}>{startTime}</span>
         </h1>
-        <h1 className={subtitleStyles}>
-          {t("time_elapsed")}:{" "}
-          <span className={infoStyles}>
-            {" "}
-            ~{timeElapsed.hours ? `${timeElapsed.hours} ${t("hour")} ` : ""}
-            {timeElapsed.minutes
-              ? `${timeElapsed.minutes} ${t("minutes")}`
-              : ""}
-          </span>
-        </h1>
-        <h1 className={subtitleStyles}>
-          {t("date")}: <span className={infoStyles}>{date}</span>
+         <h1 className={subtitleStyles}>
+          {t("stopwatch")}: <span className={infoStyles}>{hdlStopWatch(startTimeStr)}</span>
         </h1>
         <h1 className={subtitleStyles}>
           {t("guest_number")}:{" "}
@@ -116,7 +126,7 @@ function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
           <div>
             {sessions &&
               sessions.map((session, i) => (
-                <p>
+                <p key={`session-checkbox-${i}`}>
                   {i + 1}. {session.name}{" "}
                   {isEndTimer && (
                     <input
@@ -157,6 +167,16 @@ function SessionCard({ names, people, date, startTime, timeElapsed, group }) {
             />
           </>
         )}
+        <h1 className={subtitleStyles}>
+          {t("time_elapsed")}:{" "}
+          <span className={infoStyles}>
+            {" "}
+            ~{timeElapsed.hours ? `${timeElapsed.hours} ${t("hour")} ` : ""}
+            {timeElapsed.minutes
+              ? `${timeElapsed.minutes} ${t("minutes")}`
+              : ""}
+          </span>
+        </h1>
         <h1 className={subtitleStyles}>
           {t("est_price")}:{" "}
           <span className={infoStyles}>

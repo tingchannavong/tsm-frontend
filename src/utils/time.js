@@ -1,3 +1,23 @@
+export const formatMsToTime = (ms) => {
+    if (ms <= 0) return "";
+
+    // 1. Calculate units
+    const d = Math.floor(ms / 86400000);
+    const h = Math.floor((ms % 86400000) / 3600000);
+    const m = Math.floor((ms % 3600000) / 60000);
+    const s = Math.floor((ms % 60000) / 1000);
+
+    // 2. Helper to add leading zeros (e.g., "05" instead of "5")
+    const pad = (num) => String(num).padStart(2, "0");
+
+    // 3. Conditional Return
+    if (d > 0) {
+      return `${d}d ${pad(h)}h ${pad(m)}m ${pad(s)}s`;
+    }
+
+    return `${pad(h)}:${pad(m)}:${pad(s)}`;
+  };
+
 export function convertToDateString(myDate) {
    // my date accept input  "YYYY-MM-DDTHH:mm:ss"
   // example "2026-04-01T10:15:03"
@@ -38,6 +58,7 @@ export function getElapsedTime(pastDate) {
 }
 
 export function convertDateTimeToDate(dateTime, formatDate) {
+  // output 14/06/12
   const dateFormat = formatDate || "en-GB";
 
   const dateObj = new Date(dateTime);

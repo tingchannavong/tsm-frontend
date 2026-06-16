@@ -71,18 +71,16 @@ function ViewSessions() {
     <div className="flex flex-col gap-10">
       {selectedGroup &&
         selectedGroup.map((each, i) => {
+          const startTime = each.startTime;
           const people = each.items.length;
           const names = each.items.map((item) => item.name);
-          const startTimeStr = each.items[0].startTime;
-          const startTime = each.startTime;
           return (
             <SessionCard
               key={`session-card-${i}`}
+              group={each}
               startTime={startTime}
-              startTimeStr={startTimeStr}
               people={people}
               names={names}
-              group={each}
             />
           );
         })}

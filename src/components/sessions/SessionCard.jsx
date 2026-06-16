@@ -9,18 +9,24 @@ import Swal from "sweetalert2";
 import { getHomePath, havePermission } from "../../utils/auth.js";
 import { endIndividualSessions } from "../../api/session.js";
 
-function SessionCard({ names, people, startTime, startTimeStr, group }) {
+function SessionCard({ names, people, startTime, group }) {
   const t = useT();
   const navigate = useNavigate();
   const canView = havePermission();
 
+  const sessions = group.items;
+  const startTimeStr = group.items[0].startTime;
   const timeElapsed = getElapsedTime(startTimeStr);
+
+  // STYLING
+  const subtitleStyles = "text-lg font-bold";
+  const infoStyles = "text-md font-normal";
 
   const [orderPreview, setOrderPreview] = useState();
   const [isEndTimer, setIsEndTimer] = useState(false);
   const [selectedSessions, setSelectedSessions] = useState([]);
   
-  // TIMER COUNTING UP
+  // STOPWATCH COUNTING UP
   const [now, setNow] = useState(() => Date.now());
 
   const hdlStopWatch = (startTimeStr) => { 
@@ -28,11 +34,6 @@ function SessionCard({ names, people, startTime, startTimeStr, group }) {
     const timeDiffMs = now - startTimeMs;
     return formatMsToTime(timeDiffMs);
   }
-
-  const sessions = group.items;
-
-  const subtitleStyles = "text-lg font-bold";
-  const infoStyles = "text-md font-normal";
 
   const hdlEndTimer = () => {
     setIsEndTimer(true);

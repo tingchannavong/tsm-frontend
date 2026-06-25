@@ -6,15 +6,21 @@ import { useOrderStore } from "../../stores/orderStores.js";
 function EditOrderModal() {
     const currentOrder = useOrderStore((state) => state.currentOrder);
     const updateOrder = useOrderStore((state) => state.updateOrder);
+    const clearCurrentOrder = useOrderStore((state) => state.clearCurrentOrder); 
     const user = useAuthStore((state) => state.user);
+
+    const handleClose = () => {
+        clearCurrentOrder(); 
+        document.getElementById('edit_order_modal').close();
+    };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const updatedData = Object.fromEntries(formData);
     await updateOrder(currentOrder.id, {...updatedData, updatedById: user.id});
-    toast.success("update success.")
-    document.getElementById('edit_order_modal').close();
+    toast.success("update success.");
+    handleClose();
   };
 
   if (!currentOrder) return null;
@@ -37,7 +43,7 @@ function EditOrderModal() {
         {/* isAdmin can update more */}
 
           <div className="modal-action">
-            <button type="button" className="btn" onClick={() => {document.getElementById('edit_order_modal').close(); }}>Cancel</button>
+            <button type="button" className="btn" onClick={() => handleClose()}>Cancel</button>
             <button type="submit" className="btn btn-primary">Save Changes</button>
           </div>
         </form>

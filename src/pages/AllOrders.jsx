@@ -13,12 +13,14 @@ import { useOrderStore } from "../stores/orderStores.js";
 import SearchBar from "../components/SearchBar.jsx";
 import EditOrderModal from "../components/orders/EditOrderModal.jsx";
 import DeleteOrderModal from "../components/orders/DeleteOrderModal.jsx";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../components/Pagination.jsx";
 import { toast } from "react-toastify";
+import { getHomePath } from "../utils/auth.js";
 
 function AllOrders() {
   const t = useT();
+  const navigate = useNavigate();
 
   const defaultFilters = {
     status: "all",
@@ -62,8 +64,9 @@ function AllOrders() {
     fetchData(searchObject);
   }, []);
 
-  const hdlShowOrderDetails = (orderId) => {
-    
+  const hdlShowOrderDetails = (order) => {
+    setCurrentOrder(order);
+    navigate(`${getHomePath()}/orders/${order.id}`);
   }
 
   const fetchData = async (filters) => {
@@ -202,7 +205,7 @@ function AllOrders() {
                       <tr
                         key={order.id}
                         className="hover:bg-blue-50/30 transition-colors"
-                        onClick={hdlShowOrderDetails(order.id)}
+                        onClick={() => hdlShowOrderDetails(order)}
                       >
                         {/* Sticky first column */}
                         <td className="sticky left-0 z-10 bg-white px-4 py-4 font-semibold text-gray-900 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] group-hover:bg-blue-50">

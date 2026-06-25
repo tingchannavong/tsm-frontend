@@ -19,6 +19,11 @@ export async function getAllOrders(filters) {
   return res.data;
 }
 
+export async function getOrderById(id) {
+  const res = await authApi.get(`/api/orders/${id}`);
+  return res.data;
+}
+
 export async function updateOrderById(id, updatedData) {
   const res = await authApi.patch(`/api/orders/${id}`, updatedData);
   return res.data;

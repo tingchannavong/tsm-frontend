@@ -93,6 +93,7 @@ function OrderSummary() {
                   subTotal={line.subTotal?.toLocaleString()}
                   currency={line.currencyCode}
                   durationMin={line.durationMin}
+                  sessions={line.sessions}
                 />
               );
             })

@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "../styles/Base.module.css";
 import { useT } from "../languages/translations";
 import { useLocation, useNavigate, useParams } from "react-router";
-import {
-  convertDateTimeToDate,
-  convertToDateString,
-  getElapsedTime,
-} from "../utils/time.js";
+import { convertDateTimeToDate } from "../utils/time.js";
 import { getHomePath, havePermission } from "../utils/auth.js";
 import Button from "../components/Button.jsx";
 import { toast } from "react-toastify";

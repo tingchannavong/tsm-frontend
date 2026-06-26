@@ -95,5 +95,6 @@
     "next": "Next",
     "prev": "Prev",
     "stopwatch": "Stopwatch",
-    "order_details": "Order Details"
+    "order_details": "Order Details",
+    "order_id": "Order ID"
 }

@@ -28,7 +28,7 @@ function ViewOrderDetails() {
   const hdlGoBack = () => navigate(-1);
 
   useEffect(() => {
-    if (Object.keys(currentOrder).length === 0 || currentOrder.id == id) {
+    if (Object.keys(currentOrder).length === 0 || currentOrder.id == id || !currentOrder) {
       try {
         fetchOrderById(id);
       } catch (error) {
@@ -45,7 +45,7 @@ function ViewOrderDetails() {
   return (
     <>
       <FeatureHeader title={`${t("order_details")}`} />
-      <div className="flex flex-col gap-10">
+      {/* <div className="flex flex-col gap-10"> */}
         <div className={styles.mainContainer}>
           <div className="flex flex-col gap-1">
             <SmallButton text={t("go_back")} onClick={hdlGoBack} />
@@ -82,17 +82,17 @@ function ViewOrderDetails() {
             <div className="flex flex-col items-end p-4 gap-4">
               <p>
                 Grand Total: {currentOrder?.grandTotal?.toLocaleString()}{" "}
-                {currentOrder?.orderDetails[0].currencyCode}
+                {currentOrder?.orderDetails?.[0]?.currencyCode}
               </p>
               {currentOrder?.discount > 0 ? (
                 <>
                   <p>
                     Discount: {currentOrder?.discount?.toLocaleString()}{" "}
-                    {currentOrder?.orderDetails[0].currencyCode}
+                    {currentOrder?.orderDetails?.[0]?.currencyCode}
                   </p>
                   <p>
                     Net Total: {currentOrder?.netTotal?.toLocaleString()}{" "}
-                    {currentOrder?.orderDetails[0].currencyCode}
+                    {currentOrder?.orderDetails?.[0]?.currencyCode}
                   </p>
                 </>
               ) : (
@@ -102,7 +102,7 @@ function ViewOrderDetails() {
           </div>
         </div>
         {/* <pre>{JSON.stringify(currentOrder, null, 2)}</pre> */}
-      </div>
+      {/* </div> */}
     </>
   );
 }

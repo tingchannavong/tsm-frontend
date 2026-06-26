@@ -194,6 +194,11 @@ const getSessionActions = (session) => [
                     <th className="px-4 py-4 font-medium whitespace-nowrap">
                       {t("status")}
                     </th>
+                
+                    <th className="px-4 py-4 font-medium whitespace-nowrap">
+                      {t("order_id")}
+                    </th> 
+               
                     <th className="px-4 py-4 font-medium whitespace-nowrap text-center">
                       {t("action")}
                     </th>
@@ -277,6 +282,10 @@ const getSessionActions = (session) => [
                             {session.status}
                           </span>
                         </td>
+
+                        <td className="px-4 py-4 whitespace-nowrap text-gray-500">
+                          {session.orderId ? session.orderId : "N/A"}
+                        </td> 
 
                         <td className="px-4 py-4 text-center whitespace-nowrap">
                           <ActionSwitcher actions={getSessionActions(session)}/>

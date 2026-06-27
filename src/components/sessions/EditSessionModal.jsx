@@ -2,11 +2,12 @@ import { useSessionStore } from "../../stores/sessionStore";
 import { convertToDateString } from "../../utils/time.js";
 import { useAuthStore } from "../../stores/authStores.js";
 import { toast } from "react-toastify";
+import { useUserStore } from "../../stores/userStores.js";
 
 function EditSessionModal() {
   const currentSession = useSessionStore((state) => state.currentSession);
   const updateSession = useSessionStore((state) => state.updateSession);
-  const user = useAuthStore((state) => state.user);
+  const user = useUserStore((state) => state.user);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

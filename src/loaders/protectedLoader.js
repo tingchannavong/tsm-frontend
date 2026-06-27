@@ -1,6 +1,5 @@
 import { redirect } from "react-router-dom";
-import { useAuthStore } from "../stores/authStores.js";
-import { isTokenExpired } from "../utils/auth.js";
+import { useUserStore } from "../stores/userStores.js";
 
 function guard(user, allowedRole) {
 
@@ -14,12 +13,12 @@ function guard(user, allowedRole) {
 }
 
 export const roleLoader = (allowedRole) => () => {
-  const user = useAuthStore.getState().user;
+  const user = useUserStore.getState().user;
 
   return guard(user, allowedRole);
 };
 
 export const protectedLoader = () => {
-  const user = useAuthStore.getState().user;
+  const user = useUserStore.getState().user;
   return guard(user);
 };

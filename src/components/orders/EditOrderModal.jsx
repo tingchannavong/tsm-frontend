@@ -2,12 +2,13 @@ import { convertToDateString } from "../../utils/time.js";
 import { useAuthStore } from "../../stores/authStores.js";
 import { toast } from "react-toastify";
 import { useOrderStore } from "../../stores/orderStores.js";
+import { useUserStore } from "../../stores/userStores.js";
 
 function EditOrderModal() {
     const currentOrder = useOrderStore((state) => state.currentOrder);
     const updateOrder = useOrderStore((state) => state.updateOrder);
     const clearCurrentOrder = useOrderStore((state) => state.clearCurrentOrder); 
-    const user = useAuthStore((state) => state.user);
+    const user = useUserStore((state) => state.user);
 
     const handleClose = () => {
         clearCurrentOrder(); 

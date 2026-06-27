@@ -5,32 +5,22 @@ import { isTokenExpired } from "../utils/auth.js";
 
 const authConfig = (set, get) => (
     {
+        isAuthenticated: false,
         accessToken: null,
-        user: null,
         login: async (username, password) => {
             // connect backend API here
             const userData = await authService.login(username, password);
             set({
+                isAuthenticated: true,
                 accessToken: userData.access_token,
-                // user: userData.user
             });
 
-            await get().fetchUser();
-        },
-        fetchUser: async () => {
-            const token = get().accessToken;
-            if (!token) return;
-
-            if (isTokenExpired(token)) {
-                await get().logout();
-            } 
-
-            const userData = await authService.fetchMe();
-            set({user: userData})    
+            // await get().fetchUser();
         },
         logout: async () => {
             await authService.logout();
-            set({accessToken: null, user: null });
+            set({isAuthenticated: false,
+                accessToken: null });
         }
     }
 );

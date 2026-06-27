@@ -6,24 +6,19 @@ import FeatureHeader from "../components/FeatureHeader.jsx";
 import UserCard from "../components/UserCard.jsx";
 import Button from "../components/Button.jsx";
 import { useT } from "../languages/translations.js";
+import { useUserStore } from "../stores/userStores.js";
 
 function UserPage() {
   const navigate = useNavigate();
   const t = useT();
 
-  const user = useAuthStore((state) => state.user);
+  const user = useUserStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
   async function hdlLogout() {
     await logout();
     navigate("/tsm/login");
   }
-
-  // useEffect(() => {
-  //   // Later
-  //   const fetchUser = useAuthStore.getState().fetchUser;
-  //   fetchUser();
-  // }, []);
 
   const bigScreenStyles="xl:justify-center xl:items-center";
 

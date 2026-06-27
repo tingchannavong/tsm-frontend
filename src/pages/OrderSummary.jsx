@@ -16,13 +16,14 @@ import { useLocation, useNavigate } from "react-router";
 import { createOrder, getOrderPreviewBySessionIds } from "../api/order.js";
 import { useAuthStore } from "../stores/authStores.js";
 import { getHomePath } from "../utils/auth.js";
+import { useUserStore } from "../stores/userStores.js";
 
 function OrderSummary() {
   const t = useT();
   const navigate = useNavigate();
   const [orderPreview, setOrderPreview] = useState(null);
   const [discount, setDiscount] = useState(0);
-  const user = useAuthStore((state) => state.user);
+  const user = useUserStore((state) => state.user);
   const savedIds = sessionStorage.getItem("sessionIds");
 
   const hdlGoBack = () => navigate(-1);

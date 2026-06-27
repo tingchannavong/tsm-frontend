@@ -1,9 +1,9 @@
 
-import { useAuthStore } from "../stores/authStores";
 import { jwtDecode } from "jwt-decode";
+import { useUserStore } from "../stores/userStores";
 
 export function getHomePath() {
-    const user = useAuthStore.getState().user;
+    const user = useUserStore.getState().user;
     if (!user) return "/tsm/login";
     if (user.role === "ADMIN") return "/tsm/admin";
     if (user.role === "STAFF") return "/tsm/staff";
@@ -11,7 +11,7 @@ export function getHomePath() {
 };
 
 export function havePermission() {
-    const user = useAuthStore.getState().user;
+  const user = useUserStore.getState().user;
   if (!user) return false;
   return ["ADMIN", "STAFF"].includes(user.role);
 }

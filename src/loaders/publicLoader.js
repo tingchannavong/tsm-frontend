@@ -1,9 +1,9 @@
 import { redirect } from "react-router-dom"
-import { useAuthStore } from "../stores/authStores"
+import { useUserStore } from "../stores/userStores";
 
 export const publicLoader = ({ request }) => {
     
-    const user = useAuthStore.getState().user;
+    const user = useUserStore.getState().user;
     const url = new URL(request.url);
 
    if (user && (url.pathname === "/tsm" || url.pathname === "/tsm/login")) {

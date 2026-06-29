@@ -58,7 +58,6 @@ authApi.interceptors.response.use(
       } catch (error) {
         useAuthStore.setState({
           accessToken: null,
-          user: null
         });
         console.log("error at 401 response", error);
         return Promise.reject(error);

@@ -8,6 +8,7 @@ import { userEditSchema } from "../validations/user.schema.js";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUserStore } from "../stores/userStores.js";
 import { toast } from "react-toastify";
+import ChangePasswordModal from "./ChangePasswordModal.jsx";
 
 function UserCard({ id, username, firstname, lastname, phone, email }) {
   const t = useT();
@@ -137,9 +138,7 @@ function UserCard({ id, username, firstname, lastname, phone, email }) {
                 text={t("change_password")}
                 color="bg-[#7A3CEA]"
                 onClick={() =>
-                  Swal.fire({
-                    text: "Coming Soon!",
-                  })
+                   document.getElementById("change_password_modal").showModal()
                 }
               />
             </>
@@ -158,6 +157,7 @@ function UserCard({ id, username, firstname, lastname, phone, email }) {
           )}
         </div>
       </form>
+      <ChangePasswordModal />
     </>
   );
 }

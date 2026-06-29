@@ -8,6 +8,7 @@ import styles from "../styles/LoginPage.module.css";
 import { useT } from "../languages/translations.js";
 import { getHomePath } from "../utils/auth.js";
 import Swal from "sweetalert2";
+import { useUserStore } from "../stores/userStores.js";
 
 function Login() {
   const navigate = useNavigate();
@@ -27,8 +28,14 @@ function Login() {
   const submitData = async (data) => {
     try {
       await login(data.username, data.password);
-      toast.success(t("login_success"))
-      navigate(getHomePath());
+
+      const user = await useUserStore.getState().syncUser({
+        onError: (error) => toast.error("Failed to sync user data"),
+      });
+  
+        toast.success(t("login_success"));
+        navigate(getHomePath());
+ 
     } catch (error) {
       toast.error(error.message || 'Failed Log in');
     }

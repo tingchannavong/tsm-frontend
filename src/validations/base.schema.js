@@ -18,3 +18,4 @@ export const NameScm = z.string().min(1);
 export const DateTimeScm = z.string().datetime();
 
 export const PriceScm = z.coerce.number().positive("Invalid Number");
+

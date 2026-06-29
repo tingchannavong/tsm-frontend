@@ -55,6 +55,8 @@
      "view": "View",
      "delete": "Delete",
     "change_password": "Change password",
+    "old_password": "Old Password",
+    "new_password": "New Password",
     "forgot_password": "Forgot password",
     "username": "Username",
     "password": "Password",
@@ -97,5 +99,6 @@
     "stopwatch": "Stopwatch",
     "order_details": "Order Details",
     "order_id": "Order ID",
-    "user_updated": "User data successfully updated!"
+    "user_updated": "User data successfully updated!",
+    "confirm": "Confirm"
 }

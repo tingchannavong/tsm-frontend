@@ -12,3 +12,8 @@ export async function logout() {
     const res = await authApi.post("/api/auth/logout");
     return res.data;
 }
+
+export async function changePassword(id, updatedData) {
+     const res = await authApi.post(`/api/auth/change-password/users/${id}`, updatedData);
+    return res.data;
+}

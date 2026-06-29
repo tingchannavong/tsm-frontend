@@ -1,9 +1,11 @@
 
 import { jwtDecode } from "jwt-decode";
 import { useUserStore } from "../stores/userStores";
+import { getUser } from "../loaders/protectedLoader.js";
 
 export function getHomePath() {
     const user = useUserStore.getState().user;
+    
     if (!user) return "/tsm/login";
     if (user.role === "ADMIN") return "/tsm/admin";
     if (user.role === "STAFF") return "/tsm/staff";

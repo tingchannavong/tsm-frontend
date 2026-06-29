@@ -1,6 +1,11 @@
 import { redirect } from "react-router-dom";
 import { useUserStore } from "../stores/userStores.js";
 
+export async function getUser() {
+  const { user, syncUser } = useUserStore.getState();
+  return user ?? (await syncUser());
+}
+
 function guard(user, allowedRole) {
 
   if (!user) return redirect("/tsm/login");
@@ -12,13 +17,12 @@ function guard(user, allowedRole) {
   return user;
 }
 
-export const roleLoader = (allowedRole) => () => {
-  const user = useUserStore.getState().user;
-
+export const roleLoader = (allowedRole) => async () => {
+  const user = await getUser();
   return guard(user, allowedRole);
 };
 
-export const protectedLoader = () => {
-  const user = useUserStore.getState().user;
+export const protectedLoader = async () => {
+  const user = await getUser();
   return guard(user);
 };

@@ -96,5 +96,6 @@
     "prev": "Prev",
     "stopwatch": "Stopwatch",
     "order_details": "Order Details",
-    "order_id": "Order ID"
+    "order_id": "Order ID",
+    "user_updated": "User data successfully updated!"
 }

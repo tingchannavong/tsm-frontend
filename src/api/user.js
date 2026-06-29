@@ -11,11 +11,11 @@ export async function fetchAllUsers() {
 }
 
 export async function updateUserById(id, updatedData) {
-  const res = await authApi.patch(`/api/sessions/${id}`, updatedData);
+  const res = await authApi.patch(`/api/users/${id}`, updatedData);
   return res.data;
 }
 
 export async function deleteUserById(id) {
-  const res = await authApi.delete(`/api/sessions/${id}`);
+  const res = await authApi.delete(`/api/users/${id}`);
   return res.data;
 }

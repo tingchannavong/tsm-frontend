@@ -6,9 +6,14 @@ export const useUserStore = create((set, get) => ({
   setUser: (userData) => set({ user: userData }),
   clearUser: () => set({ user: null }),
   updateUser: async (id, updatedData) => {
-    await userService.updateUserById(id, updatedData);
-    set((state) => ({
-      user: state.user ? { ...state.user, ...updatedData } : updatedData,
-    }));
+    try {
+      await userService.updateUserById(id, updatedData);
+      set((state) => ({
+        user: state.user ? { ...state.user, ...updatedData } : updatedData,
+      }));
+    } catch (error) {
+      console.log('error at zustand user store', error);
+      throw error;
+    }
   },
 }));

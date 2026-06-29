@@ -24,3 +24,9 @@
 .dropDown {
   @apply bg-gray-100 rounded-sm z-1 w-30 p-2 shadow-sm border-black;
 }
+.actionButton {
+  @apply w-full rounded-2xl p-2 text-white uppercase font-medium xl:w-100 bg-blue-500
+}
+.errorText {
+  @apply text-xs text-red-500 font-medium;
+}

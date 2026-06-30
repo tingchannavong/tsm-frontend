@@ -19,15 +19,6 @@ function SessionLayout() {
   const hdlGoBack = () => navigate(-1);
   const hdlGoToFloorPlan = () => navigate(getHomePath());
 
-  // useEffect(() => {
-  //   const rootPath = `/tsm/sessions/${id}`;
-  //   if (path.pathname === rootPath) {
-  //     setIsRoot(true);
-  //   } else {
-  //     setIsRoot(false);
-  //   }
-  // }, [path.pathname]);
-
   useEffect(() => {
     const fetchLocation = async () => {
       try {

@@ -17,3 +17,8 @@ export async function changePassword(id, updatedData) {
      const res = await authApi.post(`/api/auth/change-password/users/${id}`, updatedData);
     return res.data;
 }
+
+export async function forgotPassword(body) {
+     const res = await publicApi.post(`/api/auth/forgot-password`, body);
+    return res.data;
+}

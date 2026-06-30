@@ -75,9 +75,7 @@ function Login() {
             <span className={styles.errorText}>{errors.password.message}</span>
           )}
         </div>
-        <p className="text-[#60D2CC] italic underline text-right" onClick={ () => Swal.fire({
-                  text: "Coming Soon!"
-                })}>
+        <p className="text-[#60D2CC] italic underline text-right" onClick={ () => navigate("/tsm/forgot-password")}>
           {t("forgot_password")}
         </p>
         <button type="submit" className={styles.submitButton}>

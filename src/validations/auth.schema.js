@@ -15,3 +15,7 @@ export const ChangePasswordSchema = z.object({
   message: "Passwords do not match",
   path: ["confirmPassword"], // This points the error to the confirmPassword field
 });
+
+export const EmailSchema = z.object({
+    email: z.string().email("Invalid email address")
+});

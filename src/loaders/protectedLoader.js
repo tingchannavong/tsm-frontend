@@ -18,11 +18,11 @@ function guard(user, allowedRole) {
 }
 
 export const roleLoader = (allowedRole) => async () => {
-  const user = await getUser();
+  const user = useUserStore.getState().user;
   return guard(user, allowedRole);
 };
 
 export const protectedLoader = async () => {
-  const user = await getUser();
+  const user = useUserStore.getState().user;
   return guard(user);
 };

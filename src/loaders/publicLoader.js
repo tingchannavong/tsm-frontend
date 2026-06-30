@@ -4,7 +4,7 @@ import { getUser } from "./protectedLoader.js";
 
 export const publicLoader = async ({ request }) => {
     
-    const user = await getUser();
+    const user = useUserStore.getState().user;
     const url = new URL(request.url);
 
    if (user && (url.pathname === "/tsm" || url.pathname === "/tsm/login")) {

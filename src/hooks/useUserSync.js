@@ -20,5 +20,5 @@ export const useUserSync = () => {
     } else {
       clearUser();
     }
-  }, [isAuthenticated, syncUser, clearUser]); //accessToken, logout, setUser, 
+  }, [isAuthenticated, syncUser, clearUser]); 
 };

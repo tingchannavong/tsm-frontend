@@ -11,6 +11,7 @@ function ErrorPage() {
       <Header />
       <div className={`${styles.container}`}>
         <p className={styles.title}>404 Page Not Found</p>
+        <p>{location.pathname}</p>
       </div>
       <Footer />
     </div>

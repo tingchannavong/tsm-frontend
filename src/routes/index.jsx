@@ -19,6 +19,7 @@ import OrderSummary from "../pages/OrderSummary";
 import AllOrders from "../pages/AllOrders";
 import ViewOrderDetails from "../pages/ViewOrderDetails";
 import ResetPasswordForm from "../pages/ResetPasswordForm";
+import ForgotPasswordForm from "../pages/ForgotPasswordForm";
 
 const commonPaths = [
   { path: "profile", element: <UserPage /> },
@@ -54,7 +55,8 @@ const routes = createBrowserRouter([
     children: [
       { index: true, element: <Welcome /> },
       { path: "login", element: <Login /> },
-      { path: "forgot-password", element: <ResetPasswordForm /> },
+      { path: "forgot-password", element: <ForgotPasswordForm /> },
+      { path: "reset-password/:token", element: <ResetPasswordForm /> },
       {
         path: "sessions/:id",
         element: <SessionLayout />,

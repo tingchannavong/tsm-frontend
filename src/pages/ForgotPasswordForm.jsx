@@ -7,28 +7,31 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { ResetPasswordSchema } from "../validations/auth.schema.js";
+import { EmailSchema } from "../validations/auth.schema.js";
 import SmallButton from "../components/SmallButton.jsx";
-import { resetPassword } from "../api/auth.js";
+import { forgotPassword } from "../api/auth.js";
 import Swal from "sweetalert2";
 
-function ResetPasswordForm() {
+function ForgotPasswordForm() {
   const t = useT();
   const navigate = useNavigate();
-  const { token } = useParams();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState,
   } = useForm({
-    resolver: zodResolver(ResetPasswordSchema),
+    resolver: zodResolver(EmailSchema),
   });
+
+  const { errors, isSubmitting } = formState;
 
   const submitData = async (data) => {
     try {
-      const res = await resetPassword(token, data);
-      toast.success(t("reset_password_success"));
+      const res = await forgotPassword(data);
+      Swal.fire({
+        text: "Reset link has been sent to your email. Please check your email and follow the link to reset your password."
+      })
       navigate(`/tsm/login`);
     } catch (error) {
       console.log("Status:", error.response.status);
@@ -40,45 +43,35 @@ function ResetPasswordForm() {
   return (
     <div className={`${styles.mainContainer}`}>
       <div className={`${styles.formCard}`}>
-        <p
-          className="italic underline text-blue-500 text-right"
-          onClick={() => navigate("/tsm/login")}
-        >
-          {t("back_to_login")}
-        </p>
+          <p className="italic underline text-blue-500 text-right"  onClick={ () => navigate("/tsm/login")}>{t("back_to_login")}</p>
         <h1 className={`${styles.subtitle}`}>{t("reset_password")}</h1>
         <form onSubmit={handleSubmit(submitData)}>
+
           <fieldset className="fieldset">
             <Input
-              label={t("new_password")}
-              type="password"
+              label={t("email")}
+              type="text"
+              placeholder="name@email.com"
               register={register}
-              name="newPassword"
+              name="email"
             />
+            <span className="italic">{t("reset_instructions")}</span>
 
-            {errors.newPassword && (
-              <span className={styles.errorText}>
-                {errors.newPassword?.message}
-              </span>
-            )}
-
-            <Input
-              label={`${t("confirm")} ${t("password")}`}
-              type="password"
-              register={register}
-              name="confirmPassword"
-            />
-            {errors.confirmPassword && (
-              <span className={styles.errorText}>
-                {errors.confirmPassword?.message}
-              </span>
+            {errors.email && (
+              <span className={styles.errorText}>{errors.email?.message}</span>
             )}
           </fieldset>
-          <Button text={t("submit")} color="bg-[#2D877C] mt-5" type="submit" />
+          <Button
+            text={t("send_request")}
+            color="bg-[#2D877C] mt-5"
+            type="submit"
+            disabled={isSubmitting}
+          />
         </form>
+          {isSubmitting ? "Sending..." : ""}
       </div>
     </div>
   );
 }
 
-export default ResetPasswordForm;
+export default ForgotPasswordForm;

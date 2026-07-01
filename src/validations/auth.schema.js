@@ -19,3 +19,12 @@ export const ChangePasswordSchema = z.object({
 export const EmailSchema = z.object({
     email: z.string().email("Invalid email address")
 });
+
+export const ResetPasswordSchema = z.object({
+    newPassword: z.string().min(6, "Password must be at least 6 letters"),
+    // newPassword: PasswordScm,
+    confirmPassword: z.string()
+  }).refine((data) => data.newPassword === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"], // This points the error to the confirmPassword field
+});

@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router";
 import Login from "../pages/Login";
 import { protectedLoader, roleLoader } from "../loaders/protectedLoader";
 import { publicLoader } from "../loaders/publicLoader";
-import AdminPage from "../pages/AdminPage";
 import MainLayout from "../layouts/MainLayout";
 import SessionInfo from "../pages/SessionInfo";
 import ErrorPage from "../pages/ErrorPage";
@@ -20,6 +19,9 @@ import AllOrders from "../pages/AllOrders";
 import ViewOrderDetails from "../pages/ViewOrderDetails";
 import ResetPasswordForm from "../pages/ResetPasswordForm";
 import ForgotPasswordForm from "../pages/ForgotPasswordForm";
+import UserManagement from "../pages/admin/UserManagement";
+import LocationManagement from "../pages/admin/LocationManagement";
+import PricingManagement from "../pages/admin/PricingManagement";
 
 const commonPaths = [
   { path: "profile", element: <UserPage /> },
@@ -35,7 +37,13 @@ const routes = createBrowserRouter([
     path: "/tsm/admin",
     loader: roleLoader("ADMIN"),
     element: <AdminLayout />,
-    children: [{ index: true, element: <AdminPage /> }, ...commonPaths],
+    children: [
+      { index: true, element: <FloorPlan /> },
+      { index: "users", element: <UserManagement /> },
+      { index: "locations", element: <LocationManagement /> },
+      { index: "pricings", element: <PricingManagement /> },
+      ...commonPaths,
+    ],
   },
 
   // 2. STAFF SECTION

@@ -70,8 +70,9 @@ function AllSessions() {
   const hdlCreateOrder = () => {
     if (selectedSessions.length === 0) {
       console.log('0 session');
-      alert('Please select sessions to create order.')
-      toast.error("Please select sessions to create order!");
+      Swal.fire({
+        text: "Please select sessions to create order!"
+      })
       return;
     }
     console.log('we do this')

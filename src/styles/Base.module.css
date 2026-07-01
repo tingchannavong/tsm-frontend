@@ -4,7 +4,7 @@
   @apply flex flex-col grow p-4 xl:items-center;
 }
 .bigScreenStyles {
-  @apply xl:w-fit xl:justify-center
+  @apply xl:w-fit xl:justify-center xl:items-center
 }
 .formCard {
   @apply space-y-4 w-fit p-8 bg-white rounded-xl shadow-lg border border-gray-100;

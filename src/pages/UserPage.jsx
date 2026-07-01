@@ -20,7 +20,7 @@ function UserPage() {
     navigate("/tsm/login");
   }
 
-  const bigScreenStyles="xl:justify-center xl:items-center";
+  const bigScreenStyles = "xl:justify-center xl:items-center"
 
   return (
     <>

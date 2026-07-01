@@ -21,7 +21,7 @@ function AdminNavBar() {
           <p>{t("pricings")}</p>
         </div>
       </Link>
-      <Link to="locations">
+      <Link to=".">
         <div className={navBoxStyles}>
           <ChairIcon className="h-15 w-15" />
           <p>{t("tables")}</p>

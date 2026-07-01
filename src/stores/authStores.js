@@ -21,6 +21,10 @@ const authConfig = (set, get) => (
             await authService.logout();
             set({isAuthenticated: false,
                 accessToken: null });
+        },
+        register: async () => {
+            const newUser = await authService.adminRegister();
+            return newUser;
         }
     }
 );

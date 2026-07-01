@@ -11,11 +11,11 @@ import Swal from "sweetalert2";
 import { useUserStore } from "../stores/userStores.js";
 
 function Login() {
+  const t = useT();
   const navigate = useNavigate();
 
   // get zustand
   const login = useAuthStore((state) => state.login);
-  const t = useT();
 
   // form validation with react hook form
   const {
@@ -37,7 +37,7 @@ function Login() {
         navigate(getHomePath());
  
     } catch (error) {
-      toast.error(error.message || 'Failed Log in');
+      toast.error(error.response.data.messagee || 'Failed Log in');
     }
   };
 

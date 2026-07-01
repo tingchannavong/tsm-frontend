@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router";
-import Login from "../pages/Login";
 import { protectedLoader, roleLoader } from "../loaders/protectedLoader";
 import { publicLoader } from "../loaders/publicLoader";
+import { Navigate } from "react-router";
+import Login from "../pages/Login";
 import MainLayout from "../layouts/MainLayout";
 import SessionInfo from "../pages/SessionInfo";
 import ErrorPage from "../pages/ErrorPage";
@@ -22,6 +23,7 @@ import ForgotPasswordForm from "../pages/ForgotPasswordForm";
 import UserManagement from "../pages/admin/UserManagement";
 import LocationManagement from "../pages/admin/LocationManagement";
 import PricingManagement from "../pages/admin/PricingManagement";
+import RegisterForm from "../pages/admin/RegisterForm";
 
 const commonPaths = [
   { path: "profile", element: <UserPage /> },
@@ -29,6 +31,7 @@ const commonPaths = [
   { path: "sessions/order-preview", element: <OrderSummary /> },
   { path: "orders/:id", element: <ViewOrderDetails /> },
   { path: "orders", element: <AllOrders /> },
+  { path: "floorplan", element: <FloorPlan /> },
 ];
 
 const routes = createBrowserRouter([
@@ -38,10 +41,11 @@ const routes = createBrowserRouter([
     loader: roleLoader("ADMIN"),
     element: <AdminLayout />,
     children: [
-      { index: true, element: <FloorPlan /> },
-      { path: "users", element: <UserManagement /> },
+      { index: true, element: < Navigate to="locations" replace /> },
       { path: "locations", element: <LocationManagement /> },
+      { path: "users", element: <UserManagement /> },
       { path: "pricings", element: <PricingManagement /> },
+      { path: "register-user", element: <RegisterForm /> },
       ...commonPaths,
     ],
   },
@@ -51,7 +55,7 @@ const routes = createBrowserRouter([
     path: "/tsm/staff",
     loader: roleLoader("STAFF"),
     element: <StaffLayout />,
-    children: [{ index: true, element: <FloorPlan /> }, ...commonPaths],
+    children: [{ index: true, element: < Navigate to="floorplan" replace />}, ...commonPaths],
   },
 
   // 3. PUBLIC SECTION

@@ -39,9 +39,9 @@ const routes = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       { index: true, element: <FloorPlan /> },
-      { index: "users", element: <UserManagement /> },
-      { index: "locations", element: <LocationManagement /> },
-      { index: "pricings", element: <PricingManagement /> },
+      { path: "users", element: <UserManagement /> },
+      { path: "locations", element: <LocationManagement /> },
+      { path: "pricings", element: <PricingManagement /> },
       ...commonPaths,
     ],
   },

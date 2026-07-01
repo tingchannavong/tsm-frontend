@@ -10,7 +10,6 @@ function PricingManagement() {
   const t = useT();
 
   const user = useUserStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
 
   return (
     <>

@@ -30,3 +30,6 @@
 .errorText {
   @apply text-xs text-red-500 font-medium;
 }
+.bigScreenStyles2 {
+  @apply xl:justify-center xl:items-center
+}

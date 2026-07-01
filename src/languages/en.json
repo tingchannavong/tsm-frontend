@@ -109,5 +109,5 @@
     "reset_password_success": "Password reset successfully!",
     "user_management": "User Management",
     "loc_management": "Location Management",
-    "price_management": "Pricing Management"
+    "pricing_management": "Pricing Management"
 }

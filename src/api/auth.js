@@ -29,6 +29,6 @@ export async function resetPassword(resetToken, body) {
 }
 
 export async function adminRegister(body) {
-     const res = await publicApi.post(`/api/auth/register`, body);
+     const res = await authApi.post(`/api/auth/register`, body);
     return res.data;
 }

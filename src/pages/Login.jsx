@@ -27,7 +27,6 @@ function Login() {
   // get data from react hook form
   const submitData = async (data) => {
     try {
-      console.log('data', data)
       await login(data.username, data.password);
 
       const user = await useUserStore.getState().syncUser({

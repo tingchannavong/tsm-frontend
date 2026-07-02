@@ -110,5 +110,8 @@
     "user_management": "User Management",
     "loc_management": "Location Management",
     "pricing_management": "Pricing Management",
-    "create_user": "Create New User"
+    "create_user": "Create New User",
+    "gen_register_invite": "Create Register Invite",
+    "invite_instructions": "Please input the user's email address and an invite link will be sent to this email for the registration process.",
+    "register_success": "Registration is successful"
 }

@@ -98,7 +98,7 @@ function SessionInfo() {
                 type="submit"
                 onClick={handleModalSubmit}
               >
-                Submit
+                {t("OK")}
               </button>
             </form>
           </div>

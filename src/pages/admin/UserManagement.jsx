@@ -5,6 +5,7 @@ import Button from "../../components/Button.jsx";
 import { useT } from "../../languages/translations.js";
 import { useUserStore } from "../../stores/userStores.js";
 import SmallButton from "../../components/SmallButton.jsx";
+import RegisterInviteModal from "../../components/RegisterInviteModal.jsx";
 
 function UserManagement() {
   const navigate = useNavigate();
@@ -21,9 +22,16 @@ function UserManagement() {
           color="bg-[#2D877C] font-semibold w-40"
           onClick={() => navigate("/tsm/admin/register-user")}
         />
+        {/* change to button */}
         <p>generate invite link</p>
+        <SmallButton
+          text={t("gen_register_invite")}
+          color="bg-[#2D877C] font-semibold w-40"
+          onClick={() => document.getElementById("register_invite_modal").showModal()}
+        />
         {/* All users table */}
         <p>User Table: coming soon!</p>
+      <RegisterInviteModal />
       </div>
     </>
   );

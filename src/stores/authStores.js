@@ -22,10 +22,10 @@ const authConfig = (set, get) => (
             set({isAuthenticated: false,
                 accessToken: null });
         },
-        adminRegister: async (data) => {
-            const newUser = await authService.adminRegister(data);
-            return newUser;
-        }
+        // adminRegister: async (data) => {
+        //     const newUser = await authService.adminRegister(data);
+        //     return newUser;
+        // }
     }
 );
 

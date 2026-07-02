@@ -32,3 +32,13 @@ export async function adminRegister(body) {
      const res = await authApi.post(`/api/auth/register`, body);
     return res.data;
 }
+
+export async function createRegisterInviteLink(body) {
+     const res = await authApi.post(`/api/auth/register-invite`, body);
+    return res.data;
+}
+
+export async function userRegisterByInvite(inviteToken, body) {
+     const res = await publicApi.post(`/api/auth/register/${inviteToken}`, body);
+    return res.data;
+}

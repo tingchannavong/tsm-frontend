@@ -1,29 +1,32 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import styles from "../../styles/LoginPage.module.css";
 import FeatureHeader from "../../components/FeatureHeader.jsx";
 import Button from "../../components/Button.jsx";
 import { useT } from "../../languages/translations.js";
 import { useUserStore } from "../../stores/userStores.js";
 import SmallButton from "../../components/SmallButton.jsx";
-import { useAuthStore } from "../../stores/authStores.js";
 import { useForm } from "react-hook-form";
 import RegisterCard from "../../components/RegisterCard.jsx";
 import { toast } from "react-toastify";
+import { adminRegister, userRegisterByInvite } from "../../api/auth.js";
 
 // reusable component
-function RegisterForm() {
+function RegisterForm({mode}) {
   const navigate = useNavigate();
   const t = useT();
-
-  const adminRegister = useAuthStore((state) => state.adminRegister);
-  const user = useUserStore((state) => state.user);
+  const { token } = useParams();
 
   const submitData = async (data) => {
     console.log("data", data);
     try {
-      await adminRegister(data);
+
+      if (mode === "ADMIN") {
+        await adminRegister(data);
+      } else {
+        await userRegisterByInvite(token, data); 
+      }
       toast.success(t("register_success"));
-      navigate("/tsm/admin/users");
+      mode === "ADMIN" ? navigate("/tsm/admin/users") : navigate("/tsm/login");
     } catch (error) {
       toast.error(error.response.data.message || "Failed Log in");
     }
@@ -31,10 +34,10 @@ function RegisterForm() {
 
   return (
     <div>
-      <FeatureHeader title={`${t("user_management")}`} />
+      {  mode === "ADMIN" ?   <FeatureHeader title={`${t("user_management")}`} /> : <></> }
       <div className={`${styles.mainContainer}`}>
         <RegisterCard submitData={submitData} />
-      <SmallButton text={t("go_back")} onClick={() => navigate(-1)} />
+        <SmallButton text={t("go_back")} onClick={() => navigate(-1)} />
       </div>
     </div>
   );

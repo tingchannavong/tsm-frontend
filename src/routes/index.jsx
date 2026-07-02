@@ -45,7 +45,7 @@ const routes = createBrowserRouter([
       { path: "locations", element: <LocationManagement /> },
       { path: "users", element: <UserManagement /> },
       { path: "pricings", element: <PricingManagement /> },
-      { path: "register-user", element: <RegisterForm /> },
+      { path: "register-user", element: <RegisterForm mode="ADMIN" /> },
       ...commonPaths,
     ],
   },
@@ -69,6 +69,7 @@ const routes = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "forgot-password", element: <ForgotPasswordForm /> },
       { path: "reset-password/:token", element: <ResetPasswordForm /> },
+      { path: "register-invite/:token", element: <RegisterForm mode="INVITE"/> },
       {
         path: "sessions/:id",
         element: <SessionLayout />,

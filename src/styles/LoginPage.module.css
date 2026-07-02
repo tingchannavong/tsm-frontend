@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+.mainContainer {
+  @apply flex flex-col grow p-4 xl:items-center;
+}
+.bigScreenStyles {
+  @apply xl:w-fit xl:justify-center
+}
+
 .container {
   @apply p-10 flex grow flex-col items-center justify-center min-h-full;
 }

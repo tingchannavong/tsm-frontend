@@ -19,7 +19,7 @@ function RegisterForm() {
   const user = useUserStore((state) => state.user);
 
   const submitData = async (data) => {
-    console.log('data', data);
+    console.log("data", data);
     try {
       await adminRegister(data);
       toast.success(t("register_success"));
@@ -32,7 +32,10 @@ function RegisterForm() {
   return (
     <div>
       <FeatureHeader title={`${t("user_management")}`} />
-      <RegisterCard submitData={submitData}/>
+      <div className={`${styles.mainContainer}`}>
+        <RegisterCard submitData={submitData} />
+      <SmallButton text={t("go_back")} onClick={() => navigate(-1)} />
+      </div>
     </div>
   );
 }

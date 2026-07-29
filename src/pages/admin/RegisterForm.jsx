@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 import RegisterCard from "../../components/RegisterCard.jsx";
 import { toast } from "react-toastify";
 import { adminRegister, userRegisterByInvite } from "../../api/auth.js";
+import { useGoogleLogin } from "@react-oauth/google";
+import { GoogleLogin } from '@react-oauth/google';
 
 // reusable component
 function RegisterForm({mode}) {
@@ -32,12 +34,29 @@ function RegisterForm({mode}) {
     }
   };
 
+  const login = useGoogleLogin({
+    onSuccess: tokenResponse => console.log(tokenResponse)
+  })
+
   return (
     <div>
       {  mode === "ADMIN" ?   <FeatureHeader title={`${t("user_management")}`} /> : <></> }
       <div className={`${styles.mainContainer}`}>
         <RegisterCard submitData={submitData} />
         <SmallButton text={t("go_back")} onClick={() => navigate(-1)} />
+        <Button
+                text={t("google_signin")}
+                color="bg-[#7A3CEA]"
+                onClick={() => login()}
+        />
+        <GoogleLogin
+  onSuccess={credentialResponse => {
+    console.log(credentialResponse);
+  }}
+  onError={() => {
+    console.log('Login Failed');
+  }}
+/>;
       </div>
     </div>
   );

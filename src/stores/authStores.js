@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import * as authService from "../api/auth.js";
 import { isTokenExpired } from "../utils/auth.js";
+import { googleLogout } from "@react-oauth/google";
 
 const authConfig = (set, get) => (
     {
@@ -19,6 +20,7 @@ const authConfig = (set, get) => (
         },
         logout: async () => {
             await authService.logout();
+            googleLogout();
             set({isAuthenticated: false,
                 accessToken: null });
         },

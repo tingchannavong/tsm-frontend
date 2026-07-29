@@ -113,5 +113,6 @@
     "create_user": "Create New User",
     "gen_register_invite": "Create Register Invite",
     "invite_instructions": "Please input the user's email address and an invite link will be sent to this email for the registration process.",
-    "register_success": "Registration is successful"
+    "register_success": "Registration is successful",
+    "google_signin": "Sign in with Google"
 }

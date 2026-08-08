@@ -8,7 +8,7 @@ import SmallButton from "../../components/SmallButton.jsx";
 import { useForm } from "react-hook-form";
 import RegisterCard from "../../components/RegisterCard.jsx";
 import { toast } from "react-toastify";
-import { adminRegister, userRegisterByInvite } from "../../api/auth.js";
+import { adminRegister, googleRegister, userRegisterByInvite } from "../../api/auth.js";
 import { useGoogleLogin } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
 import { isAdmin } from "../../utils/auth.js";
@@ -42,17 +42,24 @@ function RegisterForm({ mode }) {
         <></>
       )}
       <div className={`${styles.mainContainer}`}>
+        <div className="flex flex-col justify-center items-center">
         <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            console.log(credentialResponse);
-            // call backend API
+          onSuccess={async (credentialResponse) => {
+            try {
+              console.log(credentialResponse);
+              await googleRegister({idToken: credentialResponse.credential});
+              // navigate("/tsm/staff");
+            } catch (error) {
+              console.log('Backend registration failed', error)
+            }
           }}
           onError={() => {
-            console.log("Login Failed");
+            console.log("Google Log in Popup Failed");
           }}
         />
 
       <p className="mt-5 p-5 border-t-2 border-b-2 text-gray-500 font-medium"> or </p>
+        </div>
 
         <RegisterCard submitData={submitData} />
         {canView && (

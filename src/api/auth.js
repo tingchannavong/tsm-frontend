@@ -33,6 +33,11 @@ export async function adminRegister(body) {
     return res.data;
 }
 
+export async function googleRegister(body) {
+     const res = await authApi.post(`/api/auth/google`, body);
+    return res.data;
+}
+
 export async function createRegisterInviteLink(body) {
      const res = await authApi.post(`/api/auth/register-invite`, body);
     return res.data;

@@ -18,6 +18,12 @@ export function havePermission() {
   return ["ADMIN", "STAFF"].includes(user.role);
 }
 
+export function isAdmin() {
+  const user = useUserStore.getState().user;
+  if (!user) return false;
+  return ["ADMIN"].includes(user.role);
+}
+
 export function isTokenExpired(token) {
     if (!token) return true; 
 

@@ -7,5 +7,10 @@ export default defineConfig({
   plugins: [react(),
     tailwindcss()
   ],
-  base: 'http://localhost:5173/tsm', 
+  base: 'http://localhost:5173/tsm',
+  server: {
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+    },
+  },
 })

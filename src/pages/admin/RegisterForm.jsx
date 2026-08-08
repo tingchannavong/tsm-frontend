@@ -10,22 +10,22 @@ import RegisterCard from "../../components/RegisterCard.jsx";
 import { toast } from "react-toastify";
 import { adminRegister, userRegisterByInvite } from "../../api/auth.js";
 import { useGoogleLogin } from "@react-oauth/google";
-import { GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from "@react-oauth/google";
+import { isAdmin } from "../../utils/auth.js";
 
-// reusable component
-function RegisterForm({mode}) {
+function RegisterForm({ mode }) {
   const navigate = useNavigate();
   const t = useT();
   const { token } = useParams();
+  const canView = isAdmin();
 
   const submitData = async (data) => {
     console.log("data", data);
     try {
-
       if (mode === "ADMIN") {
         await adminRegister(data);
       } else {
-        await userRegisterByInvite(token, data); 
+        await userRegisterByInvite(token, data);
       }
       toast.success(t("register_success"));
       mode === "ADMIN" ? navigate("/tsm/admin/users") : navigate("/tsm/login");
@@ -34,29 +34,30 @@ function RegisterForm({mode}) {
     }
   };
 
-  const login = useGoogleLogin({
-    onSuccess: tokenResponse => console.log(tokenResponse)
-  })
-
   return (
     <div>
-      {  mode === "ADMIN" ?   <FeatureHeader title={`${t("user_management")}`} /> : <></> }
+      {mode === "ADMIN" ? (
+        <FeatureHeader title={`${t("user_management")}`} />
+      ) : (
+        <></>
+      )}
       <div className={`${styles.mainContainer}`}>
-        <RegisterCard submitData={submitData} />
-        <SmallButton text={t("go_back")} onClick={() => navigate(-1)} />
-        <Button
-                text={t("google_signin")}
-                color="bg-[#7A3CEA]"
-                onClick={() => login()}
-        />
         <GoogleLogin
-  onSuccess={credentialResponse => {
-    console.log(credentialResponse);
-  }}
-  onError={() => {
-    console.log('Login Failed');
-  }}
-/>;
+          onSuccess={(credentialResponse) => {
+            console.log(credentialResponse);
+            // call backend API
+          }}
+          onError={() => {
+            console.log("Login Failed");
+          }}
+        />
+
+      <p className="mt-5 p-5 border-t-2 border-b-2 text-gray-500 font-medium"> or </p>
+
+        <RegisterCard submitData={submitData} />
+        {canView && (
+          <SmallButton text={t("go_back")} onClick={() => navigate(-1)} />
+        )}
       </div>
     </div>
   );

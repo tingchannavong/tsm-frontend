@@ -8,16 +8,20 @@ import SmallButton from "../../components/SmallButton.jsx";
 import { useForm } from "react-hook-form";
 import RegisterCard from "../../components/RegisterCard.jsx";
 import { toast } from "react-toastify";
-import { adminRegister, googleRegister, userRegisterByInvite } from "../../api/auth.js";
+import { adminRegister, userRegisterByInvite } from "../../api/auth.js";
 import { useGoogleLogin } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
 import { isAdmin } from "../../utils/auth.js";
+import { useAuthStore } from "../../stores/authStores.js";
 
 function RegisterForm({ mode }) {
   const navigate = useNavigate();
   const t = useT();
   const { token } = useParams();
   const canView = isAdmin();
+
+  const googleAuthen = useAuthStore((state) => state.googleAuthen);
+  const syncUser = useUserStore((state) => state.syncUser);
 
   const submitData = async (data) => {
     console.log("data", data);
@@ -46,9 +50,10 @@ function RegisterForm({ mode }) {
         <GoogleLogin
           onSuccess={async (credentialResponse) => {
             try {
-              console.log(credentialResponse);
-              await googleRegister({idToken: credentialResponse.credential});
-              // navigate("/tsm/staff");
+              // console.log(credentialResponse);
+              await googleAuthen({idToken: credentialResponse.credential});
+              await syncUser();
+              navigate("/tsm/staff");
             } catch (error) {
               console.log('Backend registration failed', error)
             }

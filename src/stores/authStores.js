@@ -8,6 +8,13 @@ const authConfig = (set, get) => (
     {
         isAuthenticated: false,
         accessToken: null,
+        googleAuthen: async (idToken) => {
+            const userData = await authService.googleAuth(idToken);
+            set({
+                isAuthenticated: true,
+                accessToken: userData.access_token,
+            });
+        },
         login: async (username, password) => {
             // connect backend API here
             const userData = await authService.login(username, password);

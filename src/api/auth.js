@@ -33,8 +33,8 @@ export async function adminRegister(body) {
     return res.data;
 }
 
-export async function googleRegister(body) {
-     const res = await authApi.post(`/api/auth/google`, body);
+export async function googleAuth(body) {
+     const res = await publicApi.post(`/api/auth/google`, body);
     return res.data;
 }
 

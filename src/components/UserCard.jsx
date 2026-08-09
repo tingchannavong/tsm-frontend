@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useUserStore } from "../stores/userStores.js";
 import { toast } from "react-toastify";
 import ChangePasswordModal from "./ChangePasswordModal.jsx";
+import { $ZodCheckLowerCase } from "zod/v4/core";
 
 function UserCard({ id, username, firstname, lastname, phone, email }) {
   const t = useT();
@@ -16,7 +17,9 @@ function UserCard({ id, username, firstname, lastname, phone, email }) {
 
   const updateUser = useUserStore(state => state.updateUser);
   const user = useUserStore(state => state.user);
-
+  console.log('user.provider', user.provider);
+  const isLocal = user.provider === "local" ? true : false;
+  console.log('isLocal', isLocal)
   const onSubmit = async (data) => {
     try {
       await updateUser(user.id, data);
@@ -134,13 +137,15 @@ function UserCard({ id, username, firstname, lastname, phone, email }) {
                 color="bg-[#7A3CEA]"
                 onClick={() => setIsEditing(true)}
               />
-              <Button
+                { isLocal && 
+              (<Button
                 text={t("change_password")}
                 color="bg-[#7A3CEA]"
                 onClick={() =>
                    document.getElementById("change_password_modal").showModal()
                 }
-              />
+              />)
+              }
             </>
           )}
           {isEditing && (

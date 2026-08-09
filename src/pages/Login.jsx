@@ -9,6 +9,7 @@ import { useT } from "../languages/translations.js";
 import { getHomePath } from "../utils/auth.js";
 import Swal from "sweetalert2";
 import { useUserStore } from "../stores/userStores.js";
+import { GoogleLogin } from "@react-oauth/google";
 
 function Login() {
   const t = useT();
@@ -16,7 +17,9 @@ function Login() {
 
   // get zustand
   const login = useAuthStore((state) => state.login);
-
+  const googleAuthen = useAuthStore((state) => state.googleAuthen);
+  const syncUser = useUserStore((state) => state.syncUser);
+  
   // form validation with react hook form
   const {
     register,
@@ -29,16 +32,15 @@ function Login() {
     try {
       await login(data.username, data.password);
 
-      const user = await useUserStore.getState().syncUser({
+      const user = await syncUser({
         onError: (error) => toast.error("Failed to sync user data"),
       });
-  
-        toast.success(t("login_success"));
-        navigate(getHomePath());
- 
+
+      toast.success(t("login_success"));
+      navigate(getHomePath());
     } catch (error) {
-      console.log('error', error);
-      toast.error(error.response.data.messagee || 'Failed Log in');
+      console.log("error", error);
+      toast.error(error.response.data.messagee || "Failed Log in");
     }
   };
 
@@ -76,12 +78,30 @@ function Login() {
             <span className={styles.errorText}>{errors.password.message}</span>
           )}
         </div>
-        <p className="text-[#60D2CC] italic underline text-right" onClick={ () => navigate("/tsm/forgot-password")}>
+       <p
+          className="text-[#60D2CC] italic underline text-right"
+          onClick={() => navigate("/tsm/forgot-password")}
+        >
           {t("forgot_password")}
         </p>
         <button type="submit" className={styles.submitButton}>
           {t("login")}
         </button>
+      <GoogleLogin
+        onSuccess={async (credentialResponse) => {
+          try {
+            // console.log(credentialResponse);
+            await googleAuthen({ idToken: credentialResponse.credential });
+            await syncUser();
+            navigate(getHomePath());
+          } catch (error) {
+            console.log("Backend google auth failed", error);
+          }
+        }}
+        onError={() => {
+          console.log("Google Log in Popup Failed");
+        }}
+      />
       </form>
     </div>
   );

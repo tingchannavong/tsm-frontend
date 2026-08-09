@@ -12,7 +12,7 @@ function UserPage() {
   const navigate = useNavigate();
   const t = useT();
 
-  const user = useUserStore((state) => state.user);
+  const user = useUserStore((state) => state.user);   
   const logout = useAuthStore((state) => state.logout);
 
   async function hdlLogout() {

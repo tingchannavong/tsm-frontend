@@ -9,9 +9,8 @@ import { useForm } from "react-hook-form";
 import RegisterCard from "../../components/RegisterCard.jsx";
 import { toast } from "react-toastify";
 import { adminRegister, userRegisterByInvite } from "../../api/auth.js";
-import { useGoogleLogin } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
-import { isAdmin } from "../../utils/auth.js";
+import { getHomePath, isAdmin } from "../../utils/auth.js";
 import { useAuthStore } from "../../stores/authStores.js";
 
 function RegisterForm({ mode }) {
@@ -53,9 +52,9 @@ function RegisterForm({ mode }) {
               // console.log(credentialResponse);
               await googleAuthen({idToken: credentialResponse.credential});
               await syncUser();
-              navigate("/tsm/staff");
+              navigate(getHomePath());
             } catch (error) {
-              console.log('Backend registration failed', error)
+              console.log('Backend google auth failed', error)
             }
           }}
           onError={() => {

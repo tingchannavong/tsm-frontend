@@ -6,7 +6,7 @@ import { loginSchema } from "../validations/auth.schema.js";
 import { toast } from "react-toastify";
 import styles from "../styles/LoginPage.module.css";
 import { useT } from "../languages/translations.js";
-import { getHomePath } from "../utils/auth.js";
+import { getHomePath, handleGoogleAuthError } from "../utils/auth.js";
 import Swal from "sweetalert2";
 import { useUserStore } from "../stores/userStores.js";
 import { GoogleLogin } from "@react-oauth/google";
@@ -95,7 +95,7 @@ function Login() {
             await syncUser();
             navigate(getHomePath());
           } catch (error) {
-            console.log("Backend google auth failed", error);
+            handleGoogleAuthError(error, navigate)
           }
         }}
         onError={() => {

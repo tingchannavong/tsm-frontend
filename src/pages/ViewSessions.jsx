@@ -57,7 +57,7 @@ function ViewSessions() {
     const fetchGroupSessions = async () => {
       try {
         const data = await getSessionsByLocationGroup(id, groupId);
-        console.log(data.sameStartTimes)
+        // console.log(data.sameStartTimes)
         setSelectedGroup(data.sameStartTimes);
         // TO DO: sort by start time
       } catch (error) {

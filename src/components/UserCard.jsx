@@ -17,9 +17,9 @@ function UserCard({ id, username, firstname, lastname, phone, email }) {
 
   const updateUser = useUserStore(state => state.updateUser);
   const user = useUserStore(state => state.user);
-  console.log('user.provider', user.provider);
+  // console.log('user.provider', user.provider);
   const isLocal = user.provider === "local" ? true : false;
-  console.log('isLocal', isLocal)
+  // console.log('isLocal', isLocal)
   const onSubmit = async (data) => {
     try {
       await updateUser(user.id, data);

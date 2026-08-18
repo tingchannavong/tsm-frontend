@@ -60,7 +60,7 @@ function OrderSummary() {
         const data = await getOrderPreviewBySessionIds({
           sessionIds: sessionIds,
         });
-        console.log(data.responses);
+        // console.log(data.responses);
         setOrderPreview(data.responses);
       } catch (error) {
         toast.error(error.message || "Fetch preview failed");
